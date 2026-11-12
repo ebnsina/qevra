@@ -5,6 +5,11 @@
 		ArrowRight02Icon,
 		Calendar03Icon,
 		Certificate01Icon,
+		Comment01Icon,
+		Download01Icon,
+		File01Icon,
+		PencilEdit01Icon,
+		StarIcon,
 		CheckmarkCircle02Icon,
 		CircleIcon,
 		Quiz01Icon,
@@ -15,13 +20,16 @@
 	import Badge from '#lib/sinaui/ui/Badge.svelte';
 	import Button from '#lib/sinaui/ui/Button.svelte';
 	import Card from '#lib/sinaui/ui/Card.svelte';
+	import ConfirmButton from '#lib/sinaui/ui/ConfirmButton.svelte';
 	import FileDrop from '#lib/sinaui/ui/FileDrop.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
+	import Input from '#lib/sinaui/ui/Input.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
 	import * as Radio from '#lib/sinaui/ui/radio/index.ts';
+	import Select from '#lib/sinaui/ui/Select.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { dateTime, plural } from '#lib/format.ts';
+	import { date, dateTime, plural } from '#lib/format.ts';
 	import { message } from '#lib/messages.ts';
 	import { PASS_MARK } from '#lib/quiz.ts';
 	import { submitting } from '#lib/submitting.svelte.ts';
@@ -35,11 +43,32 @@
 	const quizPassed = $derived(Boolean(data.attempt?.passed));
 
 	const complete = submitting();
+	const ask = submitting();
+	const note = submitting();
+	const rate = submitting();
+	let deleteForms = $state<Record<string, HTMLFormElement>>({});
 	const quiz = submitting();
 	const submit = submitting();
 </script>
 
 <Seo title="{lesson.title} | {data.course.title}" description={lesson.title} noindex />
+
+{#snippet post(item: (typeof data.threads)[number]['replies'][number])}
+	<div class="post">
+		<div class="by">
+			<strong>{item.author_name}</strong>
+			{#if item.by_staff}<Badge tone="accent" icon={false}>Teacher</Badge>{/if}
+			<span class="muted">{date(item.created_at)}</span>
+			{#if item.user_id === data.user?.id}
+				<form method="post" action="?/deletePost" bind:this={deleteForms[item.id]} use:enhance hidden>
+					<input type="hidden" name="id" value={item.id} />
+				</form>
+				<ConfirmButton size="sm" onconfirm={() => deleteForms[item.id]?.requestSubmit()} confirm="Delete it?" done="Deleted">Delete</ConfirmButton>
+			{/if}
+		</div>
+		<p class="body">{item.body}</p>
+	</div>
+{/snippet}
 
 <div class="app-page">
 	<PageHeader title={lesson.title} description={data.course.title}>
@@ -54,6 +83,12 @@
 		{/snippet}
 	</PageHeader>
 
+	{#if data.preview}
+		<Alert title="You are previewing this course as a student sees it">
+			You are not enrolled, so nothing you do here is recorded as progress.
+			{#snippet actions()}<Button size="sm" variant="outline" href="/admin/courses">Back to admin</Button>{/snippet}
+		</Alert>
+	{/if}
 	{#if data.certificate}
 		<Alert tone="success" title="You finished this course">
 			Your certificate is ready.
@@ -150,6 +185,34 @@
 					<Button type="submit" loading={complete.busy}><Icon icon={CheckmarkCircle02Icon} /> Mark as complete</Button>
 				</form>
 			{/if}
+
+			<Card title="Questions and answers" icon={Comment01Icon} level={2} description="Ask about this lesson. Your teacher and classmates can reply.">
+				<form method="post" action="?/post" class="app-form" use:enhance={ask.enhance}>
+					<Textarea label="Your question" name="body" rows={2} required maxlength={4000} />
+					<div class="app-form-actions"><Button type="submit" variant="outline" loading={ask.busy}>Ask</Button></div>
+				</form>
+				{#if data.threads.length}
+					<ul class="threads">
+						{#each data.threads as thread (thread.id)}
+							<li>
+								{@render post(thread)}
+								{#if thread.replies.length}
+									<ul class="replies">
+										{#each thread.replies as reply (reply.id)}<li>{@render post(reply)}</li>{/each}
+									</ul>
+								{/if}
+								<form method="post" action="?/post" class="reply" use:enhance>
+									<input type="hidden" name="parent_id" value={thread.id} />
+									<Input label="Reply to {thread.author_name}" hideLabel name="body" placeholder="Write a reply" required maxlength={4000} />
+									<Button type="submit" variant="ghost" size="sm">Reply</Button>
+								</form>
+							</li>
+						{/each}
+					</ul>
+				{:else}
+					<p class="muted quiet">No questions yet. Be the first to ask.</p>
+				{/if}
+			</Card>
 		</div>
 
 		<aside class="side">
@@ -191,6 +254,43 @@
 							</li>
 						{/each}
 					</ul>
+				</Card>
+			{/if}
+
+			{#if data.files.length}
+				<Card title="Downloads" icon={Download01Icon} level={2}>
+					<ul class="files">
+						{#each data.files as file (file.id)}
+							<li><Icon icon={File01Icon} size={16} /><a href="/files/{file.file_key}" download={file.file_name}>{file.title}</a></li>
+						{/each}
+					</ul>
+				</Card>
+			{/if}
+
+			<Card title="My notes" icon={PencilEdit01Icon} level={2} description="Only you can see these.">
+				<form method="post" action="?/note" class="app-form" use:enhance={note.enhance}>
+					<Textarea label="Notes on this lesson" hideLabel name="body" rows={4} maxlength={10000} value={data.note} />
+					<div class="app-form-actions">
+						<Button variant="ghost" size="sm" href="/portal/notes">All my notes</Button>
+						<Button type="submit" variant="outline" size="sm" loading={note.busy}>Save notes</Button>
+					</div>
+				</form>
+			</Card>
+
+			{#if !data.preview}
+				<Card title="Rate this course" icon={StarIcon} level={2}>
+					{#snippet aside()}
+						{#if data.review}<Badge tone={data.review.approved ? 'accent' : 'neutral'}>{data.review.approved ? 'Published' : 'Waiting for approval'}</Badge>{/if}
+					{/snippet}
+					<form method="post" action="?/review" class="app-form" use:enhance={rate.enhance}>
+						<Select label="Your rating" name="rating" required value={String(data.review?.rating ?? 5)}>
+							{#each [5, 4, 3, 2, 1] as stars (stars)}<option value={String(stars)}>{'★'.repeat(stars)} {stars} of 5</option>{/each}
+						</Select>
+						<Textarea label="What did you think? (optional)" name="body" rows={3} maxlength={2000} value={data.review?.body ?? ''} />
+						<div class="app-form-actions">
+							<Button type="submit" variant="outline" size="sm" loading={rate.busy}>{data.review ? 'Update review' : 'Send review'}</Button>
+						</div>
+					</form>
 				</Card>
 			{/if}
 
@@ -289,5 +389,62 @@
 	}
 	.live .num {
 		font-size: 0.8125rem;
+	}
+	.threads,
+	.replies,
+	.files {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.threads {
+		margin-top: 1.25rem;
+	}
+	.threads > li {
+		display: grid;
+		gap: 0.75rem;
+		padding-block: 1rem;
+		border-top: 1px solid var(--ui-line);
+	}
+	.replies {
+		display: grid;
+		gap: 0.75rem;
+		padding-inline-start: 1rem;
+		border-inline-start: 2px solid var(--ui-line);
+	}
+	.by {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.875rem;
+	}
+	.body {
+		margin-top: 0.25rem;
+		white-space: pre-line;
+		overflow-wrap: anywhere;
+	}
+	.reply {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.quiet {
+		margin-top: 1rem;
+		font-size: 0.875rem;
+	}
+	.files {
+		display: grid;
+		gap: 0.6rem;
+	}
+	.files li {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.files :global(svg) {
+		flex: none;
+		color: var(--ui-accent);
 	}
 </style>

@@ -23,7 +23,12 @@
 
 <div class="app-page narrow">
 	<PageHeader title="Enroll in {course.title}" description={course.summary}>
-		{#snippet actions()}<p class="num price">{money(course.price)}</p>{/snippet}
+		{#snippet actions()}
+			<p class="num price">
+				{money(data.amount)}
+				{#if data.amount < course.price}<s class="muted was">{money(course.price)}</s>{/if}
+			</p>
+		{/snippet}
 	</PageHeader>
 
 	{#if form && 'code' in form}<Alert tone="danger" title={message(form.code)} live />{/if}
@@ -53,7 +58,7 @@
 			{#if data.pay.bkash || data.pay.nagad}
 				<dl class="app-fields">
 					<dt>Amount</dt>
-					<dd><strong class="num">{money(course.price)}</strong></dd>
+					<dd><strong class="num">{money(data.amount)}</strong></dd>
 					{#if data.pay.bkash}
 						<dt>bKash</dt>
 						<dd class="num">{data.pay.bkash}</dd>
@@ -71,8 +76,23 @@
 			{/if}
 		</Card>
 
+		<Card title="Have a coupon?" level={2}>
+			{#if data.coupon?.percent}
+				<Alert tone="success" title="Coupon {data.coupon.code.toUpperCase()} applied: {data.coupon.percent}% off. You pay {money(data.amount)}.">
+					{#snippet actions()}<Button size="sm" variant="outline" href="?">Remove</Button>{/snippet}
+				</Alert>
+			{:else}
+				{#if data.coupon}<Alert tone="warning" title="That code can't be used on this course. Check the spelling, or it may have expired." />{/if}
+				<form method="get" class="app-form-row coupon">
+					<Input label="Coupon code" name="coupon" value={data.coupon?.code ?? ''} required maxlength={40} />
+					<Button type="submit" variant="outline">Apply</Button>
+				</form>
+			{/if}
+		</Card>
+
 		<Card title="2. Tell us about the payment" description="We match these details with our account, then open the course for you." level={2}>
 			<form method="post" action="?/pay" class="app-form" use:enhance={send.enhance}>
+				{#if data.coupon?.percent}<input type="hidden" name="coupon" value={data.coupon.code} />{/if}
 				<div class="app-form-row">
 					<Select label="Paid with" name="method" required value={values?.method ?? 'bkash'} error={errors?.method}>
 						<option value="bkash">bKash</option>
@@ -97,5 +117,12 @@
 	.price {
 		font-size: 1.5rem;
 		font-weight: 600;
+	}
+	.was {
+		font-size: 1rem;
+		font-weight: 400;
+	}
+	.coupon {
+		grid-template-columns: 1fr auto;
 	}
 </style>

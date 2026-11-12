@@ -18,6 +18,13 @@ export async function load({ locals }) {
 			order by lc.starts_at limit 5`;
 		const [{ pending }] = await tx<{ pending: number }[]>`
 			select count(*)::int as pending from payments where user_id = ${userId} and status = 'pending'`;
-		return { courses, live, pending };
+		// Row-level security limits these to the courses the student is in; the join keeps staff to their own too.
+		const announcements = await tx<{ id: string; title: string; body: string; created_at: Date; course: string }[]>`
+			select a.id, a.title, a.body, a.created_at, c.title as course
+			from announcements a
+			join courses c on c.id = a.course_id
+			join enrollments e on e.course_id = c.id and e.user_id = ${userId}
+			order by a.created_at desc limit 5`;
+		return { courses, live, pending, announcements };
 	});
 }

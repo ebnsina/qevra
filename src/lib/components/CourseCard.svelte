@@ -6,7 +6,7 @@
 	import { levelTone } from '#lib/level.ts';
 
 	interface Props {
-		course: { slug: string; title: string; summary: string; level: string; price: number; image_key: string | null; enrollment_open: boolean; lessons: number };
+		course: import('#lib/server/courses.ts').CourseSummary;
 	}
 	let { course }: Props = $props();
 </script>
@@ -30,7 +30,10 @@
 		</div>
 		<h3 class="site-h3">{course.title}</h3>
 		<p class="muted summary">{course.summary}</p>
-		<p class="foot"><strong class="price">{course.enrollment_open ? money(course.price) : 'Coming soon'}</strong><span class="more">View course <Icon icon={ArrowRight02Icon} size={16} /></span></p>
+		{#if course.reviews}
+			<p class="rating"><span class="stars" aria-hidden="true">★</span> <strong>{course.rating}</strong> <span class="muted">({plural(course.reviews, 'review')})</span></p>
+		{/if}
+		<p class="foot"><span><strong class="price">{course.enrollment_open ? money(course.price) : 'Coming soon'}</strong>{#if course.enrollment_open && course.regular_price && course.regular_price > course.price} <s class="muted was">{money(course.regular_price)}</s>{/if}</span><span class="more">View course <Icon icon={ArrowRight02Icon} size={16} /></span></p>
 	</div>
 </a>
 
@@ -91,6 +94,15 @@
 	.price {
 		font-size: var(--text-lg);
 		font-weight: 700;
+	}
+	.was {
+		font-size: var(--text-sm);
+	}
+	.rating {
+		font-size: var(--text-sm);
+	}
+	.stars {
+		color: var(--ui-accent);
 	}
 	.more {
 		display: inline-flex;

@@ -20,6 +20,13 @@ export const wholeNumber = v.pipe(
 	v.toNumber(),
 	v.maxValue(10_000_000, 'That number is too large')
 );
+/** A whole number, or empty for "none" (null). */
+export const optionalNumber = v.pipe(
+	v.optional(v.string(), ''),
+	v.trim(),
+	v.check((s) => s === '' || /^\d{1,8}$/.test(s), 'Enter a whole number, or leave it empty'),
+	v.transform((s) => (s === '' ? null : Number(s)))
+);
 export const slug = v.pipe(
 	v.string(),
 	v.trim(),

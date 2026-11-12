@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BookOpen01Icon, Certificate01Icon, DashboardSquare01Icon, Globe02Icon, Payment01Icon, Settings01Icon, UserIcon } from '@hugeicons/core-free-icons';
+	import { BookOpen01Icon, Certificate01Icon, DashboardSquare01Icon, Globe02Icon, Payment01Icon, PencilEdit01Icon, Settings01Icon, UserIcon } from '@hugeicons/core-free-icons';
 	import * as Menu from '#lib/sinaui/ui/dropdown/index.ts';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import AppShell from '#lib/components/AppShell.svelte';
@@ -10,6 +10,7 @@
 			items: [
 				{ label: 'My courses', href: '/portal', icon: DashboardSquare01Icon },
 				{ label: 'Payments', href: '/portal/payments', icon: Payment01Icon },
+				{ label: 'Notes', href: '/portal/notes', icon: PencilEdit01Icon },
 				{ label: 'Certificates', href: '/portal/certificates', icon: Certificate01Icon },
 				{ label: 'Profile', href: '/portal/profile', icon: UserIcon }
 			]

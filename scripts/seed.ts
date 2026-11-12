@@ -19,6 +19,7 @@ interface Course {
 	title: string;
 	level: string;
 	price: number;
+	regular_price?: number;
 	summary: string;
 	description: string;
 	outcomes: string;
@@ -40,10 +41,16 @@ interface Lesson {
 	preview?: boolean;
 	assignment?: string;
 	quiz?: [question: string, options: string[], correct: number][];
+	/** A study sheet (by its title in resources.ts) attached to the lesson as a download. */
+	download?: { sheet: string; title: string };
 }
 type Curriculum = Record<
 	string,
-	{ live: { title: string; in_days: number; hour: number; minute: number }[]; sections: { title: string; lessons: Lesson[] }[] }
+	{
+		live: { title: string; in_days: number; hour: number; minute: number }[];
+		announcement?: { title: string; body: string };
+		sections: { title: string; lessons: Lesson[] }[];
+	}
 >;
 
 const demo = process.argv.includes('--demo');
@@ -111,9 +118,9 @@ async function seedContent() {
 		// Courses start closed: openCoursesWithLessons() below opens the ones that have something to teach.
 		for (const [i, course] of content.courses.entries()) {
 			await tx`
-				insert into courses (slug, title, level, price, summary, description, outcomes, requirements,
+				insert into courses (slug, title, level, price, regular_price, summary, description, outcomes, requirements,
 					image_key, published, enrollment_open, position)
-				values (${course.slug}, ${course.title}, ${course.level}, ${course.price}, ${course.summary},
+				values (${course.slug}, ${course.title}, ${course.level}, ${course.price}, ${course.regular_price ?? null}, ${course.summary},
 					${course.description}, ${course.outcomes}, ${course.requirements}, ${courseImage(course.slug)}, true, false, ${i})`;
 		}
 		for (const [i, [name, affiliation, body]] of content.reviews.entries()) {
@@ -177,6 +184,33 @@ async function seedSample() {
 					values (${courseId}, ${live.title}, ${dhakaTime(live.in_days, live.hour, live.minute)}, 'https://zoom.us/')`;
 			}
 		}
+		// Each of these is added once, also to a setup that was seeded before they existed.
+		const footer = `${content.settings.name} - ${content.settings.tagline}`;
+		for (const [slug, course] of Object.entries(curriculum)) {
+			const [{ id: courseId } = { id: null }] = await tx<{ id: string }[]>`select id from courses where slug = ${slug}`;
+			if (!courseId) continue;
+			if (course.announcement && !(await tx`select 1 from announcements where course_id = ${courseId} limit 1`).length) {
+				await tx`insert into announcements (course_id, title, body) values (${courseId}, ${course.announcement.title}, ${course.announcement.body})`;
+			}
+			for (const lesson of course.sections.flatMap((section) => section.lessons)) {
+				const sheet = resources.find((r) => r.title === lesson.download?.sheet);
+				if (!lesson.download || !sheet) continue;
+				const [row] = await tx<{ id: string }[]>`
+					select l.id from lessons l where l.course_id = ${courseId} and l.title = ${lesson.title}
+						and not exists (select 1 from lesson_files f where f.lesson_id = l.id)`;
+				if (!row) continue;
+				// Under the course's id: that is how the app knows only its students may download it.
+				const key = `lessons/${courseId}/${sheet.key.split('/').pop()}`;
+				await upload(key, tablePdf({ ...sheet, footer }));
+				await tx`insert into lesson_files (lesson_id, title, file_key, file_name)
+					values (${row.id}, ${lesson.download.title}, ${key}, ${`${sheet.title}.pdf`})`;
+			}
+		}
+		for (const course of content.courses) {
+			if (course.regular_price) await tx`update courses set regular_price = ${course.regular_price} where slug = ${course.slug} and regular_price is null`;
+		}
+		await tx`insert into coupons (code, percent_off) values ('WELCOME10', 10) on conflict (code) do nothing`;
+
 		if (!(await tx`select 1 from resources limit 1`).length) {
 			for (const [i, sheet] of resources.entries()) {
 				await tx`insert into resources (title, description, file_key, file_name, position)

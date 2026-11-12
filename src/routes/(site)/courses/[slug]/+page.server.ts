@@ -15,6 +15,7 @@ interface Course {
 	price: number;
 	image_key: string | null;
 	enrollment_open: boolean;
+	regular_price: number | null;
 }
 
 const lines = (text: string) => text.split('\n').map((l) => l.trim()).filter(Boolean);
@@ -22,7 +23,7 @@ const lines = (text: string) => text.split('\n').map((l) => l.trim()).filter(Boo
 export async function load({ locals, params }) {
 	return locals.db(async (tx) => {
 		const [course] = await tx<Course[]>`
-			select id, slug, title, summary, description, outcomes, requirements, level, price, image_key, enrollment_open
+			select id, slug, title, summary, description, outcomes, requirements, level, price, image_key, enrollment_open, regular_price
 			from courses where slug = ${params.slug} and published`;
 		if (!course) error(404, 'Course not found');
 
@@ -40,6 +41,11 @@ export async function load({ locals, params }) {
 		const [enrollment] = locals.user
 			? await tx`select 1 from enrollments where course_id = ${course.id} and user_id = ${locals.user.id}`
 			: [];
+		const reviews = await tx<{ id: string; author_name: string; rating: number; body: string; created_at: Date }[]>`
+			select id, author_name, rating, body, created_at from course_reviews
+			where course_id = ${course.id} and approved order by created_at desc limit 30`;
+		const [{ downloads }] = await tx<{ downloads: number }[]>`
+			select count(*)::int as downloads from lesson_files f join lessons l on l.id = f.lesson_id where l.course_id = ${course.id}`;
 		const { home } = await getContent(tx);
 
 		const preview = lessons.find((l) => l.is_preview && embedUrl(l.video_url));
@@ -59,8 +65,11 @@ export async function load({ locals, params }) {
 				lessons: lessons.length,
 				quizzes: lessons.filter((l) => l.has_quiz).length,
 				assignments: lessons.filter((l) => l.has_assignment).length,
-				live
+				live,
+				downloads
 			},
+			reviews,
+			rating: reviews.length ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) * 10) / 10 : null,
 			preview: preview ? { title: preview.title, src: embedUrl(preview.video_url)! } : null,
 			instructor: home.about_name ? { name: home.about_name, role: home.about_role, text: home.about_text } : null,
 			enrolled: Boolean(enrollment)
