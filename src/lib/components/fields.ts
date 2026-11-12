@@ -2,7 +2,7 @@
 export interface Field {
 	name: string;
 	label: string;
-	type?: 'text' | 'textarea' | 'number' | 'switch' | 'image' | 'file' | 'select' | 'datetime' | 'email' | 'url' | 'color';
+	type?: 'text' | 'textarea' | 'richtext' | 'number' | 'switch' | 'image' | 'file' | 'select' | 'datetime' | 'email' | 'url' | 'color';
 	required?: boolean;
 	hint?: string;
 	rows?: number;

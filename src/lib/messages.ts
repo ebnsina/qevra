@@ -13,6 +13,7 @@ const MESSAGES = {
 	in_use: "This can't be deleted because students have records attached to it. Unpublish it instead.",
 	transaction_used: 'This transaction ID was already submitted. Check it and try again.',
 	payment_pending: 'You already sent a payment for this course. We are checking it.',
+	coupon_invalid: "That coupon can't be used on this course any more. Remove it and try again.",
 	already_enrolled: 'You are already enrolled in this course.',
 	already_reviewed: 'This was already reviewed, so it can no longer be changed.',
 	not_found: "We couldn't find that. It may have been removed."

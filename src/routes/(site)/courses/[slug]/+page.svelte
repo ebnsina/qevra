@@ -3,6 +3,7 @@
 		Calendar03Icon,
 		Certificate01Icon,
 		CheckmarkCircle02Icon,
+		Download01Icon,
 		PlayIcon,
 		Quiz01Icon,
 		Task01Icon,
@@ -17,7 +18,7 @@
 	import Dialog from '#lib/sinaui/ui/Dialog.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { money, plural } from '#lib/format.ts';
+	import { date, money, plural } from '#lib/format.ts';
 	import { levelTone } from '#lib/level.ts';
 
 	let { data } = $props();
@@ -30,6 +31,7 @@
 			{ icon: Video01Icon, text: plural(counts.lessons, 'recorded lesson'), show: counts.lessons > 0 },
 			{ icon: Quiz01Icon, text: plural(counts.quizzes, 'quiz', 'quizzes'), show: counts.quizzes > 0 },
 			{ icon: Task01Icon, text: `${plural(counts.assignments, 'assignment')} with teacher feedback`, show: counts.assignments > 0 },
+			{ icon: Download01Icon, text: plural(counts.downloads, 'downloadable file'), show: counts.downloads > 0 },
 			{ icon: Calendar03Icon, text: `${plural(counts.live, 'live class', 'live classes')} coming up`, show: counts.live > 0 },
 			{ icon: Certificate01Icon, text: 'Certificate of completion', show: true }
 		].filter((item) => item.show)
@@ -65,6 +67,7 @@
 			<p class="summary">{course.summary}</p>
 			<ul class="meta">
 				<li><Badge icon={false} tone={levelTone(course.level)}>{course.level || 'All levels'}</Badge></li>
+				{#if data.rating}<li><span class="stars" aria-hidden="true">★</span><strong>{data.rating}</strong> <a href="#reviews">({plural(data.reviews.length, 'review')})</a></li>{/if}
 				{#if counts.lessons}<li><Icon icon={Video01Icon} size={16} />{plural(counts.lessons, 'lesson')}</li>{/if}
 				{#if data.instructor}<li><Icon icon={UserIcon} size={16} /><span>Taught by <a href="#instructor">{data.instructor.name}</a></span></li>{/if}
 			</ul>
@@ -127,6 +130,21 @@
 			</section>
 		{/if}
 
+		{#if data.reviews.length}
+			<section id="reviews">
+				<h2 class="block-title"><span class="stars" aria-hidden="true">★</span> {data.rating} course rating · {plural(data.reviews.length, 'review')}</h2>
+				<ul class="reviews">
+					{#each data.reviews as review (review.id)}
+						<li>
+							<p class="who"><strong>{review.author_name}</strong><span class="muted">{date(review.created_at)}</span></p>
+							<p class="stars" aria-label="{review.rating} out of 5">{'★'.repeat(review.rating)}<span class="off">{'★'.repeat(5 - review.rating)}</span></p>
+							{#if review.body}<p>{review.body}</p>{/if}
+						</li>
+					{/each}
+				</ul>
+			</section>
+		{/if}
+
 		{#if data.instructor}
 			<section id="instructor">
 				<h2 class="block-title">Instructor</h2>
@@ -155,7 +173,13 @@
 		</div>
 		<div class="buy-body">
 			{#if open}
-				<p class="price">{money(course.price)}</p>
+				<p class="price">
+					{money(course.price)}
+					{#if course.regular_price && course.regular_price > course.price}
+						<s class="was">{money(course.regular_price)}</s>
+						<span class="off-badge">{Math.round((1 - course.price / course.regular_price) * 100)}% off</span>
+					{/if}
+				</p>
 				<Button size="lg" href={enrollHref}>{enrollLabel}</Button>
 				{#if !data.enrolled && course.price > 0}<p class="muted small">Pay with bKash or Nagad. Access opens once we confirm it.</p>{/if}
 			{:else}
@@ -358,6 +382,48 @@
 		line-height: 1.1;
 	}
 	.small {
+		font-size: var(--text-xs);
+	}
+	.was {
+		font-family: var(--ui-font);
+		font-size: var(--text-lg);
+		font-weight: 400;
+		color: var(--ui-muted);
+	}
+	.off-badge {
+		font-family: var(--ui-font);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		color: var(--ui-accent);
+	}
+	.stars {
+		color: var(--ui-accent);
+	}
+	.stars .off {
+		color: var(--ui-line);
+	}
+	.reviews {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+		gap: 1.5rem 2.5rem;
+	}
+	.reviews li {
+		display: grid;
+		gap: 0.3rem;
+		align-content: start;
+		padding-top: 1rem;
+		border-top: 1px solid var(--ui-line);
+	}
+	.who {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.5rem;
+	}
+	.who .muted {
 		font-size: var(--text-xs);
 	}
 	.includes-title {

@@ -14,16 +14,21 @@ export async function uploadFrom(formData: FormData, field: string, prefix: stri
 	return file ? saveUpload(file, prefix, kind) : null;
 }
 
+/** True when saveRow or deleteRow handed back a failure for the form, rather than a result. */
+export const isFailure = (result: unknown): result is ReturnType<typeof fail> =>
+	typeof result === 'object' && result !== null && 'status' in result;
+
 /**
- * Updates the row with this id, or adds a new one. Returns a failure to hand back to the form when
- * the web address (or another unique value) is taken. `fileColumn` names the column holding an
+ * Updates the row with this id, or adds a new one, and returns its id. Returns a failure to hand back
+ * to the form when the web address (or another unique value) is taken. `fileColumn` names the column holding an
  * uploaded file's key, so the file it replaces is removed from storage.
  */
 export async function saveRow(db: Db, table: string, id: string | null, row: Row, fileColumn?: string) {
 	try {
 		const replaced = await db(async (tx: Tx) => {
 			if (!id) {
-				await tx`insert into ${tx(table)} ${tx(row)}`;
+				const [added] = await tx<{ id: string }[]>`insert into ${tx(table)} ${tx(row)} returning id`;
+				id = added.id;
 				return null;
 			}
 			const [old] = fileColumn && row[fileColumn] ? await tx`select ${tx(fileColumn)} as key from ${tx(table)} where id = ${id}` : [];
@@ -31,6 +36,7 @@ export async function saveRow(db: Db, table: string, id: string | null, row: Row
 			return (old?.key as string | null) ?? null;
 		});
 		if (replaced && replaced !== row[fileColumn!]) await deleteFile(replaced);
+		return { id: id! };
 	} catch (e) {
 		if (isConflict(e, '23505')) return fail(409, { code: 'slug_taken' });
 		throw e;

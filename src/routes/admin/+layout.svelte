@@ -1,11 +1,14 @@
 <script lang="ts">
 	import {
+		Analytics01Icon,
 		BookOpen01Icon,
 		Comment01Icon,
+		Coupon01Icon,
 		DashboardSquare01Icon,
 		File01Icon,
 		Globe02Icon,
 		Layers01Icon,
+		MessageQuestionIcon,
 		News01Icon,
 		Payment01Icon,
 		Settings01Icon,
@@ -25,8 +28,17 @@
 				{ label: 'Dashboard', href: '/admin', icon: DashboardSquare01Icon },
 				{ label: 'Payments', href: '/admin/payments', icon: Payment01Icon, badge: data.waiting.payments },
 				{ label: 'Students', href: '/admin/students', icon: UserGroupIcon },
-				{ label: 'Submissions', href: '/admin/submissions', icon: Task01Icon, badge: data.waiting.submissions },
 				{ label: 'Courses', href: '/admin/courses', icon: BookOpen01Icon }
+			]
+		},
+		{
+			title: 'Teaching',
+			items: [
+				{ label: 'Questions', href: '/admin/questions', icon: MessageQuestionIcon, badge: data.waiting.questions },
+				{ label: 'Submissions', href: '/admin/submissions', icon: Task01Icon, badge: data.waiting.submissions },
+				{ label: 'Course reviews', href: '/admin/course-reviews', icon: StarIcon, badge: data.waiting.reviews },
+				{ label: 'Analytics', href: '/admin/analytics', icon: Analytics01Icon },
+				{ label: 'Coupons', href: '/admin/coupons', icon: Coupon01Icon }
 			]
 		},
 		{
@@ -35,9 +47,9 @@
 				{ label: 'Site settings', href: '/admin/site', icon: Settings01Icon },
 				{ label: 'Blog posts', href: '/admin/posts', icon: News01Icon },
 				{ label: 'Pages', href: '/admin/pages', icon: File01Icon },
-				{ label: 'Reviews', href: '/admin/reviews', icon: StarIcon },
+				{ label: 'Testimonials', href: '/admin/reviews', icon: Comment01Icon },
 				{ label: 'Resources', href: '/admin/resources', icon: Layers01Icon },
-				{ label: 'Partner logos', href: '/admin/partners', icon: Comment01Icon }
+				{ label: 'Partner logos', href: '/admin/partners', icon: Globe02Icon }
 			]
 		}
 	]);

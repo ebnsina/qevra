@@ -1,5 +1,6 @@
 <script lang="ts" generics="T extends Item">
 	import type { Snippet } from 'svelte';
+	import { goto } from '$app/navigation';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
 	import RowLink from '#lib/sinaui/blocks/studio/RowLink.svelte';
 	import Button from '#lib/sinaui/ui/Button.svelte';
@@ -20,18 +21,24 @@
 		/** Table columns; the first one opens the row. `text` formats a cell; `cell` draws it (a badge). */
 		columns: { label: string; text?: (item: T) => string; numeric?: boolean }[];
 		cell?: Snippet<[T, number]>;
-		fields: Field[];
+		/** The sheet's form. Not needed with editHref. */
+		fields?: Field[];
 		form?: { code?: string; errors?: Record<string, string>; values?: Record<string, string> } | null;
 		/** More buttons in an open row's sheet (a link to its lessons). */
 		rowActions?: Snippet<[T]>;
+		/** Starting values for a new record in the sheet. */
+		defaults?: Item;
+		/** Opens a record in its own editor page instead of a sheet: the address for a row, or for a new one (null). */
+		editHref?: (item: T | null) => string;
 	}
-	let { title, noun, empty, items, columns, cell, fields, form, rowActions }: Props = $props();
+	let { title, noun, empty, items, columns, cell, fields = [], form, rowActions, defaults, editHref }: Props = $props();
 
 	let open = $state(false);
 	let openId = $state<string | null>(null);
 	const selected = $derived(items.find((item) => item.id === openId) ?? null);
 
 	function show(id: string | null) {
+		if (editHref) return goto(editHref(items.find((item) => item.id === id) ?? null));
 		openId = id;
 		open = true;
 	}
@@ -75,6 +82,8 @@
 	</Card>
 </div>
 
-<CrudSheet bind:open {noun} {fields} item={selected} {form}>
-	{#snippet actions()}{#if selected}{@render rowActions?.(selected)}{/if}{/snippet}
-</CrudSheet>
+{#if !editHref}
+	<CrudSheet bind:open {noun} {fields} item={selected} {defaults} {form}>
+		{#snippet actions()}{#if selected}{@render rowActions?.(selected)}{/if}{/snippet}
+	</CrudSheet>
+{/if}

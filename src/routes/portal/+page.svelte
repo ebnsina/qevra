@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BookOpen01Icon, Calendar03Icon } from '@hugeicons/core-free-icons';
+	import { BookOpen01Icon, Calendar03Icon, News01Icon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
 	import Alert from '#lib/sinaui/ui/Alert.svelte';
 	import Badge from '#lib/sinaui/ui/Badge.svelte';
@@ -9,7 +9,7 @@
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { dateTime, plural } from '#lib/format.ts';
+	import { date, dateTime, plural } from '#lib/format.ts';
 
 	let { data } = $props();
 </script>
@@ -53,6 +53,22 @@
 		</Card>
 	{/if}
 
+	{#if data.announcements.length}
+		<Card title="Announcements" icon={News01Icon} level={2} flush>
+			<ul class="live">
+				{#each data.announcements as item (item.id)}
+					<li class="news">
+						<div>
+							<strong>{item.title}</strong>
+							<span class="muted">{item.course} · {date(item.created_at)}</span>
+							{#if item.body}<p class="news-body">{item.body}</p>{/if}
+						</div>
+					</li>
+				{/each}
+			</ul>
+		</Card>
+	{/if}
+
 	{#if data.live.length}
 		<Card title="Upcoming live classes" icon={Calendar03Icon} level={2} flush>
 			<ul class="live">
@@ -87,5 +103,10 @@
 	.live div {
 		display: grid;
 		font-size: 0.9375rem;
+	}
+	.news-body {
+		margin-top: 0.4rem;
+		white-space: pre-line;
+		overflow-wrap: anywhere;
 	}
 </style>

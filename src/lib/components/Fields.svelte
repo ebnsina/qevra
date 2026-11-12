@@ -4,6 +4,7 @@
 	import Select from '#lib/sinaui/ui/Select.svelte';
 	import Switch from '#lib/sinaui/ui/Switch.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
+	import RichField from './RichField.svelte';
 	import { toLocalInput } from '#lib/format.ts';
 	import type { Field, Item } from './fields.ts';
 
@@ -30,7 +31,7 @@
 		if (field.type === 'datetime') return toLocalInput(value as Date);
 		return String(value);
 	}
-	const wide = (field: Field) => field.wide || ['textarea', 'image', 'file', 'switch'].includes(field.type ?? 'text');
+	const wide = (field: Field) => field.wide || ['textarea', 'richtext', 'image', 'file', 'switch'].includes(field.type ?? 'text');
 </script>
 
 <div class={['fields', columns === 2 && 'two']}>
@@ -39,6 +40,8 @@
 		<div class={{ wide: wide(field) }}>
 			{#if field.type === 'textarea'}
 				<Textarea label={field.label} name={field.name} rows={field.rows ?? 4} required={field.required} hint={field.hint} value={text(field)} error={errors?.[field.name]} />
+			{:else if field.type === 'richtext'}
+				<RichField label={field.label} name={field.name} value={text(field)} hint={field.hint} error={errors?.[field.name]} />
 			{:else if field.type === 'switch'}
 				<Switch name={field.name} checked={Boolean(item?.[field.name])}>{field.label}</Switch>
 				{#if field.hint}<p class="hint">{field.hint}</p>{/if}

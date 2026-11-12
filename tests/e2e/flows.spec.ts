@@ -99,3 +99,56 @@ test('an enrolled student sees a waiting screen, not an error, while the course 
 	await expect(student.getByRole('heading', { level: 1, name: 'English for Today' })).toBeVisible();
 	await expect(student.getByText('Lessons are being added')).toBeVisible();
 });
+
+test('a coupon lowers the fee, and a question under a lesson gets the teacher\'s answer', async ({ browser }) => {
+	const student = await (await browser.newContext()).newPage();
+	await register(student, 'Rafi');
+
+	// English for Job Seekers costs 999; WELCOME10 takes 10% off.
+	await student.goto('/portal/enroll/english-for-job-seekers?coupon=welcome10');
+	await expect(student.getByText('Coupon WELCOME10 applied: 10% off')).toBeVisible();
+	await student.goto('/portal/enroll/english-for-job-seekers?coupon=NOSUCHCODE');
+	await expect(student.getByText("That code can't be used on this course")).toBeVisible();
+
+	// Join the free course and ask a question under its first lesson.
+	await student.goto('/portal/enroll/english-for-complete-idiots');
+	await student.getByRole('button', { name: 'Start the course' }).click();
+	const question = `Is there homework? ${Date.now()}`;
+	await expect(async () => {
+		await student.getByLabel('Your question').fill(question);
+		await student.getByRole('button', { name: 'Ask', exact: true }).click();
+		await expect(student.getByText(question)).toBeVisible({ timeout: 3000 });
+	}).toPass();
+
+	const admin = await (await browser.newContext()).newPage();
+	await admin.goto('/login');
+	await signIn(admin, 'admin@example.com', 'admin12345');
+	await expect(admin).toHaveURL('/admin');
+	await admin.goto('/admin/questions');
+	const answerBox = admin.getByLabel('Your answer');
+	await expect(async () => {
+		await admin.getByRole('button', { name: question }).click();
+		await expect(answerBox).toBeVisible({ timeout: 1000 });
+	}).toPass();
+	await answerBox.fill('Yes: one short task after each section.');
+	await admin.getByRole('button', { name: 'Post answer' }).click();
+	await expect(admin.getByText('No questions are waiting')).toBeVisible();
+
+	await student.reload();
+	await expect(student.getByText('Yes: one short task after each section.')).toBeVisible();
+	await expect(student.getByText('Teacher', { exact: true })).toBeVisible();
+});
+
+test('a post is written on its own editor page', async ({ page }) => {
+	await page.goto('/login');
+	await signIn(page, 'admin@example.com', 'admin12345');
+	await expect(page).toHaveURL('/admin');
+	await page.goto('/admin/posts/new');
+	const slug = `how-to-practise-${Date.now()}`;
+	await page.getByLabel('Title').fill('How to practise every day');
+	await page.getByLabel('Web address').fill(slug);
+	await page.getByRole('button', { name: 'Create post' }).click();
+	await expect(page).toHaveURL(/\/admin\/posts\/[0-9a-f-]{36}\?saved/);
+	await expect(page.getByText('Saved.')).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'How to practise every day' })).toBeVisible();
+});

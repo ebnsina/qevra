@@ -5,11 +5,12 @@ import { redirect } from '@sveltejs/kit';
 export async function load({ locals, params }) {
 	const userId = locals.user!.id;
 	return locals.db(async (tx) => {
-		const [course] = await tx<{ id: string; slug: string; title: string; summary: string }[]>`
-			select c.id, c.slug, c.title, c.summary from courses c
-			join enrollments e on e.course_id = c.id and e.user_id = ${userId}
-			where c.slug = ${params.slug}`;
-		if (!course) redirect(303, `/portal/enroll/${params.slug}`);
+		const [course] = await tx<{ id: string; slug: string; title: string; summary: string; enrolled: boolean }[]>`
+			select c.id, c.slug, c.title, c.summary,
+				exists (select 1 from enrollments e where e.course_id = c.id and e.user_id = ${userId}) as enrolled
+			from courses c where c.slug = ${params.slug}`;
+		// Staff can open any course to see it as a student does.
+		if (!course || (!course.enrolled && locals.user!.role !== 'admin')) redirect(303, `/portal/enroll/${params.slug}`);
 
 		const lessons = await tx<{ id: string; done: boolean }[]>`
 			select l.id, p.lesson_id is not null as done

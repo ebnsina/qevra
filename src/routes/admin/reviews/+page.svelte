@@ -5,11 +5,11 @@
 	let { data, form } = $props();
 </script>
 
-<Seo title="Reviews | Admin" description="Student reviews shown on the website." noindex />
+<Seo title="Testimonials | Admin" description="Student reviews shown on the website." noindex />
 
 <CrudPage
-	title="Reviews"
-	noun="review"
+	title="Testimonials"
+	noun="testimonial"
 	empty="Add what students said about their course. Reviews show on the home page and the Reviews page."
 	items={data.reviews}
 	{form}

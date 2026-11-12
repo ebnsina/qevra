@@ -51,4 +51,10 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - The Studio block and `SidebarLayout`'s `tabs` live on sinaui's local `studio-block` branch (not on main yet). To
   re-copy: run `pnpm dev --port 5199` in `~/Sites/sinaui`, then
   `SINAUI_REGISTRY=http://localhost:5199 node ~/Sites/sinaui/cli/index.js add blocks/studio --overwrite`.
-- Admin forms are lists of `Field`s (`components/fields.ts`) rendered by `Fields`, `CrudSheet` and `CrudPage`.
+- Admin forms are lists of `Field`s (`components/fields.ts`) rendered by `Fields`. Small records (testimonials,
+  coupons, lessons) edit in a side sheet (`CrudSheet`, `CrudPage`); posts, pages and course details edit on a full
+  page (`EditorPage`, at `/admin/<list>/[id]`, with `new` for a new one). Rich text is saved as HTML; older text is
+  Markdown, and `renderMarkdown` handles both.
+- Row-level security also covers Q&A (`lesson_posts`: enrolled students only), private notes (`lesson_notes`: the
+  writer only, not even staff) and reviews (`course_reviews`: public once approved). Students can't read `coupons`;
+  a code is checked through the `coupon_for()` database function.
