@@ -1,11 +1,11 @@
 @import '@fontsource-variable/geist-mono';
 @import '@fontsource-variable/geist';
 
-/* Fonts: Clash Display and Amulya from Fontshare, served from this site. */
+/* Fonts, served from this site: Fraunces (headings, SIL Open Font License) and Amulya (text, Fontshare). */
 @font-face {
-	font-family: 'Clash Display';
-	src: url('/fonts/clash-display.woff2') format('woff2');
-	font-weight: 200 700;
+	font-family: 'Fraunces';
+	src: url('/fonts/fraunces.woff2') format('woff2');
+	font-weight: 100 900;
 	font-display: swap;
 }
 @font-face {
@@ -25,7 +25,7 @@
 /* Tokens */
 :root {
 	--ui-font: 'Amulya', ui-sans-serif, system-ui, sans-serif;
-	--ui-font-heading: 'Clash Display', var(--ui-font);
+	--ui-font-heading: 'Fraunces', ui-serif, Georgia, serif;
 	--ui-font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
 
 	/* Brand: one color, set in the site settings (--brand, --on-brand come from the root layout).
@@ -88,10 +88,8 @@ h4 {
 	margin: 0;
 	font-family: var(--ui-font-heading);
 	font-weight: 600;
-	/* Clash Display is tight by design; a little air makes it easier to read. */
-	letter-spacing: 0.015em;
-	word-spacing: 0.06em;
-	line-height: 1.25;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
 	text-wrap: balance;
 }
 p {
@@ -393,7 +391,7 @@ a.site-card.in:hover {
 	border-radius: 0.3em;
 }
 
-/* Signed-in app (portal and admin): Geist throughout; the website keeps Clash Display and Amulya. */
+/* Signed-in app (portal and admin): Geist throughout; the website keeps Fraunces and Amulya. */
 .app-area {
 	--ui-font: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
 	--ui-font-heading: var(--ui-font);

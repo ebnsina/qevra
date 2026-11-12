@@ -24,3 +24,4 @@ First version.
 - Website: courses can be filtered (open now, free, coming soon); reviews, resources, blog, posts and the contact page are redesigned, and every page ends with one next step
 - The seed now loads a generic sample academy instead of one academy's own content, and can add demo activity
 - Renamed to Tadris
+- Website headings are set in Fraunces, a serif

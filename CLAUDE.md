@@ -42,7 +42,7 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - Money is whole taka; dates and numbers format through `src/lib/format.ts` (Bangladesh time).
 
 ## Design
-- Website: Clash Display headings, Amulya text (self-hosted in `static/fonts`), white with one brand color
+- Website: Fraunces headings, Amulya text (self-hosted in `static/fonts`), white with one brand color
   (forest green `#166534` by default, set per academy in Site settings). Tinted sections and `.site-card` cards.
   It is the academy's own site: content about the academy, not about the software.
 - Portal and admin: Geist, on sinaui's **Studio block** (`src/lib/sinaui/blocks/studio`): `AppShell.svelte` wraps

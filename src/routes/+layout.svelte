@@ -14,7 +14,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<link rel="preload" href="/fonts/clash-display.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+	<link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 	<link rel="preload" href="/fonts/amulya.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 	{@html `<style>:root{--brand:${brand};--on-brand:${onColor(brand)}}</style>`}
 </svelte:head>
