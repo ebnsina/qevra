@@ -381,6 +381,12 @@
 		overflow: hidden;
 		white-space: nowrap;
 	}
+	/* In the icon rail the header gives up its side padding and centers what it holds, so a logo
+	   mark wider than an icon is shown whole, on the icons' center line. */
+	.collapsed .head {
+		justify-items: center;
+		padding-inline: 0;
+	}
 	/* Scrolls when it must, fading at the edges so it's plainly scrollable. */
 	nav {
 		position: relative;
