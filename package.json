@@ -1,0 +1,56 @@
+{
+	"name": "tadris",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"db:up": "docker compose up -d --wait",
+		"db:migrate": "node --env-file=.env scripts/migrate.ts",
+		"db:seed": "node --env-file=.env scripts/seed.ts",
+		"test": "node --env-file=.env.test ./node_modules/vitest/vitest.mjs run",
+		"test:e2e": "playwright test",
+		"db:seed:demo": "node --env-file=.env scripts/seed.ts --demo",
+		"admin:create": "node --env-file=.env scripts/create-admin.ts",
+		"db:seed:sample": "node --env-file=.env scripts/seed.ts --sample",
+		"db:seed:activity": "node --env-file=.env scripts/seed-activity.ts",
+		"db:seed:activity:clear": "node --env-file=.env scripts/seed-activity.ts --clear"
+	},
+	"devDependencies": {
+		"@neon/config": "^1.14.0",
+		"@playwright/test": "^1.65.0",
+		"@sveltejs/adapter-vercel": "^7.0.3",
+		"@sveltejs/kit": "^3.0.0",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"@types/node": "^26.6.6",
+		"@types/nodemailer": "^8.0.2",
+		"svelte": "^5.57.2",
+		"svelte-check": "^4.6.0",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.0",
+		"vitest": "^5.1.0"
+	},
+	"dependencies": {
+		"@fontsource-variable/geist": "^5.3.0",
+		"@fontsource-variable/geist-mono": "^5.3.0",
+		"@hugeicons/core-free-icons": "^4.4.0",
+		"@tanstack/charts": "0.18.0",
+		"@tiptap/core": "^3.33.1",
+		"@tiptap/extensions": "^3.33.1",
+		"@tiptap/starter-kit": "^3.33.1",
+		"aws4fetch": "^1.0.20",
+		"marked": "^18.2.0",
+		"nodemailer": "^10.5.0",
+		"postgres": "^4.1.0",
+		"valibot": "^1.5.0"
+	}
+}

@@ -1,0 +1,501 @@
+@import '@fontsource-variable/geist-mono';
+@import '@fontsource-variable/geist';
+
+/* Fonts, served from this site: Fraunces (headings, SIL Open Font License) and Amulya (text, Fontshare). */
+@font-face {
+	font-family: 'Fraunces';
+	src: url('/fonts/fraunces.woff2') format('woff2');
+	font-weight: 100 900;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Amulya';
+	src: url('/fonts/amulya.woff2') format('woff2');
+	font-weight: 300 700;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Amulya';
+	src: url('/fonts/amulya-italic.woff2') format('woff2');
+	font-weight: 300 700;
+	font-style: italic;
+	font-display: swap;
+}
+
+/* Tokens */
+:root {
+	--ui-font: 'Amulya', ui-sans-serif, system-ui, sans-serif;
+	--ui-font-heading: 'Fraunces', ui-serif, Georgia, serif;
+	--ui-font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
+
+	/* Brand: one color, set in the site settings (--brand, --on-brand come from the root layout).
+	   On the dark theme it is lightened so it still reads on onyx. */
+	--ui-accent: light-dark(var(--brand), color-mix(in oklab, var(--brand) 45%, white));
+	--ui-on-accent: light-dark(var(--on-brand), #0b1020);
+	--app-tint: color-mix(in oklab, var(--ui-accent) 5%, var(--ui-bg));
+	--app-tint-strong: color-mix(in oklab, var(--ui-accent) 12%, var(--ui-bg));
+	--ui-sidebar-current-bg: var(--app-tint-strong);
+	--ui-sidebar-current-fg: var(--ui-fg);
+	--ui-sheet-width: min(100vw, 40rem);
+
+	/* Type scale (1.2 ratio from a 1rem body); headings tighten as they grow. */
+	--text-xs: 0.8125rem;
+	--text-sm: 0.9375rem;
+	--text-base: 1rem;
+	--text-lg: 1.125rem;
+	--text-xl: 1.25rem;
+	--text-2xl: 1.5rem;
+	--text-h2: clamp(1.75rem, 3.2vw, 2.375rem);
+	--text-h1: clamp(2.125rem, 4.6vw, 3.125rem);
+	--text-hero: clamp(2.5rem, 6vw, 4.25rem);
+
+	/* Spacing: one 0.25rem step scale; sections and cards pick from it. */
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-6: 1.5rem;
+	--space-8: 2rem;
+	--space-12: 3rem;
+	--space-section: clamp(4rem, 9vw, 6.5rem);
+
+	--app-col: 72rem;
+	--app-gutter: clamp(1rem, 4vw, 1.5rem);
+	--app-gap: 1.25rem;
+}
+
+/* Base */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+html {
+	font-family: var(--ui-font);
+	background: var(--ui-bg);
+	color: var(--ui-fg);
+	-webkit-font-smoothing: antialiased;
+	scroll-behavior: smooth;
+}
+body {
+	margin: 0;
+	font-size: var(--text-base);
+	line-height: 1.65;
+}
+h1,
+h2,
+h3,
+h4 {
+	margin: 0;
+	font-family: var(--ui-font-heading);
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	text-wrap: balance;
+}
+p {
+	margin: 0;
+	text-wrap: pretty;
+}
+a {
+	color: inherit;
+}
+img {
+	max-width: 100%;
+	display: block;
+}
+.num {
+	font-family: var(--ui-font-mono);
+	font-variant-numeric: tabular-nums;
+}
+.muted {
+	color: var(--ui-muted);
+}
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* Public website: sections run edge to edge, content in one centered column. */
+.site-wrap {
+	width: 100%;
+	max-width: calc(var(--app-col) + 2 * var(--app-gutter));
+	margin-inline: auto;
+	padding-inline: var(--app-gutter);
+}
+.site-section {
+	padding-block: var(--space-section);
+}
+.site-section.tint {
+	background: var(--app-tint);
+}
+.site-head {
+	margin-bottom: 2.75rem;
+}
+.site-head.row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: end;
+	justify-content: space-between;
+	gap: var(--space-4) var(--space-8);
+}
+.site-eyebrow {
+	color: var(--ui-accent);
+	font-size: var(--text-sm);
+	font-weight: 600;
+}
+.site-h1 {
+	font-size: var(--text-h1);
+	line-height: 1.15;
+}
+.site-h2 {
+	font-size: var(--text-h2);
+	line-height: 1.2;
+	margin-block: var(--space-2) var(--space-3);
+}
+.site-h3 {
+	font-size: var(--text-lg);
+	font-weight: 500;
+	line-height: 1.35;
+}
+.site-lede {
+	color: var(--ui-muted);
+	font-size: var(--text-lg);
+	max-width: 40rem;
+}
+/* Inner pages open with a banner in the brand's tint: a soft glow in one corner and a faint grid,
+   clearly set apart from the white page below. */
+.site-page-top {
+	position: relative;
+	padding-block: clamp(3rem, 7vw, 5rem) clamp(2.5rem, 5vw, 3.5rem);
+	background:
+		radial-gradient(38rem 20rem at 88% -10%, color-mix(in oklab, var(--ui-accent) 22%, transparent), transparent 70%),
+		linear-gradient(180deg, var(--app-tint-strong), var(--app-tint));
+	border-bottom: 1px solid var(--ui-line);
+	overflow: hidden;
+}
+.site-page-top::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(var(--ui-line) 1px, transparent 1px), linear-gradient(90deg, var(--ui-line) 1px, transparent 1px);
+	background-size: 3rem 3rem;
+	mask-image: radial-gradient(60rem 24rem at 80% 0%, #000, transparent 75%);
+	pointer-events: none;
+}
+.site-page-top > * {
+	position: relative;
+}
+/* Facts under a banner's heading: a number and what it counts. */
+.site-facts {
+	list-style: none;
+	margin: var(--space-6) 0 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-4) var(--space-12);
+}
+.site-facts li {
+	display: grid;
+}
+.site-facts strong {
+	font-family: var(--ui-font-heading);
+	font-size: var(--text-2xl);
+	font-weight: 600;
+	line-height: 1.2;
+}
+.site-facts span {
+	color: var(--ui-muted);
+	font-size: var(--text-sm);
+}
+.site-page-top .site-h1 {
+	margin-block: var(--space-3);
+}
+.site-crumbs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	color: var(--ui-muted);
+	font-size: var(--text-sm);
+}
+.site-crumbs a {
+	color: var(--ui-accent);
+	text-decoration: none;
+}
+/* One card surface everywhere: white, no border, a light shadow. */
+.site-card {
+	padding: var(--space-6);
+	border-radius: calc(var(--ui-radius) + 0.25rem);
+	background: var(--ui-surface);
+	box-shadow: var(--ui-shadow-xs);
+}
+.site-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: var(--app-gap);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.site-grid.four {
+	grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 64rem) {
+	.site-grid,
+	.site-grid.four {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+@media (max-width: 40rem) {
+	.site-grid,
+	.site-grid.four {
+		grid-template-columns: 1fr;
+	}
+}
+/* Icon tile: brand color with a white icon. */
+.app-icon {
+	display: grid;
+	place-items: center;
+	flex: none;
+	width: 2.75rem;
+	height: 2.75rem;
+	border-radius: var(--ui-radius);
+	background: var(--ui-accent);
+	color: var(--ui-on-accent);
+	font-family: var(--ui-font-heading);
+	font-weight: 600;
+}
+/* Icon cards: title left, icon right, then the content below a gap. */
+.card-head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--space-4);
+	margin-bottom: var(--space-3);
+}
+.card-head > :is(h2, h3) {
+	padding-top: var(--space-2);
+}
+
+/* Scroll reveal: armed only when JavaScript runs (the .js flag in app.html), so content never hides
+   without it. src/lib/reveal.ts adds .in as each one enters the view. */
+.js :is(.reveal, .site-card) {
+	transition:
+		opacity 500ms var(--ui-ease-out),
+		transform 500ms var(--ui-ease-out),
+		box-shadow var(--ui-dur) var(--ui-ease-out);
+	transition-delay: calc(var(--i, 0) * 70ms);
+}
+.js :is(.reveal, .site-card):not(.in) {
+	opacity: 0;
+	transform: translateY(16px);
+}
+.js :is(.reveal, .site-card).instant {
+	transition: none;
+}
+/* Cards in a row arrive one after another. */
+.site-grid > :nth-child(3n + 2) {
+	--i: 1;
+}
+.site-grid > :nth-child(3n + 3) {
+	--i: 2;
+}
+.site-grid.four > :nth-child(4n + 1) {
+	--i: 0;
+}
+.site-grid.four > :nth-child(4n + 2) {
+	--i: 1;
+}
+.site-grid.four > :nth-child(4n + 3) {
+	--i: 2;
+}
+.site-grid.four > :nth-child(4n + 4) {
+	--i: 3;
+}
+/* Cards that are links lift a little under the pointer. */
+a.site-card.in:hover {
+	transform: translateY(-4px);
+	transition-delay: 0s;
+	box-shadow: var(--ui-shadow-overlay);
+}
+@media (prefers-reduced-motion: reduce) {
+	.js :is(.reveal, .site-card) {
+		transition: none;
+	}
+	.js :is(.reveal, .site-card):not(.in) {
+		opacity: 1;
+		transform: none;
+	}
+	a.site-card.in:hover {
+		transform: none;
+	}
+}
+
+/* Long-form text written by staff (lessons, posts, pages) */
+.prose {
+	max-width: 68ch;
+	line-height: 1.7;
+	overflow-wrap: anywhere;
+}
+.prose > * + * {
+	margin-top: 1.1em;
+}
+.prose h2 {
+	font-size: 1.5rem;
+	letter-spacing: -0.02em;
+	line-height: 1.25;
+	margin-top: 2em;
+}
+.prose h3 {
+	font-size: 1.2rem;
+	margin-top: 1.6em;
+}
+.prose ul,
+.prose ol {
+	padding-inline-start: 1.25em;
+}
+.prose a {
+	text-underline-offset: 0.2em;
+}
+.prose blockquote {
+	margin-inline: 0;
+	padding-inline-start: 1em;
+	border-inline-start: 3px solid var(--ui-fg);
+}
+.prose table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9375em;
+}
+.prose :is(th, td) {
+	padding: 0.5em 0.75em;
+	border-bottom: 1px solid var(--ui-line);
+	text-align: start;
+	vertical-align: top;
+}
+.prose th {
+	font-weight: 600;
+}
+.prose del {
+	color: var(--ui-muted);
+}
+.prose code {
+	font-family: var(--ui-font-mono);
+	font-size: 0.9em;
+	background: var(--ui-subtle);
+	padding: 0.1em 0.3em;
+	border-radius: 0.3em;
+}
+
+/* Signed-in app (portal and admin): Geist throughout; the website keeps Fraunces and Amulya. */
+.app-area {
+	--ui-font: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+	--ui-font-heading: var(--ui-font);
+	font-family: var(--ui-font);
+	font-size: 0.9375rem;
+	line-height: 1.55;
+}
+/* Cards in the app: no border, lifted off the tinted page by a light shadow; their title icons in the brand color. */
+.app-area {
+	--ui-card-line: transparent;
+	--ui-card-shadow: var(--ui-shadow-xs);
+	--ui-card-icon: var(--ui-accent);
+	/* Six hues for icon tiles, so a row of numbers can be told apart at a glance. Icons only:
+	   buttons and links stay in the brand color. */
+	--tile-1: var(--ui-accent);
+	--tile-2: light-dark(#2563eb, #60a5fa);
+	--tile-3: light-dark(#d97706, #fbbf24);
+	--tile-4: light-dark(#7c3aed, #a78bfa);
+	--tile-5: light-dark(#e11d48, #fb7185);
+	--tile-6: light-dark(#0891b2, #22d3ee);
+}
+/* Stats in a row take the hues in turn. */
+.app-area .stats > * {
+	--ui-stat-icon-bg: color-mix(in oklab, var(--tile) 14%, var(--ui-surface));
+	--ui-stat-icon-fg: var(--tile);
+}
+.app-area .stats > :nth-child(6n + 1) {
+	--tile: var(--tile-1);
+}
+.app-area .stats > :nth-child(6n + 2) {
+	--tile: var(--tile-2);
+}
+.app-area .stats > :nth-child(6n + 3) {
+	--tile: var(--tile-3);
+}
+.app-area .stats > :nth-child(6n + 4) {
+	--tile: var(--tile-4);
+}
+.app-area .stats > :nth-child(6n + 5) {
+	--tile: var(--tile-5);
+}
+.app-area .stats > :nth-child(6n + 6) {
+	--tile: var(--tile-6);
+}
+.app-area :is(h1, h2, h3, h4) {
+	letter-spacing: -0.01em;
+	word-spacing: normal;
+}
+.app-page {
+	display: grid;
+	gap: var(--app-gap);
+	padding: clamp(1rem, 3vw, 2rem);
+	max-width: 80rem;
+	margin-inline: auto;
+}
+.app-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+}
+.app-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+	gap: var(--app-gap);
+}
+/* Cards in a row share a height and keep their actions on the bottom line. */
+.app-cards > * {
+	display: flex;
+	flex-direction: column;
+}
+.app-form {
+	display: grid;
+	gap: 1rem;
+}
+.app-form-row {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+	gap: 1rem;
+	align-items: end;
+}
+.app-form-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem;
+}
+.app-fields {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 0.6rem 1.25rem;
+	margin: 0;
+	font-size: 0.9375rem;
+}
+.app-fields dt {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	color: var(--ui-muted);
+}
+.app-fields dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+/* The whole row is the target; the RowLink in its first cell names it for keyboards and screen readers. */
+.app-area tbody tr:has(td:first-child > button) {
+	cursor: pointer;
+}

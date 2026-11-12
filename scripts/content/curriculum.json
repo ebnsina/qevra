@@ -1,0 +1,484 @@
+{
+	"english-for-beginners": {
+		"live": [
+			{
+				"title": "Live class: the noun phrase, your questions",
+				"in_days": 2,
+				"hour": 17,
+				"minute": 30
+			},
+			{
+				"title": "Live class: determiners practice",
+				"in_days": 4,
+				"hour": 17,
+				"minute": 30
+			},
+			{
+				"title": "Live class: verbs and their objects",
+				"in_days": 7,
+				"hour": 17,
+				"minute": 30
+			}
+		],
+		"sections": [
+			{
+				"title": "The noun phrase",
+				"lessons": [
+					{
+						"title": "Introduction to the Noun Phrase",
+						"video": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+						"preview": true,
+						"body": "Every English sentence is built from phrases, and the noun phrase is the one you will use most.\n\n## In this lesson\n\n- What a noun phrase is: a noun and the words that belong to it\n- The **head noun** and what can come before it\n- Why learning phrases works better than memorizing single words\n\n**Example:** in *the two old books on the table*, the head noun is **books**. Everything else tells us more about the books."
+					},
+					{
+						"title": "Introduction to Determiners",
+						"video": "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+						"body": "A determiner is the word that opens a noun phrase: *a*, *the*, *this*, *my*, *some*, *every*.\n\n## In this lesson\n\n- What determiners do: they tell us **which one** or **how many**\n- A singular countable noun needs a determiner: *a book*, not ~~book~~\n- The main families: articles, demonstratives, possessives and quantifiers",
+						"quiz": [
+							[
+								"Which word is a determiner?",
+								[
+									"quickly",
+									"this",
+									"beautiful",
+									"run"
+								],
+								1
+							],
+							[
+								"Which sentence is correct?",
+								[
+									"I bought book yesterday.",
+									"I bought a book yesterday.",
+									"I bought the a book yesterday."
+								],
+								1
+							],
+							[
+								"In the phrase \"my new phone\", which word is the determiner?",
+								[
+									"my",
+									"new",
+									"phone"
+								],
+								0
+							]
+						],
+						"download": {
+							"sheet": "Determiners at a Glance",
+							"title": "Determiners at a glance (PDF)"
+						}
+					},
+					{
+						"title": "Countable and Uncountable Determiners",
+						"video": "https://www.youtube.com/watch?v=R6MlUcmOul8",
+						"body": "Some determiners go only with countable nouns, some only with uncountable nouns, and some with both.\n\n| With countable nouns | With uncountable nouns | With both |\n| --- | --- | --- |\n| many, a few, several | much, a little | some, any, a lot of |\n\n**Remember:** *information*, *advice*, *furniture* and *money* are uncountable in English. We say *some advice*, never ~~an advice~~."
+					},
+					{
+						"title": "Countable Determiners: a/an, another",
+						"video": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+						"body": "## a or an?\n\nThe choice follows the **sound**, not the spelling.\n\n- *a university*, *a European country* (they begin with a \"y\" sound)\n- *an hour*, *an honest man* (the *h* is silent)\n- *an MBA*, *an umbrella*\n\n## another\n\n*Another* means \"one more\" or \"a different one\", and it goes with a singular countable noun: *another cup*, *another day*.",
+						"quiz": [
+							[
+								"Choose the right phrase.",
+								[
+									"a hour",
+									"an hour"
+								],
+								1
+							],
+							[
+								"Choose the right phrase.",
+								[
+									"a university",
+									"an university"
+								],
+								0
+							],
+							[
+								"Which sentence is correct?",
+								[
+									"Can I have another water?",
+									"Can I have another glass of water?",
+									"Can I have another waters?"
+								],
+								1
+							],
+							[
+								"She is ___ honest person.",
+								[
+									"a",
+									"an",
+									"another"
+								],
+								1
+							]
+						]
+					},
+					{
+						"title": "Countable Singular Determiners: each, every, either, neither",
+						"video": "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+						"body": "These four determiners all take a **singular** noun and a **singular** verb.\n\n- **each**: the members of a group, one by one. *Each student has a book.*\n- **every**: all the members together. *Every student has a book.*\n- **either**: one or the other of two. *Either day is fine.*\n- **neither**: not one and not the other of two. *Neither answer is correct.*"
+					},
+					{
+						"title": "Countable Plural Determiners: these, those",
+						"video": "https://www.youtube.com/watch?v=R6MlUcmOul8",
+						"body": "*This* and *that* are singular. *These* and *those* are plural.\n\n| | Near | Far |\n| --- | --- | --- |\n| Singular | this book | that book |\n| Plural | these books | those books |",
+						"quiz": [
+							[
+								"___ shoes over there are mine.",
+								[
+									"This",
+									"That",
+									"Those"
+								],
+								2
+							],
+							[
+								"Each of the students ___ a notebook.",
+								[
+									"have",
+									"has",
+									"are having"
+								],
+								1
+							],
+							[
+								"Neither answer ___ correct.",
+								[
+									"is",
+									"are",
+									"were"
+								],
+								0
+							],
+							[
+								"Which sentence is correct?",
+								[
+									"Every students passed.",
+									"Every student passed.",
+									"Every of student passed."
+								],
+								1
+							]
+						]
+					}
+				]
+			},
+			{
+				"title": "Verbs",
+				"lessons": [
+					{
+						"title": "Transitive and Intransitive Verbs: Part 1",
+						"video": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+						"body": "A **transitive** verb needs an object. An **intransitive** verb does not take one.\n\n- Transitive: *She **bought** a book.* (bought what? a book)\n- Intransitive: *The baby **slept**.* (nothing receives the action)\n\nSome verbs can be both: *He **reads** every night.* / *He **reads** the newspaper.*",
+						"quiz": [
+							[
+								"Which sentence has a transitive verb?",
+								[
+									"The sun rises in the east.",
+									"She wrote a letter.",
+									"He arrived late."
+								],
+								1
+							],
+							[
+								"Which verb is intransitive here? \"The children laughed loudly.\"",
+								[
+									"children",
+									"laughed",
+									"loudly"
+								],
+								1
+							],
+							[
+								"Which sentence is wrong?",
+								[
+									"We discussed the problem.",
+									"We discussed about the problem.",
+									"We talked about the problem."
+								],
+								1
+							]
+						]
+					},
+					{
+						"title": "Common Mistake: Study English vs. Study in English",
+						"video": "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+						"body": "These two do not mean the same thing.\n\n- **I study English.** English is the subject I am learning.\n- **I study in English.** English is the language my lessons are taught in.\n\nSo a student of the English department *studies English*, and a physics student at an English-medium university *studies physics in English*."
+					},
+					{
+						"title": "Write about your day",
+						"video": "",
+						"body": "Time to use what you have learned. Pay attention to your determiners (*a*, *the*, *my*, *some*) and to whether each verb needs an object.",
+						"assignment": "Write 8 to 10 sentences about what you did yesterday. Underline every determiner you use. Upload your work as a PDF, a Word file or a clear photo of your notebook."
+					}
+				]
+			}
+		],
+		"announcement": {
+			"title": "Welcome to English for Beginners",
+			"body": "Start with the first lesson, \"Introduction to the Noun Phrase\", and work down the list. Ask anything under a lesson: I read every question.\n\nLive classes are on Sunday, Tuesday and Thursday at 5:30 pm. You will find the Join button on your overview."
+		}
+	},
+	"english-for-job-seekers": {
+		"live": [],
+		"sections": [
+			{
+				"title": "Modal auxiliaries",
+				"lessons": [
+					{
+						"title": "Modal Auxiliary: Should and Ought to",
+						"video": "https://www.youtube.com/watch?v=R6MlUcmOul8",
+						"preview": true,
+						"body": "*Should* and *ought to* both give advice or say what is right. In exam questions they are usually interchangeable.\n\n- *You **should** revise every day.*\n- *You **ought to** revise every day.*\n\n**Watch the form:** *should* is followed by the bare infinitive (*should go*), while *ought* always takes *to* (*ought to go*). The negative is *ought not to*."
+					},
+					{
+						"title": "Should and Ought to + do / be doing / have done",
+						"video": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+						"body": "The form after the modal tells you the time.\n\n| Form | Meaning | Example |\n| --- | --- | --- |\n| should + do | advice now or in general | You should apply. |\n| should + be doing | something expected to be in progress | He should be working now. |\n| should + have done | a past action that did not happen (regret or criticism) | You should have applied earlier. |",
+						"quiz": [
+							[
+								"You failed because you did not study. You ___ harder.",
+								[
+									"should study",
+									"should have studied",
+									"should be studying"
+								],
+								1
+							],
+							[
+								"It is 10 o'clock. The exam ___ now.",
+								[
+									"should be starting",
+									"should have start",
+									"ought start"
+								],
+								0
+							],
+							[
+								"Which sentence is correct?",
+								[
+									"You ought not to smoke.",
+									"You ought to not smoke.",
+									"You not ought to smoke."
+								],
+								0
+							],
+							[
+								"\"You should have told me.\" What does it mean?",
+								[
+									"You told me.",
+									"You did not tell me, and that was wrong.",
+									"You will tell me."
+								],
+								1
+							]
+						],
+						"download": {
+							"sheet": "Irregular Verbs",
+							"title": "Irregular verbs sheet (PDF)"
+						}
+					},
+					{
+						"title": "Could have + been / had / done",
+						"video": "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+						"body": "*Could have* + past participle talks about a **past possibility that did not happen**.\n\n- *She **could have passed**, but she did not sit the exam.*\n- *You **could have been** hurt!*\n\nCompare *could not have done*: it was impossible. *He **could not have known**: nobody told him.*",
+						"quiz": [
+							[
+								"He ___ the job, but he did not apply.",
+								[
+									"could get",
+									"could have got",
+									"can have got"
+								],
+								1
+							],
+							[
+								"\"She could have won.\" Did she win?",
+								[
+									"Yes",
+									"No",
+									"We cannot know"
+								],
+								1
+							],
+							[
+								"Choose the correct form: \"You could have ___ killed.\"",
+								[
+									"be",
+									"been",
+									"being"
+								],
+								1
+							]
+						]
+					}
+				]
+			},
+			{
+				"title": "Phrases and clauses",
+				"lessons": [
+					{
+						"title": "Noun + Adjective Phrase: Translation and Drafting",
+						"video": "https://www.youtube.com/watch?v=R6MlUcmOul8",
+						"body": "In English an adjective phrase can come **after** the noun it describes. This structure appears constantly in translation and drafting questions.\n\n- *a man **proud of his country***\n- *students **eager to learn***\n- *a room **full of books***\n\nWhen you translate from Bangla, find the noun first, then attach the describing phrase after it."
+					},
+					{
+						"title": "Reduced Adjective Clause: Participle Phrase",
+						"video": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+						"body": "An adjective clause can often be shortened to a participle phrase.\n\n- Active: *The man **who is standing** there is my uncle.* becomes *The man **standing** there is my uncle.*\n- Passive: *The book **which was written** by Tagore is famous.* becomes *The book **written** by Tagore is famous.*\n\n**Rule of thumb:** active meaning takes *-ing*, passive meaning takes the past participle.",
+						"quiz": [
+							[
+								"Reduce the clause: \"The boy who is playing there is my brother.\"",
+								[
+									"The boy played there is my brother.",
+									"The boy playing there is my brother.",
+									"The boy plays there is my brother."
+								],
+								1
+							],
+							[
+								"Reduce the clause: \"The letter which was sent yesterday has arrived.\"",
+								[
+									"The letter sending yesterday has arrived.",
+									"The letter sent yesterday has arrived.",
+									"The letter was sent yesterday has arrived."
+								],
+								1
+							],
+							[
+								"\"The students ___ for the BCS need strong grammar.\"",
+								[
+									"prepared",
+									"preparing",
+									"prepare"
+								],
+								1
+							]
+						]
+					},
+					{
+						"title": "Figures of Speech: Simile, Metaphor, Personification, Euphemism, Oxymoron",
+						"video": "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+						"body": "Five figures of speech that come up again and again in the Preliminary test.\n\n| Figure | What it does | Example |\n| --- | --- | --- |\n| Simile | compares with *like* or *as* | as brave as a lion |\n| Metaphor | says one thing **is** another | Life is a journey. |\n| Personification | gives human qualities to things | The wind whispered. |\n| Euphemism | a mild word for a harsh one | He passed away. |\n| Oxymoron | two opposite words together | a deafening silence |",
+						"quiz": [
+							[
+								"\"He is as brave as a lion.\" Which figure of speech is this?",
+								[
+									"Metaphor",
+									"Simile",
+									"Oxymoron"
+								],
+								1
+							],
+							[
+								"\"The camel is the ship of the desert.\" Which figure of speech is this?",
+								[
+									"Metaphor",
+									"Simile",
+									"Personification"
+								],
+								0
+							],
+							[
+								"\"He passed away last night.\" Which figure of speech is this?",
+								[
+									"Oxymoron",
+									"Euphemism",
+									"Personification"
+								],
+								1
+							],
+							[
+								"Which is an oxymoron?",
+								[
+									"bitter sweet",
+									"as cold as ice",
+									"the smiling moon"
+								],
+								0
+							]
+						]
+					},
+					{
+						"title": "Practice set: modals and participle phrases",
+						"video": "",
+						"body": "A written practice set in the style of the written test. Take your time and check each sentence against the rules from this section.",
+						"assignment": "1. Write five sentences with \"should have\" or \"could have\" about a decision you regret. 2. Rewrite five sentences of your own, reducing an adjective clause to a participle phrase. Upload your answers as a PDF, a Word file or a clear photo."
+					}
+				]
+			}
+		],
+		"announcement": {
+			"title": "Welcome to English for Job Seekers",
+			"body": "The lessons are recorded, so learn at your own pace. Do the quiz after each lesson before you move on: the questions are in the style of the Preliminary test.\n\nIf an explanation is not clear, ask under that lesson."
+		}
+	},
+	"english-from-scratch": {
+		"live": [],
+		"sections": [
+			{
+				"title": "Getting started",
+				"lessons": [
+					{
+						"title": "How this course works",
+						"video": "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+						"preview": true,
+						"body": "Welcome. Watch each lesson, then mark it complete to move on."
+					},
+					{
+						"title": "Introducing yourself",
+						"video": "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+						"body": "Practise saying your name, where you are from and what you do.\n\n- *My name is ...*\n- *I am from ...*\n- *I work as ...* / *I study ...*"
+					}
+				]
+			},
+			{
+				"title": "Everyday English",
+				"lessons": [
+					{
+						"title": "Asking questions",
+						"video": "https://www.youtube.com/watch?v=R6MlUcmOul8",
+						"body": "Questions with *do*, *does*, *is* and *are*.",
+						"quiz": [
+							[
+								"Which question is correct?",
+								[
+									"Where you live?",
+									"Where do you live?",
+									"Where does you live?"
+								],
+								1
+							],
+							[
+								"Choose the right word: \"___ she a teacher?\"",
+								[
+									"Do",
+									"Is",
+									"Are"
+								],
+								1
+							],
+							[
+								"Choose the right word: \"___ they work here?\"",
+								[
+									"Do",
+									"Does",
+									"Is"
+								],
+								0
+							]
+						]
+					},
+					{
+						"title": "Write about your day",
+						"video": "",
+						"body": "Use what you have learned so far.",
+						"assignment": "Write 8 to 10 sentences about what you did yesterday. Upload it as a PDF, Word file or a clear photo."
+					}
+				]
+			}
+		]
+	}
+}
