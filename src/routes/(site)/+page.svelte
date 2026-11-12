@@ -17,6 +17,7 @@
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import CourseCard from '#lib/components/CourseCard.svelte';
 	import Seo from '#lib/components/Seo.svelte';
+	import SiteCta from '#lib/components/SiteCta.svelte';
 	import { pairs } from '#lib/content.ts';
 	import { date } from '#lib/format.ts';
 
@@ -249,17 +250,7 @@
 	</section>
 {/if}
 
-<section class="site-section">
-	<div class="site-wrap">
-		<div class="closing reveal">
-			<div>
-				<h2 class="site-h2">{home.closing_title}</h2>
-				<p>{home.closing_text}</p>
-			</div>
-			<Button size="lg" variant="secondary" href="/contact">Let's talk <Icon icon={ArrowRight02Icon} /></Button>
-		</div>
-	</div>
-</section>
+<SiteCta title={home.closing_title} text={home.closing_text} />
 
 <style>
 	.hero {
@@ -480,24 +471,5 @@
 	}
 	.post:hover h3 {
 		color: var(--ui-accent);
-	}
-
-	.closing {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1.5rem 3rem;
-		padding: clamp(2rem, 5vw, 3.5rem);
-		border-radius: calc(var(--ui-radius) + 0.5rem);
-		background: var(--ui-accent);
-		color: var(--ui-on-accent);
-	}
-	.closing :global(.site-h2) {
-		margin-top: 0;
-	}
-	.closing p {
-		font-size: var(--text-lg);
-		max-width: 36rem;
 	}
 </style>

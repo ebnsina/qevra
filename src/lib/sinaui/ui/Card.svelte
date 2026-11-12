@@ -124,7 +124,7 @@
 		display: flex;
 		align-items: center;
 		block-size: calc(var(--ui-font-size) * 1.5);
-		color: var(--ui-muted);
+		color: var(--ui-card-icon, var(--ui-muted));
 	}
 	.title {
 		margin: 0;

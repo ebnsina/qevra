@@ -18,3 +18,9 @@ First version.
 - Teacher: Questions, Course reviews, Analytics and Coupons screens; announcements to a course (in the portal and by email); drag sections and lessons into order; preview a course as a student
 - Courses can show a regular fee struck through, and students can enter a coupon code when enrolling
 - Posts, pages and course details open in a full editor page with a rich text editor, instead of a side sheet
+- Overview pages for staff and students: numbers, a 30-day chart, what is waiting, latest activity
+- Analytics: choose 30 days, 90 days or 12 months; trends for enrollments, income, new students, lessons and quiz tries; income by course, how students pay, ratings, hardest quizzes and most active students
+- Colored icons in the dashboard; forest green is the default brand color
+- Website: courses can be filtered (open now, free, coming soon); reviews, resources, blog, posts and the contact page are redesigned, and every page ends with one next step
+- The seed now loads a generic sample academy instead of one academy's own content, and can add demo activity
+- Renamed to Tadris

@@ -8,7 +8,7 @@
 	const groups = [
 		{
 			items: [
-				{ label: 'My courses', href: '/portal', icon: DashboardSquare01Icon },
+				{ label: 'Overview', href: '/portal', icon: DashboardSquare01Icon },
 				{ label: 'Payments', href: '/portal/payments', icon: Payment01Icon },
 				{ label: 'Notes', href: '/portal/notes', icon: PencilEdit01Icon },
 				{ label: 'Certificates', href: '/portal/certificates', icon: Certificate01Icon },
@@ -20,7 +20,7 @@
 </script>
 
 {#if data.user}
-	<AppShell label="Student portal" home="/portal" {groups} site={data.settings} user={data.user}>
+	<AppShell label="Student portal" role="Student" home="/portal" {groups} user={data.user}>
 		{#snippet menu()}
 			{#if data.user?.role === 'admin'}<Menu.Item href="/admin"><Icon icon={Settings01Icon} size={16} />Admin</Menu.Item>{/if}
 			<Menu.Item href="/"><Icon icon={Globe02Icon} size={16} />View website</Menu.Item>

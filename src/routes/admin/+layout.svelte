@@ -25,7 +25,7 @@
 	const groups = $derived([
 		{
 			items: [
-				{ label: 'Dashboard', href: '/admin', icon: DashboardSquare01Icon },
+				{ label: 'Overview', href: '/admin', icon: DashboardSquare01Icon },
 				{ label: 'Payments', href: '/admin/payments', icon: Payment01Icon, badge: data.waiting.payments },
 				{ label: 'Students', href: '/admin/students', icon: UserGroupIcon },
 				{ label: 'Courses', href: '/admin/courses', icon: BookOpen01Icon }
@@ -56,7 +56,7 @@
 </script>
 
 {#if data.user}
-	<AppShell label="Admin" home="/admin" {groups} site={data.settings} user={data.user}>
+	<AppShell label="Admin" role="Admin" home="/admin" {groups} user={data.user}>
 		{#snippet menu()}
 			<Menu.Item href="/portal"><Icon icon={UserIcon} size={16} />Student portal</Menu.Item>
 			<Menu.Item href="/"><Icon icon={Globe02Icon} size={16} />View website</Menu.Item>

@@ -23,12 +23,12 @@ async function signIn(page: Page, email: string, pass: string) {
 
 test('a visitor signs up, starts a free course and finishes a lesson', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toContainText('Level up your English');
-	await page.goto('/courses/english-for-complete-idiots');
-	await expect(page.getByRole('heading', { level: 1, name: 'English for Complete Idiots' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('Learn the English you will actually use');
+	await page.goto('/courses/english-from-scratch');
+	await expect(page.getByRole('heading', { level: 1, name: 'English from Scratch' })).toBeVisible();
 
 	await register(page, 'Amina');
-	await page.goto('/portal/enroll/english-for-complete-idiots');
+	await page.goto('/portal/enroll/english-from-scratch');
 	await page.getByRole('button', { name: 'Start the course' }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'How this course works' })).toBeVisible();
 
@@ -91,12 +91,12 @@ test('an enrolled student sees a waiting screen, not an error, while the course 
 		await admin.getByRole('button', { name: 'Nadia' }).click();
 		await expect(course).toBeVisible({ timeout: 1000 });
 	}).toPass();
-	await course.selectOption({ label: 'English for Today' });
+	await course.selectOption({ label: 'Everyday Spoken English' });
 	await admin.getByRole('button', { name: 'Enroll' }).click();
 	await expect(admin.getByText('Course opened for this student.')).toBeVisible();
 
-	await student.goto('/portal/courses/english-for-today');
-	await expect(student.getByRole('heading', { level: 1, name: 'English for Today' })).toBeVisible();
+	await student.goto('/portal/courses/everyday-spoken-english');
+	await expect(student.getByRole('heading', { level: 1, name: 'Everyday Spoken English' })).toBeVisible();
 	await expect(student.getByText('Lessons are being added')).toBeVisible();
 });
 
@@ -104,14 +104,14 @@ test('a coupon lowers the fee, and a question under a lesson gets the teacher\'s
 	const student = await (await browser.newContext()).newPage();
 	await register(student, 'Rafi');
 
-	// English for Job Seekers costs 999; WELCOME10 takes 10% off.
+	// WELCOME10 takes 10% off the fee.
 	await student.goto('/portal/enroll/english-for-job-seekers?coupon=welcome10');
 	await expect(student.getByText('Coupon WELCOME10 applied: 10% off')).toBeVisible();
 	await student.goto('/portal/enroll/english-for-job-seekers?coupon=NOSUCHCODE');
 	await expect(student.getByText("That code can't be used on this course")).toBeVisible();
 
 	// Join the free course and ask a question under its first lesson.
-	await student.goto('/portal/enroll/english-for-complete-idiots');
+	await student.goto('/portal/enroll/english-from-scratch');
 	await student.getByRole('button', { name: 'Start the course' }).click();
 	const question = `Is there homework? ${Date.now()}`;
 	await expect(async () => {
@@ -151,4 +151,28 @@ test('a post is written on its own editor page', async ({ page }) => {
 	await expect(page).toHaveURL(/\/admin\/posts\/[0-9a-f-]{36}\?saved/);
 	await expect(page.getByText('Saved.')).toBeVisible();
 	await expect(page.getByRole('heading', { level: 1, name: 'How to practise every day' })).toBeVisible();
+});
+
+test('the course list narrows to free courses', async ({ page }) => {
+	await page.goto('/courses');
+	await expect(async () => {
+		await page.getByRole('radio', { name: 'Free' }).check({ force: true });
+		await expect(page.getByText('Showing 1 course', { exact: true })).toBeVisible({ timeout: 1000 });
+	}).toPass();
+	await expect(page.getByRole('link', { name: /English from Scratch/ })).toBeVisible();
+	await expect(page.getByRole('link', { name: /English for Job Seekers/ })).toBeHidden();
+});
+
+test('analytics follows the chosen period', async ({ page }) => {
+	await page.goto('/login?next=/admin/analytics');
+	await signIn(page, 'admin@example.com', 'admin12345');
+	await expect(page.getByRole('heading', { level: 1, name: 'Analytics' })).toBeVisible();
+	await expect(async () => {
+		await page.getByLabel('Period').selectOption('90');
+		await expect(page).toHaveURL(/days=90/, { timeout: 1000 });
+	}).toPass();
+	await expect(page.getByText('In the last 90 days', { exact: true })).toBeVisible();
+	// An unknown period falls back to 30 days rather than failing.
+	await page.goto('/admin/analytics?days=7');
+	await expect(page.getByText('In the last 30 days', { exact: true })).toBeVisible();
 });

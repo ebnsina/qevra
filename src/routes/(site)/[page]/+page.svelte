@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { CallIcon, Location01Icon, Mail01Icon, WhatsappIcon } from '@hugeicons/core-free-icons';
-	import Button from '#lib/sinaui/ui/Button.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import PageTop from '#lib/components/PageTop.svelte';
 	import Seo from '#lib/components/Seo.svelte';
+	import SiteCta from '#lib/components/SiteCta.svelte';
 
 	let { data } = $props();
 	const settings = $derived(data.settings);
@@ -15,6 +15,7 @@
 			{ icon: Location01Icon, label: 'Address', value: settings.address, href: '' }
 		].filter((c) => c.value)
 	);
+	const contact = $derived(data.slug === 'contact' && contacts.length > 0);
 </script>
 
 <Seo title="{data.title} | {settings.name}" description={data.text} />
@@ -22,33 +23,75 @@
 <PageTop crumb={data.title} title={data.title} />
 
 <section class="site-section">
-	<div class="site-wrap body">
+	<div class="site-wrap body" class:contact>
 		<div class="prose">{@html data.html}</div>
-		{#if data.slug === 'contact' && contacts.length}
-			<ul class="site-grid">
-				{#each contacts as contact (contact.label)}
-					<li class="site-card">
-						<div class="card-head">
-							<h2 class="site-h3">{contact.label}</h2>
-							<span class="app-icon"><Icon icon={contact.icon} size={20} /></span>
-						</div>
-						<p>{#if contact.href}<a href={contact.href}>{contact.value}</a>{:else}{contact.value}{/if}</p>
-					</li>
-				{/each}
-			</ul>
+		{#if contact}
+			<aside class="site-card reach" aria-label="Ways to reach us">
+				<h2 class="site-h3">Reach us directly</h2>
+				<ul>
+					{#each contacts as item (item.label)}
+						<li>
+							<span class="app-icon"><Icon icon={item.icon} size={20} /></span>
+							<p>
+								<span class="muted">{item.label}</span>
+								{#if item.href}<a href={item.href}>{item.value}</a>{:else}<strong>{item.value}</strong>{/if}
+							</p>
+						</li>
+					{/each}
+				</ul>
+			</aside>
 		{/if}
-		<div><Button variant="outline" href="/courses">See our courses</Button></div>
 	</div>
 </section>
+
+{#if data.slug === 'contact'}
+	<SiteCta title={data.closing.title} text={data.closing.text} href="/courses" label="See our courses" />
+{:else}
+	<SiteCta title={data.closing.title} text={data.closing.text} />
+{/if}
 
 <style>
 	.body {
 		display: grid;
-		gap: var(--space-8);
+		gap: var(--space-12);
 	}
-	.site-card a {
-		color: var(--ui-accent);
+	.prose {
+		max-width: 46rem;
+		font-size: var(--text-lg);
+	}
+	@media (min-width: 56rem) {
+		.contact {
+			grid-template-columns: 1fr minmax(20rem, 24rem);
+			align-items: start;
+		}
+	}
+	.reach {
+		background: var(--app-tint);
+	}
+	.reach ul {
+		list-style: none;
+		margin: var(--space-4) 0 0;
+		padding: 0;
+	}
+	.reach li {
+		display: flex;
+		align-items: center;
+		gap: var(--space-4);
+		padding-block: var(--space-4);
+		border-top: 1px solid var(--ui-line);
+	}
+	.reach p {
+		display: grid;
+		font-size: var(--text-sm);
+	}
+	.reach a,
+	.reach strong {
+		color: var(--ui-text, inherit);
+		font-size: var(--text-base);
 		font-weight: 600;
 		overflow-wrap: anywhere;
+	}
+	.reach a {
+		color: var(--ui-accent);
 	}
 </style>

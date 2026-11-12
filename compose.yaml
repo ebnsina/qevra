@@ -3,11 +3,17 @@ services:
   postgres:
     image: postgres:17
     environment:
-      POSTGRES_USER: qevra_owner
+      POSTGRES_USER: tadris_owner
       POSTGRES_PASSWORD: owner
-      POSTGRES_DB: qevra
+      POSTGRES_DB: tadris
     ports: ['54329:5432']
-    volumes: ['pg:/var/lib/postgresql/data']
+    volumes:
+      - pg:/var/lib/postgresql/data
+      - ./scripts/local-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'tadris_owner', '-d', 'tadris_test']
+      interval: 1s
+      retries: 30
   storage:
     # S3 API stand-in for development; it accepts any access key. It forgets its files when it
     # restarts: run `pnpm db:seed` again to put the demo files back.

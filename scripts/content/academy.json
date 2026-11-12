@@ -1,0 +1,206 @@
+{
+	"settings": {
+		"name": "Alif Academy",
+		"brand_color": "#166534",
+		"tagline": "English for work, study and everyday life",
+		"description": "Alif Academy is an online English academy: recorded lessons, live classes, quizzes, feedback on your writing and a certificate when you finish.",
+		"email": "hello@example.com",
+		"phone": "+880 1700-000000",
+		"whatsapp": "+880 1700-000000",
+		"address": "",
+		"facebook": "",
+		"youtube": "",
+		"instagram": "",
+		"bkash_number": "01700-000000 (Personal)",
+		"nagad_number": "01700-000000 (Personal)",
+		"payment_note": "Use the \"Send Money\" option to pay the course fee, then enter the transaction ID here. We verify within 24 hours and open your course."
+	},
+	"home": {
+		"badge": "Admission open",
+		"title": "Learn the English you will actually use",
+		"lede": "Short lessons, live classes and feedback from a real teacher, built around what you need English for.",
+		"cta_label": "See the courses",
+		"facts": "10 | courses\nLive + recorded | lessons\nQuizzes | after every topic\nCertificate | when you finish",
+		"trusted_title": "",
+		"about_title": "One idea at a time, explained properly.",
+		"about_text": "Alif Academy began as evening classes for job seekers and moved online to reach learners everywhere. Each lesson covers a single point, explains the reason behind it and asks you to use it before you move on.",
+		"about_quote": "A rule you understand stays with you. A rule you memorised leaves after the exam.",
+		"about_name": "Farid Hasan",
+		"about_role": "Founder and lead teacher",
+		"points_title": "What we value",
+		"points": "Open to everyone | Fully online: the same lessons and the same teacher wherever you live.\nPractical results | Every lesson ends with something you can now do.\nFeedback from a person | Your written work is read and answered by your teacher.\nFair fees | Clear prices, with no hidden charges.",
+		"closing_title": "Not sure which course fits you?",
+		"closing_text": "Tell us what you need English for and we will point you to the right course."
+	},
+	"courses": [
+		{
+			"slug": "english-for-beginners",
+			"title": "English for Beginners",
+			"level": "Beginner",
+			"price": 2500,
+			"regular_price": 4000,
+			"summary": "Build a solid foundation: how English sentences are put together, from the noun phrase up.",
+			"outcomes": "Understand how a noun phrase is built\nChoose the right determiner: a, an, the, this, each, every\nTell countable from uncountable nouns\nKnow which verbs need an object\nAvoid the most common beginner mistakes\nWrite short, correct paragraphs about your day",
+			"requirements": "A phone or computer with an internet connection\nYou can read basic English words\nA notebook for practice",
+			"description": "**Recorded lessons with live classes every week.** Short videos, a quiz after each topic, a written task with feedback, and study sheets to download.\n\nMany people study English for years and still cannot build a correct sentence with confidence. This course starts again from the beginning, the right way: you learn how English is put together, one piece at a time, and you use each piece before moving on.\n\n## Who is this course for?\n\n- You studied English at school but still feel unsure of the basics.\n- You memorised grammar rules that did not help you speak or write.\n- You want a strong base before an exam course such as IELTS.\n- You tried other courses and want a clear, step-by-step path.\n\n## Frequently asked questions\n\n### How do I pay?\n\nSend the fee with bKash or Nagad, then enter the transaction ID on the enrollment page. We confirm payments within a day and your course opens in your student portal.\n\n### Do I need a laptop?\n\nNo. Every lesson works on a phone or tablet. A laptop is optional.\n\n### Can I ask questions?\n\nYes. Ask under any lesson and the teacher replies there, where your classmates can read the answer too.\n\n### Do I get a certificate?\n\nYes. Finish every lesson and your certificate is ready to download, with a number anyone can check."
+		},
+		{
+			"slug": "english-for-job-seekers",
+			"title": "English for Job Seekers",
+			"level": "Intermediate",
+			"price": 1500,
+			"regular_price": 3000,
+			"summary": "The grammar that competitive exams test, explained so you can answer with reasons, not guesses.",
+			"outcomes": "Answer grammar MCQs by reasoning, not guessing\nUse modal verbs correctly in the past, present and future\nShorten clauses into participle phrases\nRecognise the figures of speech exams ask about\nSpot the traps examiners set in wrong options",
+			"requirements": "A basic understanding of English: this is not a beginner course\nA phone or computer with an internet connection\nTime for the practice set after each section",
+			"description": "**Recorded lessons you can watch at your own pace.** Practice sets in the style of real papers, quizzes after every topic and study sheets to download.\n\nIn recruitment exams, English is often the paper that decides who goes through. This course covers the grammar those exams return to again and again, with the reasoning behind each answer, so the next question on the same point is easy.\n\n## Who is this course for?\n\n- You are preparing for a government, bank or other recruitment exam.\n- You know many rules but cannot apply them to real questions.\n- English cost you marks in an earlier attempt.\n- You want grammar that also helps in the written test.\n\n## Frequently asked questions\n\n### How do I pay?\n\nSend the fee with bKash or Nagad, then enter the transaction ID on the enrollment page. We confirm payments within a day and your course opens in your student portal.\n\n### Do I need a laptop?\n\nNo. Every lesson works on a phone or tablet. A laptop is optional.\n\n### Can I ask questions?\n\nYes. Ask under any lesson and the teacher replies there, where your classmates can read the answer too.\n\n### Do I get a certificate?\n\nYes. Finish every lesson and your certificate is ready to download, with a number anyone can check."
+		},
+		{
+			"slug": "english-from-scratch",
+			"title": "English from Scratch",
+			"level": "Beginner",
+			"price": 0,
+			"summary": "A free starter course: your first questions, answers and sentences in English.",
+			"outcomes": "Introduce yourself\nAsk and answer simple questions\nWrite a few sentences about your day",
+			"requirements": "A phone or computer with an internet connection",
+			"description": "**Free.** Four short lessons to try how learning here works before you join a full course.\n\n## Who is this course for?\n\n- You are new to English.\n- You want to see the lessons, quizzes and assignments before paying for a course.\n\n## Frequently asked questions\n\n### How do I pay?\n\nSend the fee with bKash or Nagad, then enter the transaction ID on the enrollment page. We confirm payments within a day and your course opens in your student portal.\n\n### Do I need a laptop?\n\nNo. Every lesson works on a phone or tablet. A laptop is optional.\n\n### Can I ask questions?\n\nYes. Ask under any lesson and the teacher replies there, where your classmates can read the answer too.\n\n### Do I get a certificate?\n\nYes. Finish every lesson and your certificate is ready to download, with a number anyone can check."
+		},
+		{
+			"slug": "everyday-spoken-english",
+			"title": "Everyday Spoken English",
+			"level": "All levels",
+			"price": 0,
+			"summary": "Speak with confidence in everyday situations: fluency, common phrases and clear pronunciation.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is being prepared and is not open for enrollment yet. Look at the courses you can join now, and check back soon."
+		},
+		{
+			"slug": "english-for-effective-writing",
+			"title": "English for Effective Writing",
+			"level": "Advanced",
+			"price": 0,
+			"summary": "Write clear emails, applications and essays that say exactly what you mean.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is being prepared and is not open for enrollment yet. Look at the courses you can join now, and check back soon."
+		},
+		{
+			"slug": "clear-pronunciation",
+			"title": "Clear Pronunciation",
+			"level": "Intermediate",
+			"price": 0,
+			"summary": "Stress, rhythm and the sounds that are hardest to get right.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is being prepared and is not open for enrollment yet. Look at the courses you can join now, and check back soon."
+		},
+		{
+			"slug": "ielts-basics",
+			"title": "IELTS Basics",
+			"level": "Intermediate",
+			"price": 0,
+			"summary": "The four IELTS modules explained, with strategies and practice for each.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is being prepared and is not open for enrollment yet. Look at the courses you can join now, and check back soon."
+		},
+		{
+			"slug": "english-for-school-success",
+			"title": "English for School Success",
+			"level": "Classes 6 to 12",
+			"price": 0,
+			"summary": "School and college English: grammar, comprehension and exam writing.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is being prepared and is not open for enrollment yet. Look at the courses you can join now, and check back soon."
+		},
+		{
+			"slug": "english-for-freelancers",
+			"title": "English for Freelancers",
+			"level": "Intermediate",
+			"price": 0,
+			"summary": "Write proposals, talk to clients and handle calls with confidence.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is being prepared and is not open for enrollment yet. Look at the courses you can join now, and check back soon."
+		},
+		{
+			"slug": "english-for-early-readers",
+			"title": "English for Early Readers",
+			"level": "All ages",
+			"price": 0,
+			"summary": "First steps in reading English, with phonics and simple stories.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is being prepared and is not open for enrollment yet. Look at the courses you can join now, and check back soon."
+		}
+	],
+	"reviews": [
+		[
+			"Nusrat Jahan",
+			"Job seeker",
+			"The reasons behind each answer were what I had been missing. My mock test scores went up within a month."
+		],
+		[
+			"Tanvir Ahmed",
+			"University student",
+			"Short lessons I could follow on the bus, and a quiz to check I had understood."
+		],
+		[
+			"Sumaiya Akter",
+			"Freelancer",
+			"The feedback on my writing was specific and kind. I write to clients with confidence now."
+		],
+		[
+			"Rakib Hossain",
+			"Bank job candidate",
+			"I could ask under any lesson and get an answer the next day. It felt like a real classroom."
+		],
+		[
+			"Farhana Islam",
+			"Teacher",
+			"Clear, patient explanations. I now use the same examples with my own students."
+		]
+	],
+	"posts": [
+		{
+			"slug": "five-minutes-a-day",
+			"title": "Five minutes a day beats two hours on Friday",
+			"excerpt": "Why short daily practice works better than one long session, and how to start.",
+			"body": "Most learners plan one long study session a week. Most of them skip it.\n\nA language is a habit, and habits are built by repetition, not by effort. Five minutes every day gives your memory seven chances a week to keep a new word. Two hours on Friday gives it one.\n\n## What five minutes looks like\n\n- Read one short paragraph aloud.\n- Write three sentences about your day.\n- Review yesterday's five new words before learning five more.\n\n## Make it hard to skip\n\nTie it to something you already do: after breakfast, on the bus, before you check your phone at night. The best time is the one you will actually keep.\n\nStart today. Not with two hours. With five minutes.",
+			"published_at": "2026-10-03T06:00:00Z"
+		},
+		{
+			"slug": "stop-translating-in-your-head",
+			"title": "How to stop translating in your head",
+			"excerpt": "Three habits that help you think in English instead of translating every sentence.",
+			"body": "If you build every sentence in your own language first and then translate it, you will always be slow, and your sentences will carry the shape of the other language.\n\n## 1. Learn phrases, not single words\n\nDo not learn *interested*. Learn *I am interested in*. A phrase arrives ready to use, with its grammar already inside it.\n\n## 2. Name what you see\n\nWalking down the street, name things in English, silently: *a red bus, a closed shop, two students waiting*. No translation is needed for what is in front of you.\n\n## 3. Allow simple sentences\n\nYou translate because you want to say something complicated. Say something simpler instead. *I was late. The bus did not come.* Two short, correct sentences beat one long broken one.\n\nIt feels slow for a few weeks. Then one day you notice a whole thought arrived in English.",
+			"published_at": "2026-10-04T06:00:00Z"
+		},
+		{
+			"slug": "say-it-wrong-first",
+			"title": "Say it wrong first",
+			"excerpt": "Mistakes are how speaking improves. Here is how to make more of them, on purpose.",
+			"body": "Nobody learns to swim by reading about water. And nobody learns to speak by waiting until their sentences are perfect.\n\n## Why mistakes help\n\nWhen you say something wrong and are corrected, you remember the correction far better than a rule you read. The small sting is what makes it stay.\n\n## Three safe places to be wrong\n\n- **Alone:** describe your day aloud for one minute. Record it. Listen once.\n- **With a classmate:** agree to speak only English for ten minutes, and to correct each other kindly.\n- **In class:** ask your question in English, even if it comes out crooked. That is what the class is for.\n\n## Keep a mistake list\n\nWrite down each correction you receive. Read the list once a week. You will see the same five mistakes again and again, and then, one by one, you will stop making them.",
+			"published_at": "2026-10-05T06:00:00Z"
+		}
+	],
+	"pages": [
+		{
+			"slug": "about",
+			"title": "About us",
+			"body": "Alif Academy teaches English to learners who want to use it: in an exam hall, in an office, in a message to a client.\n\n## Our mission\n\nGood English teaching should not depend on where you live. We teach online so that a student in a small town gets the same lessons, the same teacher and the same feedback as one in the capital.\n\n## How we teach\n\n- **One idea at a time.** Each lesson covers a single point, and you use it before moving on.\n- **Reasons, not rules.** We explain why an answer is right, so the next question is easier.\n- **Feedback from a person.** Your written work is read and answered by your teacher.\n\n## Our story\n\nThe academy began as evening classes for a handful of job seekers. The classes filled, then filled again, and moving online was the only way to say yes to everyone who asked.\n\n## Our name\n\n*Alif* is the first letter of the alphabet: where every reader begins."
+		},
+		{
+			"slug": "contact",
+			"title": "Contact us",
+			"body": "Questions about a course? Message us on WhatsApp or send an email, and we will get back to you within 24 hours."
+		},
+		{
+			"slug": "privacy",
+			"title": "Privacy policy",
+			"body": "Last updated: November 2026\n\nYour privacy matters to us. This policy explains what we collect, how we use it and how we protect it when you use this website and your student account.\n\n## Information we collect\n\n- **Account details:** your name, email address and, if you give it, your phone number.\n- **Payment details:** the bKash or Nagad number you paid from and the transaction ID you enter. We don't store card details or PINs; payments are made in the bKash or Nagad app.\n- **Your learning:** the lessons you finish, your quiz results, your questions, and the assignments you hand in.\n- **Sign-in:** your password is stored only in a scrambled (hashed) form that we cannot read.\n\n## How we use your information\n\n- To confirm your payment and open your course\n- To give you your lessons, feedback and certificate\n- To answer your questions and send password-reset emails\n\n## Sharing your information\n\nWe do not sell your information. It is seen only by your teacher and our support staff, or shared when the law requires it. A certificate can be checked by anyone who has its number; it shows your name, the course and the date.\n\n## Your choices\n\nYou can ask to see, correct or delete your personal data. Message us and we will do it, where the law allows.\n\n## Changes to this policy\n\nThis policy may be updated. The current version is always shown here with its date."
+		}
+	]
+}

@@ -1,17 +1,19 @@
-// Fills a new setup with the academy's real content (scripts/content). Safe to run twice.
+// Fills a new setup with a sample academy's content (scripts/content). Safe to run twice.
+// For a real academy, replace scripts/content/academy.json, or seed and then edit in the admin area.
 //
 //   node --env-file=.env scripts/seed.ts            the website's content only
-//   node --env-file=.env scripts/seed.ts --sample   also sample teaching material, to show a customer:
-//                                                   lessons built on the academy's public YouTube videos,
-//                                                   quizzes, assignments, live classes and study sheets
-//   node --env-file=.env scripts/seed.ts --demo     --sample plus demo accounts and a free practice
-//                                                   course, for local work and tests. Never on
-//                                                   production: the demo passwords are public.
-import { readFile, readdir } from 'node:fs/promises';
+//   node --env-file=.env scripts/seed.ts --sample   also sample teaching material: lessons (with
+//                                                   license-free placeholder films), quizzes,
+//                                                   assignments, live classes and study sheets
+//   node --env-file=.env scripts/seed.ts --demo     --sample plus demo accounts, for local work and
+//                                                   tests. Never on production: the demo passwords
+//                                                   are public.
+import { readFile } from 'node:fs/promises';
 import { AwsClient } from 'aws4fetch';
 import postgres from 'postgres';
 import { hashPassword } from '../src/lib/server/password.ts';
 import { resources } from './content/resources.ts';
+import { coverPng } from './cover.ts';
 import { tablePdf } from './pdf.ts';
 
 interface Course {
@@ -30,7 +32,7 @@ interface Content {
 	home: Record<string, string>;
 	courses: Course[];
 	reviews: [name: string, affiliation: string, body: string][];
-	posts: { slug: string; title: string; excerpt: string; body: string; image: string | null; published_at: string }[];
+	posts: { slug: string; title: string; excerpt: string; body: string; published_at: string }[];
 	pages: { slug: string; title: string; body: string }[];
 }
 
@@ -62,16 +64,13 @@ const env = (name: string) => {
 };
 
 const dir = new URL('./content/', import.meta.url);
-const content: Content = JSON.parse(await readFile(new URL('delta.json', dir), 'utf8'));
+const content: Content = JSON.parse(await readFile(new URL('academy.json', dir), 'utf8'));
 const curriculum: Curriculum = JSON.parse(await readFile(new URL('curriculum.json', dir), 'utf8'));
-const partnerFiles = (await readdir(new URL('partners/', dir))).sort();
 const sql = postgres(env('DATABASE_URL'), { max: 1, onnotice: () => {} });
 
 // Where each file lives in storage. The database rows below point at the same keys.
-const LOGO = 'public/site/logo.png';
-const courseImage = (slug: string) => `public/courses/${slug}.jpg`;
-const partnerImage = (file: string) => `public/partners/${file}`;
-const postImage = (slug: string) => `public/posts/${slug}.jpg`;
+const courseImage = (slug: string) => `public/courses/${slug}.png`;
+const postImage = (slug: string) => `public/posts/${slug}.png`;
 
 const storage = new AwsClient({
 	accessKeyId: env('AWS_ACCESS_KEY_ID'),
@@ -92,11 +91,9 @@ async function upload(key: string, body: string | Uint8Array<ArrayBuffer>) {
 
 /** Puts every file in storage. Run each time, so a new or emptied bucket is filled again. */
 async function uploadFiles() {
-	const file = async (path: string, key: string) => upload(key, await readFile(new URL(path, dir)));
-	await file('logo.png', LOGO);
-	for (const name of partnerFiles) await file(`partners/${name}`, partnerImage(name));
-	for (const course of content.courses) await file(`courses/${course.slug}.jpg`, courseImage(course.slug));
-	for (const post of content.posts) if (post.image) await file(post.image, postImage(post.slug));
+	// Cover pictures are drawn here, one per course and post, so no photographs live in the repository.
+	for (const [i, course] of content.courses.entries()) await upload(courseImage(course.slug), coverPng(i));
+	for (const [i, post] of content.posts.entries()) await upload(postImage(post.slug), coverPng(100 + i));
 	if (sample) {
 		const footer = `${content.settings.name} - ${content.settings.tagline}`;
 		for (const sheet of resources) await upload(sheet.key, tablePdf({ ...sheet, footer }));
@@ -108,13 +105,9 @@ async function seedContent() {
 		if ((await tx`select 1 from courses limit 1`).length) return console.log('content is already there');
 
 		await tx`insert into site_content (key, value) values
-			('settings', ${tx.json({ ...content.settings, logo_key: LOGO })}), ('home', ${tx.json(content.home)})
+			('settings', ${tx.json(content.settings)}), ('home', ${tx.json(content.home)})
 			on conflict (key) do nothing`;
 
-		for (const [i, name] of partnerFiles.entries()) {
-			const label = name.replace(/^\d+-|\.png$/g, '').replaceAll('-', ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-			await tx`insert into partners (name, image_key, position) values (${label}, ${partnerImage(name)}, ${i})`;
-		}
 		// Courses start closed: openCoursesWithLessons() below opens the ones that have something to teach.
 		for (const [i, course] of content.courses.entries()) {
 			await tx`
@@ -129,7 +122,7 @@ async function seedContent() {
 		for (const post of content.posts) {
 			await tx`insert into posts (slug, title, excerpt, body, image_key, published_at)
 				values (${post.slug}, ${post.title}, ${post.excerpt}, ${post.body},
-					${post.image ? postImage(post.slug) : null}, ${post.published_at})`;
+					${postImage(post.slug)}, ${post.published_at})`;
 		}
 		for (const page of content.pages) {
 			await tx`insert into pages (slug, title, body) values (${page.slug}, ${page.title}, ${page.body})`;
@@ -221,53 +214,17 @@ async function seedSample() {
 	});
 }
 
-// --- Demo accounts and a free practice course (--demo) ---
-
-const PRACTICE_COURSE = 'english-for-complete-idiots';
-const practiceLessons: Curriculum[string]['sections'] = [
-	{
-		title: 'Getting started',
-		lessons: [
-			{ title: 'How this course works', video: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', preview: true, body: 'Welcome. Watch each lesson, then mark it complete to move on.' },
-			{ title: 'Introducing yourself', video: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', body: 'Practise saying your name, where you are from and what you do.' }
-		]
-	},
-	{
-		title: 'Everyday English',
-		lessons: [
-			{
-				title: 'Asking questions',
-				video: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
-				body: 'Questions with *do*, *does*, *is* and *are*.',
-				quiz: [
-					['Which question is correct?', ['Where you live?', 'Where do you live?', 'Where does you live?'], 1],
-					['Choose the right word: "___ she a teacher?"', ['Do', 'Is', 'Are'], 1],
-					['Choose the right word: "___ they work here?"', ['Do', 'Does', 'Is'], 0]
-				]
-			},
-			{
-				title: 'Write about your day',
-				video: '',
-				body: 'Use what you have learned so far.',
-				assignment: 'Write 8 to 10 sentences about what you did yesterday. Upload it as a PDF, Word file or a clear photo.'
-			}
-		]
-	}
-];
+// --- Demo accounts (--demo) ---
 
 async function seedDemo() {
-	await sql.begin(async (tx) => {
-		const users = [
-			['admin@example.com', 'Academy Admin', 'admin', 'admin12345'],
-			['student@example.com', 'Sample Student', 'student', 'student12345']
-		];
-		for (const [email, name, role, password] of users) {
-			await tx`insert into users (email, name, role, password_hash)
-				values (${email}, ${name}, ${role}, ${await hashPassword(password)}) on conflict (email) do nothing`;
-		}
-		// A free course with lessons, so joining without payment can be tried.
-		await addLessons(tx, PRACTICE_COURSE, practiceLessons);
-	});
+	const users = [
+		['admin@example.com', 'Academy Admin', 'admin', 'admin12345'],
+		['student@example.com', 'Sample Student', 'student', 'student12345']
+	];
+	for (const [email, name, role, password] of users) {
+		await sql`insert into users (email, name, role, password_hash)
+			values (${email}, ${name}, ${role}, ${await hashPassword(password)}) on conflict (email) do nothing`;
+	}
 	console.log('Demo sign-ins: admin@example.com / admin12345 and student@example.com / student12345');
 }
 
