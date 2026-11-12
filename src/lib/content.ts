@@ -6,7 +6,7 @@ const needed = (max = 200) => v.pipe(line(max), v.minLength(1, 'This is required
 
 export const SettingsSchema = v.object({
 	name: needed(60),
-	brand_color: v.pipe(v.string(), v.trim(), v.regex(/^#[0-9a-fA-F]{6}$/, 'Enter a color like #0047ab')),
+	brand_color: v.pipe(v.string(), v.trim(), v.regex(/^#[0-9a-fA-F]{6}$/, 'Enter a color like #166534')),
 	tagline: line(120),
 	description: line(300),
 	email: line(120),
@@ -44,7 +44,7 @@ export type Home = v.InferOutput<typeof HomeSchema>;
 
 export const DEFAULT_SETTINGS: Settings = {
 	name: 'Your Academy',
-	brand_color: '#0047ab',
+	brand_color: '#166534',
 	logo_key: '',
 	tagline: '',
 	description: 'Online courses with recorded lessons, live classes, quizzes and certificates.',

@@ -49,6 +49,8 @@
 	--ui-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 6px -2px rgb(0 0 0 / 0.08);
 	/* Resting cards (widgets, blocks) are flat: a 1px edge drawn as a ring, no drop shadow. */
 	--ui-shadow-card: 0 0 0 1px var(--ui-field-line);
+	/* --ui-card-icon: the color of a card's title icon. Unset, it is muted like secondary text. */
+	/* --ui-stat-icon-bg, --ui-stat-icon-fg: a Stat's icon tile. Unset, it is a quiet gray tile. */
 	/* Card's edge and lift. Unset: a field-line border and no shadow. Set --ui-card-line: transparent and
 	   --ui-card-shadow: var(--ui-shadow-xs) for borderless cards lifted off a tinted page. */
 

@@ -168,11 +168,51 @@ img {
 	font-size: var(--text-lg);
 	max-width: 40rem;
 }
-/* Inner pages open with a banner in the brand's tint, clearly set apart from the white page below. */
+/* Inner pages open with a banner in the brand's tint: a soft glow in one corner and a faint grid,
+   clearly set apart from the white page below. */
 .site-page-top {
+	position: relative;
 	padding-block: clamp(3rem, 7vw, 5rem) clamp(2.5rem, 5vw, 3.5rem);
-	background: linear-gradient(180deg, var(--app-tint-strong), var(--app-tint));
+	background:
+		radial-gradient(38rem 20rem at 88% -10%, color-mix(in oklab, var(--ui-accent) 22%, transparent), transparent 70%),
+		linear-gradient(180deg, var(--app-tint-strong), var(--app-tint));
 	border-bottom: 1px solid var(--ui-line);
+	overflow: hidden;
+}
+.site-page-top::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(var(--ui-line) 1px, transparent 1px), linear-gradient(90deg, var(--ui-line) 1px, transparent 1px);
+	background-size: 3rem 3rem;
+	mask-image: radial-gradient(60rem 24rem at 80% 0%, #000, transparent 75%);
+	pointer-events: none;
+}
+.site-page-top > * {
+	position: relative;
+}
+/* Facts under a banner's heading: a number and what it counts. */
+.site-facts {
+	list-style: none;
+	margin: var(--space-6) 0 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-4) var(--space-12);
+}
+.site-facts li {
+	display: grid;
+}
+.site-facts strong {
+	font-family: var(--ui-font-heading);
+	font-size: var(--text-2xl);
+	font-weight: 600;
+	line-height: 1.2;
+}
+.site-facts span {
+	color: var(--ui-muted);
+	font-size: var(--text-sm);
 }
 .site-page-top .site-h1 {
 	margin-block: var(--space-3);
@@ -361,10 +401,42 @@ a.site-card.in:hover {
 	font-size: 0.9375rem;
 	line-height: 1.55;
 }
-/* Cards in the app: no border, lifted off the tinted page by a light shadow. */
+/* Cards in the app: no border, lifted off the tinted page by a light shadow; their title icons in the brand color. */
 .app-area {
 	--ui-card-line: transparent;
 	--ui-card-shadow: var(--ui-shadow-xs);
+	--ui-card-icon: var(--ui-accent);
+	/* Six hues for icon tiles, so a row of numbers can be told apart at a glance. Icons only:
+	   buttons and links stay in the brand color. */
+	--tile-1: var(--ui-accent);
+	--tile-2: light-dark(#2563eb, #60a5fa);
+	--tile-3: light-dark(#d97706, #fbbf24);
+	--tile-4: light-dark(#7c3aed, #a78bfa);
+	--tile-5: light-dark(#e11d48, #fb7185);
+	--tile-6: light-dark(#0891b2, #22d3ee);
+}
+/* Stats in a row take the hues in turn. */
+.app-area .stats > * {
+	--ui-stat-icon-bg: color-mix(in oklab, var(--tile) 14%, var(--ui-surface));
+	--ui-stat-icon-fg: var(--tile);
+}
+.app-area .stats > :nth-child(6n + 1) {
+	--tile: var(--tile-1);
+}
+.app-area .stats > :nth-child(6n + 2) {
+	--tile: var(--tile-2);
+}
+.app-area .stats > :nth-child(6n + 3) {
+	--tile: var(--tile-3);
+}
+.app-area .stats > :nth-child(6n + 4) {
+	--tile: var(--tile-4);
+}
+.app-area .stats > :nth-child(6n + 5) {
+	--tile: var(--tile-5);
+}
+.app-area .stats > :nth-child(6n + 6) {
+	--tile: var(--tile-6);
 }
 .app-area :is(h1, h2, h3, h4) {
 	letter-spacing: -0.01em;

@@ -75,8 +75,9 @@
 		inline-size: 2rem;
 		block-size: 2rem;
 		border-radius: var(--ui-radius-control);
-		background: var(--ui-subtle);
-		color: var(--ui-fg);
+		/* Set these two to color the tile: a different hue per stat tells a row of them apart. */
+		background: var(--ui-stat-icon-bg, var(--ui-subtle));
+		color: var(--ui-stat-icon-fg, var(--ui-fg));
 	}
 	.value {
 		font-size: 1.625rem;

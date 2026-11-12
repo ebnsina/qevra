@@ -1,36 +1,38 @@
 <script lang="ts">
-	// The frame of the signed-in areas: sinaui's Studio block with this academy's logo and sign-out.
-	// Shared by the admin and the student portal.
+	// The frame of the signed-in areas: sinaui's Studio block, headed "Dashboard" with a badge that
+	// says whose it is. Shared by the admin and the student portal.
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
 	import Studio from '#lib/sinaui/blocks/studio/Studio.svelte';
+	import Badge from '#lib/sinaui/ui/Badge.svelte';
 	import type { SidebarGroup } from '#lib/sinaui/ui/SidebarLayout.svelte';
 
 	interface Props {
 		/** Names the area ("Admin"); also the first breadcrumb. */
 		label: string;
+		/** The badge beside "Dashboard": "Admin" or "Student". */
+		role: string;
 		/** The area's first page. */
 		home: string;
 		groups: SidebarGroup[];
-		site: { name: string; logo_key: string };
 		user: { name: string; email: string };
 		/** Extra items in the account menu (a link to the other area). */
 		menu?: Snippet;
 		children: Snippet;
 	}
-	let { label, home, groups, site, user, menu, children }: Props = $props();
+	let { label, role, home, groups, user, menu, children }: Props = $props();
 
 	let signOut = $state<HTMLFormElement>();
 </script>
 
 <div class="app-area">
-	<Studio name={label} {home} {groups} path={page.url.pathname} {user} {menu} onsignout={() => signOut?.requestSubmit()}>
+	<Studio name={label} {home} {groups} path={page.url.pathname} {user} {menu} search={false} onsignout={() => signOut?.requestSubmit()}>
 		{#snippet brand(collapsed)}
-			{#if site.logo_key && !collapsed}
-				<img class="logo" src="/files/{site.logo_key}" alt={site.name} />
+			{#if collapsed}
+				<span class="mark" aria-hidden="true">{role.slice(0, 1)}</span>
 			{:else}
-				<span class="mark" aria-hidden="true">{site.name.slice(0, 1)}</span>
-				{#if !collapsed}<strong>{site.name}</strong>{/if}
+				<strong class="title">Dashboard</strong>
+				<Badge tone="accent" icon={false}>{role}</Badge>
 			{/if}
 		{/snippet}
 		{@render children()}
@@ -39,18 +41,10 @@
 </div>
 
 <style>
-	.logo {
-		height: 2.25rem;
-		width: auto;
-	}
-	/* Same single-color-logo assumption as the website's Logo component. */
-	:global(:root[data-theme='dark']) .logo {
-		filter: invert(1);
-	}
-	@media (prefers-color-scheme: dark) {
-		:global(:root:not([data-theme='light'])) .logo {
-			filter: invert(1);
-		}
+	.title {
+		font-size: 1.0625rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
 	}
 	.mark {
 		display: grid;

@@ -1,5 +1,5 @@
 {
-	"name": "qevra",
+	"name": "tadris",
 	"version": "0.0.1",
 	"private": true,
 	"type": "module",
@@ -14,14 +14,16 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"db:up": "docker compose up -d",
+		"db:up": "docker compose up -d --wait",
 		"db:migrate": "node --env-file=.env scripts/migrate.ts",
 		"db:seed": "node --env-file=.env scripts/seed.ts",
 		"test": "node --env-file=.env.test ./node_modules/vitest/vitest.mjs run",
 		"test:e2e": "playwright test",
 		"db:seed:demo": "node --env-file=.env scripts/seed.ts --demo",
 		"admin:create": "node --env-file=.env scripts/create-admin.ts",
-		"db:seed:sample": "node --env-file=.env scripts/seed.ts --sample"
+		"db:seed:sample": "node --env-file=.env scripts/seed.ts --sample",
+		"db:seed:activity": "node --env-file=.env scripts/seed-activity.ts",
+		"db:seed:activity:clear": "node --env-file=.env scripts/seed-activity.ts --clear"
 	},
 	"devDependencies": {
 		"@neon/config": "^1.14.0",
@@ -41,6 +43,7 @@
 		"@fontsource-variable/geist": "^5.3.0",
 		"@fontsource-variable/geist-mono": "^5.3.0",
 		"@hugeicons/core-free-icons": "^4.4.0",
+		"@tanstack/charts": "0.18.0",
 		"@tiptap/core": "^3.33.1",
 		"@tiptap/extensions": "^3.33.1",
 		"@tiptap/starter-kit": "^3.33.1",

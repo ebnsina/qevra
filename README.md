@@ -1,4 +1,4 @@
-# Qevra
+# Tadris
 
 A learning platform an academy runs for itself: its public website, a student portal and an admin
 area, in one app. Built for academies that sell recorded courses with live classes and take payment
@@ -33,7 +33,8 @@ pnpm install
 cp .env.example .env     # the defaults match the local services
 pnpm db:up               # Postgres, storage and a mail catcher (http://localhost:8026)
 pnpm db:migrate
-pnpm db:seed:demo        # the academy's content, plus demo accounts and sample lessons
+pnpm db:seed:demo        # a sample academy's content, plus demo accounts and sample lessons
+pnpm db:seed:activity    # optional: 640 demo students with payments, progress and reviews
 pnpm dev                 # http://localhost:5173
 ```
 
@@ -44,7 +45,7 @@ Demo accounts: `admin@example.com` / `admin12345` and `student@example.com` / `s
 | Variable | What it is |
 | --- | --- |
 | `DATABASE_URL` | Postgres owner connection. Used only by `db:migrate` and `db:seed`. |
-| `DATABASE_APP_URL` | What the app runs as: the same address with the user `qevra_app` and a password you choose. `db:migrate` creates that role. |
+| `DATABASE_APP_URL` | What the app runs as: the same address with the user `tadris_app` and a password you choose. `db:migrate` creates that role. |
 | `AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | S3-compatible storage for uploads (Neon Object Storage). |
 | `MAIL_SMTP_URL`, `MAIL_FROM` | SMTP account for password-reset emails. |
 
@@ -58,7 +59,7 @@ npx neon link                  # choose the project
 npx neon checkout dev --create # a dev branch with its own data and files; writes DATABASE_URL and AWS_* to .env
 ```
 
-Then set `DATABASE_APP_URL` in `.env`: copy `DATABASE_URL`, change the user to `qevra_app` and choose a
+Then set `DATABASE_APP_URL` in `.env`: copy `DATABASE_URL`, change the user to `tadris_app` and choose a
 password. Run `pnpm db:migrate` (it creates that user), then `pnpm db:seed:demo`.
 
 Production has its own steps: see Deployment.
@@ -67,7 +68,7 @@ Production has its own steps: see Deployment.
 
 ```sh
 pnpm check       # types
-pnpm test        # unit tests, and database tests against a real Postgres (the qevra_test database)
+pnpm test        # unit tests, and database tests against a real Postgres (the tadris_test database)
 pnpm test:e2e    # browser tests of the main flows
 ```
 
