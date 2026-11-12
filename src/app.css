@@ -328,6 +328,23 @@ a.site-card.in:hover {
 	padding-inline-start: 1em;
 	border-inline-start: 3px solid var(--ui-fg);
 }
+.prose table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9375em;
+}
+.prose :is(th, td) {
+	padding: 0.5em 0.75em;
+	border-bottom: 1px solid var(--ui-line);
+	text-align: start;
+	vertical-align: top;
+}
+.prose th {
+	font-weight: 600;
+}
+.prose del {
+	color: var(--ui-muted);
+}
 .prose code {
 	font-family: var(--ui-font-mono);
 	font-size: 0.9em;

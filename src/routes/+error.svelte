@@ -9,7 +9,7 @@
 	<p class="site-eyebrow">Error {page.status}</p>
 	<h1 class="site-h1">{page.status === 404 ? "We can't find that page." : 'That did not work.'}</h1>
 	<p class="site-lede">
-		{page.status === 404 ? 'The link may be old, or the page may have moved.' : page.error?.message}
+		{page.error?.message && page.error.message !== 'Not Found' ? page.error.message : 'The link may be old, or the page may have moved.'}
 	</p>
 	<div><Button href="/">Back to the home page</Button></div>
 </main>

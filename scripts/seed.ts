@@ -1,13 +1,18 @@
 // Fills a new setup with the academy's real content (scripts/content). Safe to run twice.
 //
-//   node --env-file=.env scripts/seed.ts          content only: use this for production
-//   node --env-file=.env scripts/seed.ts --demo   also demo accounts, sample lessons and sample downloads,
-//                                                 for local work and tests. Never on production: the
-//                                                 demo passwords are public.
+//   node --env-file=.env scripts/seed.ts            the website's content only
+//   node --env-file=.env scripts/seed.ts --sample   also sample teaching material, to show a customer:
+//                                                   lessons built on the academy's public YouTube videos,
+//                                                   quizzes, assignments, live classes and study sheets
+//   node --env-file=.env scripts/seed.ts --demo     --sample plus demo accounts and a free practice
+//                                                   course, for local work and tests. Never on
+//                                                   production: the demo passwords are public.
 import { readFile, readdir } from 'node:fs/promises';
 import { AwsClient } from 'aws4fetch';
 import postgres from 'postgres';
 import { hashPassword } from '../src/lib/server/password.ts';
+import { resources } from './content/resources.ts';
+import { tablePdf } from './pdf.ts';
 
 interface Course {
 	slug: string;
@@ -28,7 +33,21 @@ interface Content {
 	pages: { slug: string; title: string; body: string }[];
 }
 
+interface Lesson {
+	title: string;
+	video: string;
+	body: string;
+	preview?: boolean;
+	assignment?: string;
+	quiz?: [question: string, options: string[], correct: number][];
+}
+type Curriculum = Record<
+	string,
+	{ live: { title: string; in_days: number; hour: number; minute: number }[]; sections: { title: string; lessons: Lesson[] }[] }
+>;
+
 const demo = process.argv.includes('--demo');
+const sample = demo || process.argv.includes('--sample');
 const env = (name: string) => {
 	const value = process.env[name];
 	if (!value) throw new Error(`${name} is not set`);
@@ -37,6 +56,7 @@ const env = (name: string) => {
 
 const dir = new URL('./content/', import.meta.url);
 const content: Content = JSON.parse(await readFile(new URL('delta.json', dir), 'utf8'));
+const curriculum: Curriculum = JSON.parse(await readFile(new URL('curriculum.json', dir), 'utf8'));
 const partnerFiles = (await readdir(new URL('partners/', dir))).sort();
 const sql = postgres(env('DATABASE_URL'), { max: 1, onnotice: () => {} });
 
@@ -45,7 +65,6 @@ const LOGO = 'public/site/logo.png';
 const courseImage = (slug: string) => `public/courses/${slug}.jpg`;
 const partnerImage = (file: string) => `public/partners/${file}`;
 const postImage = (slug: string) => `public/posts/${slug}.jpg`;
-const demoResource = (index: number) => `public/resources/demo-${index + 1}.pdf`;
 
 const storage = new AwsClient({
 	accessKeyId: env('AWS_ACCESS_KEY_ID'),
@@ -71,7 +90,10 @@ async function uploadFiles() {
 	for (const name of partnerFiles) await file(`partners/${name}`, partnerImage(name));
 	for (const course of content.courses) await file(`courses/${course.slug}.jpg`, courseImage(course.slug));
 	for (const post of content.posts) if (post.image) await file(post.image, postImage(post.slug));
-	if (demo) for (const [i, [title]] of demoResources.entries()) await upload(demoResource(i), placeholderPdf(title));
+	if (sample) {
+		const footer = `${content.settings.name} - ${content.settings.tagline}`;
+		for (const sheet of resources) await upload(sheet.key, tablePdf({ ...sheet, footer }));
+	}
 }
 
 async function seedContent() {
@@ -109,21 +131,71 @@ async function seedContent() {
 	});
 }
 
-// --- Demo only ---
+// --- Sample teaching material (--sample) ---
 
-const DEMO_VIDEO = 'https://www.youtube.com/watch?v=aqz-KE-bpKQ';
-const DEMO_COURSES = ['english-for-beginners', 'english-for-job-seekers', 'english-for-complete-idiots'];
-const demoResources = [
-	['The Oxford 3000', 'Master the 3000 most important words in English selected by experts at Oxford University Press.'],
-	['Regular Verbs', 'Essential regular verbs you must know: simple, clean, and easy to remember.'],
-	['Irregular Verbs', 'Download and memorize the most common irregular verbs for accurate speaking and writing.']
-];
-const demoLessons = [
+/** A moment `inDays` from today at the given time in Bangladesh. */
+function dhakaTime(inDays: number, hour: number, minute: number) {
+	const day = new Date(Date.now() + 6 * 3_600_000 + inDays * 86_400_000).toISOString().slice(0, 10);
+	const two = (n: number) => String(n).padStart(2, '0');
+	return new Date(`${day}T${two(hour)}:${two(minute)}:00+06:00`);
+}
+
+/** Adds a course's sections, lessons and quizzes, unless it already has some. */
+async function addLessons(tx: postgres.TransactionSql, slug: string, sections: Curriculum[string]['sections']) {
+	const [course] = await tx<{ id: string }[]>`
+		select c.id from courses c
+		where c.slug = ${slug} and not exists (select 1 from modules m where m.course_id = c.id)`;
+	if (!course) return null;
+	let position = 0;
+	for (const [m, section] of sections.entries()) {
+		const [{ id: moduleId }] = await tx`
+			insert into modules (course_id, title, position) values (${course.id}, ${section.title}, ${m}) returning id`;
+		for (const lesson of section.lessons) {
+			const [{ id: lessonId }] = await tx`
+				insert into lessons (course_id, module_id, title, position, video_url, body, assignment, is_preview)
+				values (${course.id}, ${moduleId}, ${lesson.title}, ${position++}, ${lesson.video}, ${lesson.body},
+					${lesson.assignment ?? ''}, ${lesson.preview ?? false})
+				returning id`;
+			for (const [q, [question, options, correct]] of (lesson.quiz ?? []).entries()) {
+				await tx`insert into quiz_questions (lesson_id, question, options, correct, position)
+					values (${lessonId}, ${question}, ${options}, ${correct}, ${q})`;
+			}
+		}
+	}
+	console.log(`lessons added to ${slug}`);
+	return course.id;
+}
+
+async function seedSample() {
+	await sql.begin(async (tx) => {
+		for (const [slug, course] of Object.entries(curriculum)) {
+			const courseId = await addLessons(tx, slug, course.sections);
+			if (!courseId) continue;
+			// The meeting link is a stand-in: put the real Zoom or Meet link on each class in the admin area.
+			for (const live of course.live) {
+				await tx`insert into live_classes (course_id, title, starts_at, meeting_url)
+					values (${courseId}, ${live.title}, ${dhakaTime(live.in_days, live.hour, live.minute)}, 'https://zoom.us/')`;
+			}
+		}
+		if (!(await tx`select 1 from resources limit 1`).length) {
+			for (const [i, sheet] of resources.entries()) {
+				await tx`insert into resources (title, description, file_key, file_name, position)
+					values (${sheet.title}, ${sheet.description}, ${sheet.key}, ${`${sheet.title}.pdf`}, ${i})`;
+			}
+			console.log('study sheets added');
+		}
+	});
+}
+
+// --- Demo accounts and a free practice course (--demo) ---
+
+const PRACTICE_COURSE = 'english-for-complete-idiots';
+const practiceLessons: Curriculum[string]['sections'] = [
 	{
 		title: 'Getting started',
 		lessons: [
-			{ title: 'How this course works', preview: true, body: 'Welcome. Watch each lesson, then mark it complete to move on.' },
-			{ title: 'Introducing yourself', body: 'Practise saying your name, where you are from and what you do.' }
+			{ title: 'How this course works', video: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', preview: true, body: 'Welcome. Watch each lesson, then mark it complete to move on.' },
+			{ title: 'Introducing yourself', video: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', body: 'Practise saying your name, where you are from and what you do.' }
 		]
 	},
 	{
@@ -131,6 +203,7 @@ const demoLessons = [
 		lessons: [
 			{
 				title: 'Asking questions',
+				video: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
 				body: 'Questions with *do*, *does*, *is* and *are*.',
 				quiz: [
 					['Which question is correct?', ['Where you live?', 'Where do you live?', 'Where does you live?'], 1],
@@ -140,34 +213,13 @@ const demoLessons = [
 			},
 			{
 				title: 'Write about your day',
+				video: '',
 				body: 'Use what you have learned so far.',
 				assignment: 'Write 8 to 10 sentences about what you did yesterday. Upload it as a PDF, Word file or a clear photo.'
 			}
 		]
 	}
-] as const;
-
-/** A one-page PDF with a single line of text: a stand-in for a real download. */
-function placeholderPdf(text: string) {
-	const stream = `BT /F1 24 Tf 72 760 Td (${text}) Tj ET`;
-	const objects = [
-		'<< /Type /Catalog /Pages 2 0 R >>',
-		'<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
-		'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>',
-		`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`,
-		'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'
-	];
-	let body = '%PDF-1.4\n';
-	const offsets = objects.map((object, i) => {
-		const at = body.length;
-		body += `${i + 1} 0 obj\n${object}\nendobj\n`;
-		return at;
-	});
-	const xref = body.length;
-	body += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
-	for (const at of offsets) body += `${String(at).padStart(10, '0')} 00000 n \n`;
-	return `${body}trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
-}
+];
 
 async function seedDemo() {
 	await sql.begin(async (tx) => {
@@ -179,41 +231,8 @@ async function seedDemo() {
 			await tx`insert into users (email, name, role, password_hash)
 				values (${email}, ${name}, ${role}, ${await hashPassword(password)}) on conflict (email) do nothing`;
 		}
-
-		// Sample lessons, a quiz, an assignment and a live class, so the whole flow can be tried.
-		for (const slug of DEMO_COURSES) {
-			const [course] = await tx`
-				select c.id from courses c
-				where c.slug = ${slug} and not exists (select 1 from modules m where m.course_id = c.id)`;
-			if (!course) continue;
-			let position = 0;
-			for (const [m, module] of demoLessons.entries()) {
-				const [{ id: moduleId }] = await tx`
-					insert into modules (course_id, title, position) values (${course.id}, ${module.title}, ${m}) returning id`;
-				for (const lesson of module.lessons) {
-					const [{ id: lessonId }] = await tx`
-						insert into lessons (course_id, module_id, title, position, video_url, body, assignment, is_preview)
-						values (${course.id}, ${moduleId}, ${lesson.title}, ${position++}, ${DEMO_VIDEO}, ${lesson.body},
-							${'assignment' in lesson ? lesson.assignment : ''}, ${'preview' in lesson})
-						returning id`;
-					if (!('quiz' in lesson)) continue;
-					for (const [q, [question, options, correct]] of lesson.quiz.entries()) {
-						await tx`insert into quiz_questions (lesson_id, question, options, correct, position)
-							values (${lessonId}, ${question}, ${[...options]}, ${correct}, ${q})`;
-					}
-				}
-			}
-			await tx`insert into live_classes (course_id, title, starts_at, meeting_url)
-				values (${course.id}, 'Live question and answer session', now() + interval '3 days', 'https://meet.google.com/')`;
-			console.log(`sample lessons added to ${slug}`);
-		}
-
-		if (!(await tx`select 1 from resources limit 1`).length) {
-			for (const [i, [title, description]] of demoResources.entries()) {
-				await tx`insert into resources (title, description, file_key, file_name, position)
-					values (${title}, ${description}, ${demoResource(i)}, ${`${title}.pdf`}, ${i})`;
-			}
-		}
+		// A free course with lessons, so joining without payment can be tried.
+		await addLessons(tx, PRACTICE_COURSE, practiceLessons);
 	});
 	console.log('Demo sign-ins: admin@example.com / admin12345 and student@example.com / student12345');
 }
@@ -229,10 +248,8 @@ async function openCoursesWithLessons() {
 
 await uploadFiles();
 await seedContent();
-if (demo) {
-	await seedDemo();
-	await openCoursesWithLessons();
-} else {
-	console.log('No courses are open for enrollment yet: add lessons in the admin area, then switch each course on.');
-}
+if (sample) await seedSample();
+if (demo) await seedDemo();
+if (sample) await openCoursesWithLessons();
+else console.log('No courses are open for enrollment yet: add lessons in the admin area, then switch each course on.');
 await sql.end();

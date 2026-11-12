@@ -86,7 +86,9 @@ Built for Vercel with Neon. The app's functions run in Singapore (`sin1`), next 
    `files` bucket, and `npx neon env pull --branch production --file .env.production` writes its settings
    to a file git ignores. Add `DATABASE_APP_URL` to that file (see Configuration).
 2. **Schema and content.** `node --env-file=.env.production scripts/migrate.ts`, then
-   `node --env-file=.env.production scripts/seed.ts` for the academy's content. Never add `--demo` here.
+   `node --env-file=.env.production scripts/seed.ts` for the academy's content. Add `--sample` to also load
+   sample lessons, quizzes, assignments and study sheets for showing the platform to the academy. Never
+   add `--demo` here: its accounts have published passwords.
 3. **First admin.** `node --env-file=.env.production scripts/create-admin.ts you@example.com "Your Name"`
    prints a password once. Sign in and change it under Profile.
 4. **Vercel.** Import the repository, then add these variables to the project (Vercel can import

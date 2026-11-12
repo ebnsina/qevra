@@ -7,9 +7,11 @@ First setup: DELTA (mydelta.online); its real content is what the seed loads.
 SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storage). Deploys to Vercel.
 
 ## Commands
-- `pnpm db:up` local Postgres, storage and mail (Docker) · `pnpm db:migrate` · `pnpm db:seed:demo` (content + demo
-  accounts and sample lessons; safe to rerun) · `pnpm db:seed` (content only, what production gets) ·
-  `pnpm admin:create <email> "<name>"` (prints a password once)
+- `pnpm db:up` local Postgres, storage and mail (Docker) · `pnpm db:migrate`
+- Seeding (each is safe to rerun): `pnpm db:seed` the website's content only · `pnpm db:seed:sample` also sample
+  teaching material (lessons on the academy's public YouTube videos, quizzes, assignments, live classes, study
+  sheets) · `pnpm db:seed:demo` all of that plus demo accounts and a free practice course (local and tests only)
+- `pnpm admin:create <email> "<name>"` creates a staff account and prints its password once
 - `pnpm dev` · `pnpm check` (keep 0 errors, 0 warnings)
 - `pnpm test` unit + database tests against `qevra_test` · `pnpm test:e2e` browser flows (starts its own server on 5174)
 - Demo logins after seeding: `admin@example.com` / `admin12345`, `student@example.com` / `student12345`
@@ -18,7 +20,7 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - `src/routes/(site)` public website · `(auth)` sign-in · `portal` students · `admin` staff · `files/[...key]` serves uploads
 - `src/lib/server` everything that touches the database, storage or mail · `src/lib/components` app pieces · `src/lib/sinaui` copied sinaui (never edit)
 - `migrations/*.sql` applied in name order by `scripts/migrate.ts` · `scripts/seed.ts` + `scripts/content/` the
-  academy's real content (DELTA) · `.env.production` (git-ignored) holds production's settings
+  academy's real content (DELTA): `delta.json` website, `curriculum.json` sample lessons, `resources.ts` study sheets · `.env.production` (git-ignored) holds production's settings
 - `neon.ts` declares the storage bucket (`neon deploy` creates it). Neon project `delta`: local work uses its `dev`
   branch (`.env`); `production` is untouched until the first deploy. Tests use the local Docker database (`.env.test`).
 - `.mcp.json` Neon MCP server (signs in with OAuth on first use) · `.agents/skills` Neon agent skills

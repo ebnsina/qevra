@@ -20,7 +20,8 @@
 		"test": "node --env-file=.env.test ./node_modules/vitest/vitest.mjs run",
 		"test:e2e": "playwright test",
 		"db:seed:demo": "node --env-file=.env scripts/seed.ts --demo",
-		"admin:create": "node --env-file=.env scripts/create-admin.ts"
+		"admin:create": "node --env-file=.env scripts/create-admin.ts",
+		"db:seed:sample": "node --env-file=.env scripts/seed.ts --sample"
 	},
 	"devDependencies": {
 		"@neon/config": "^1.14.0",
