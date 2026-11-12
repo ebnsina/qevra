@@ -1,0 +1,217 @@
+{
+	"settings": {
+		"name": "DELTA",
+		"brand_color": "#0047ab",
+		"tagline": "A Different English Language Training Academy",
+		"description": "DELTA is an online English language training academy in Bangladesh. Founder Abdul Ahad designs, develops and teaches every course.",
+		"email": "mydelta.online@gmail.com",
+		"phone": "+880 1778-405030",
+		"whatsapp": "+880 1778-405030",
+		"address": "",
+		"facebook": "https://m.me/mydelta.online",
+		"youtube": "https://www.youtube.com/@DELTA_ELT",
+		"instagram": "",
+		"bkash_number": "01312205207 (Personal)",
+		"nagad_number": "01312205207 (Personal)",
+		"payment_note": "Use the \"Send Money\" option to pay the course fee, then enter the transaction ID here. We verify within 24 hours and open your course."
+	},
+	"home": {
+		"badge": "Admission open",
+		"title": "Level up your English skills",
+		"lede": "Our courses are built to solve real-world English challenges, taught step by step by a teacher with 15+ years of experience.",
+		"cta_label": "Start learning now",
+		"facts": "Since 2016 | teaching English\n12,000+ | students enrolled\n10 | courses\n15+ years | teaching experience",
+		"trusted_title": "Trusted by students across Bangladesh",
+		"about_title": "We teach English differently, and teach it right.",
+		"about_text": "DELTA began in Rajshahi in 2016 with classroom training for job seekers, and moved online in 2021. Our mission is to make high-quality English education accessible to students across Bangladesh, regardless of location, background or past experience: practical, proven methods in place of outdated ones.",
+		"about_quote": "I believe in teaching with purpose, not gimmicks.",
+		"about_name": "Abdul Ahad",
+		"about_role": "Founder, CEO & Mentor · BA & MA in English (RU) · 15+ years of experience",
+		"points_title": "What we value",
+		"points": "Access for all | Our courses are designed for nationwide accessibility: no travel, no limitations.\nPractical results | We teach English the way it should be taught: clearly, step by step, and with real-life application.\nIntegrity & impact | We deliver what we promise, aiming to change lives by building confidence and unlocking doors.\nQuality at a fair price | We keep our courses affordable without compromising on quality.",
+		"closing_title": "Which course is for you?",
+		"closing_text": "Share your learning goals with us and we will help you choose."
+	},
+	"courses": [
+		{
+			"slug": "english-for-beginners",
+			"title": "English for Beginners",
+			"level": "Beginner",
+			"price": 5000,
+			"enrollment_open": true,
+			"summary": "Master the basics of English & build a solid foundation for students, job seekers, and exam takers.",
+			"outcomes": "Build a strong English base: understand the main parts of English clearly\nImprove all your skills: reading, writing, listening and speaking\nLearn how to learn, so you can keep improving your English on your own\nUnderstand grammar easily, in a simple, practical way that helps you use it\nSpeak and write with confidence\nBe ready for big tests: the strong base needed for BCS, IELTS and other job exams",
+			"requirements": "A device (laptop preferred) with a stable internet connection for joining Zoom sessions; headphones are recommended\nA willingness to learn from the basics, attend regularly, and complete all assignments on time\nBasic proficiency in reading and writing both English and Bangla",
+			"description": "**Live batch on Zoom.** 50 live sessions, 3 sessions a week of 60 minutes each, over nearly 4 months. Course materials as PDFs, and recordings of every class for 1 year.\n\nIn the education system of Bangladesh, English is taught compulsorily for 12 straight years, from grade 1 to grade 12. But the unfortunate truth is, even after studying the language for over a decade, most students still struggle to speak and write correct, acceptable English. You might be one of them. Maybe you've already tried more than one English course. And then, like many, you failed, and felt frustrated and disappointed.\n\nThis course is not like those other courses. It's built to lay a strong foundation in the English language. In this course, we'll guide you through a new, simpler way to learn: one that actually works. Now is the time to break through your English barriers and step into new possibilities.\n\n## Who is this course for?\n\nThis course is for anyone who is serious about making their English much better, especially if you've found learning English hard before. This course is perfect for you if:\n\n- You are a student (high school, college, university) and feel your English is not good enough. You want a better way to learn than the old methods.\n- You are looking for a job. Good English is key for jobs like BCS, but your English skills are stopping you from getting a good score and a job.\n- You get confused by grammar rules. You've tried to memorize them, but it didn't help you speak or write well.\n- You want to take exams like IELTS, but your basic English is weak.\n- You have taken other English courses and felt let down. This course is built to give you real results, step by step.\n\n## Frequently asked questions\n\n### Is this a live or recorded course?\n\nThis is a live batch on Zoom, in real time. Recordings and PDFs are shared afterwards in your student portal and stay available for 1 year.\n\n### What if I miss a live class?\n\nLive attendance is encouraged, but recordings are available for 1 year, so you won't miss anything.\n\n### Is this a passive lecture or interactive?\n\nIt's fully interactive. You can ask questions live during Zoom sessions and get immediate answers, just like in an in-person class.\n\n### Am I allowed to download recorded sessions?\n\nDownloading isn't permitted. You can rewatch sessions as many times as you like within 1 year.\n\n### Do I need to buy books beforehand?\n\nNo. All instructions and materials are provided within the course. This is a guided, hands-on learning experience, with no extra purchases needed.\n\n### Can I share lessons or materials with others?\n\nNo. All materials are DELTA's intellectual property and for enrolled students only.\n\n### Do I need a laptop?\n\nNo. The course works well on your phone or tablet. A laptop is optional.\n\n### Is there any refund policy?\n\nWe don't offer refunds after payment, since access is provided as soon as your payment is confirmed."
+		},
+		{
+			"slug": "english-for-job-seekers",
+			"title": "English for Job Seekers",
+			"level": "Intermediate",
+			"price": 999,
+			"enrollment_open": true,
+			"summary": "Master essential English for job exams like BCS. Gain the skills to pass confidently and transform your future!",
+			"outcomes": "Crack English MCQs with confidence: understand the logic behind the right answer, no more guessing\nRecognize exam patterns: spot traps, common distractors and the question styles used in real exams\nBuild real grammar knowledge: learn how English actually works, not just what you memorized in school\nLay the groundwork for the written test: your sentence structure and grammar control will improve\nAvoid the silent killer: English won't silently eliminate you anymore",
+			"requirements": "A device (computer, tablet or phone) with a stable internet connection to watch the recorded sessions\nA dedicated mindset to learn consistently and apply the lessons through practice exercises\nA basic understanding of English: this course is not for absolute beginners",
+			"description": "**Recorded batch.** 95 in-depth recorded sessions, practice sets, MCQ tests with detailed solutions, and downloadable lecture sheets (PDF). 2 years of access with unlimited rewatching. Limited-time fee: ৳999 (regular fee ৳3,000).\n\nEnglish isn't just a language. It's a filter. It quietly separates those who do well in English from those who don't: in MCQs, in written exams, in viva boards. Every year, thousands of brilliant job seekers in Bangladesh sit for the BCS and other public recruitment exams. They study hard. They dream big. But when the Preliminary (MCQ) test comes, English stops them cold. They got an A+ in English in SSC and HSC. They studied English for 17 years. And yet, when they sit for the BCS, they freeze. It's not because they're weak. It's because the system never taught them how English really works, only how to memorise it.\n\nFor thousands of job seekers, English is a silent killer. It quietly strangles their dreams before they even get a chance. They don't even reach the written or viva, because the MCQs take them out first. Are you one of them? You're not alone. More importantly, you're not weak; your English is. Now is the time to break through the filter. That's what this course is here to fix.\n\n## Who is this course for?\n\nThis course is for serious job seekers who want to break through the English \"filter\" of their recruitment tests. It's for you if:\n\n- You're preparing for the BCS, NTRCA, or other government job exams and struggling with English.\n- You've already taken courses and memorized numerous grammar rules over the years, but can't apply them to real test questions.\n- You've failed the Preliminary test, and English was a big reason.\n- You want conceptual grammar clarity that helps in MCQ and also prepares you for the written test.\n- You want reasonable improvement in all four language skills: reading, writing, listening and speaking.\n\n**Note:** this course is not for absolute beginners. If you struggle with basic English, start with \"English for Beginners\" first.\n\n## Frequently asked questions\n\n### Is this a live or recorded course?\n\nThis is a recorded course. All video lessons are in order inside your student portal. Once your payment is confirmed, you can learn entirely at your own pace.\n\n### How long do I have access to the materials?\n\nYou get 2 years of full access to all video lessons, PDFs and practice materials, including any updates during that period.\n\n### Is this course interactive?\n\nThe sessions were originally conducted live and were fully interactive, so questions from students were answered in real time. You'll find that most questions you might have are already addressed within the lessons.\n\n### Am I allowed to download the recorded sessions?\n\nDownloading the video sessions is not permitted. You can rewatch them as many times as you like during your 2-year access.\n\n### Do I need to buy books beforehand?\n\nNo. All instructions and materials are provided within the course. This is a guided, hands-on learning experience, with no extra purchases needed.\n\n### Can I share lessons or materials with others?\n\nNo. All materials are DELTA's intellectual property and for enrolled students only.\n\n### Do I need a laptop?\n\nNo. The course works well on your phone or tablet. A laptop is optional.\n\n### Is there any refund policy?\n\nWe don't offer refunds after payment, since access is provided as soon as your payment is confirmed."
+		},
+		{
+			"slug": "english-for-effective-writing",
+			"title": "English for Effective Writing",
+			"level": "Advanced",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "Advanced English writing course. Master grammar, style, and effective communication for all tests.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		},
+		{
+			"slug": "english-for-today",
+			"title": "English for Today",
+			"level": "All levels",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "Speak confidently! Master everyday English, fluency, and standard pronunciation through practical drills.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		},
+		{
+			"slug": "english-for-authentic-accent",
+			"title": "English for Authentic Accent",
+			"level": "Intermediate",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "Perfect your English pronunciation! Speak clearly, confidently, and avoid embarrassing mispronunciations.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		},
+		{
+			"slug": "basics-for-ielts",
+			"title": "Basics for IELTS",
+			"level": "Intermediate",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "Kickstart your IELTS journey! Learn exam basics & strategies for a strong foundation. Aim for success!",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		},
+		{
+			"slug": "english-for-academic-success",
+			"title": "English for Academic Success",
+			"level": "Classes 6 to 12",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "Excel academically! Master English for school & college (Classes 6-12) to ace exams & boost performance.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		},
+		{
+			"slug": "english-for-freelancers",
+			"title": "English for Freelancers",
+			"level": "Intermediate",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "Boost your freelance career! Master English for client communication, proposals, and project success.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		},
+		{
+			"slug": "english-for-early-readers",
+			"title": "English for Early Readers",
+			"level": "All ages",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "First steps to reading English! Learn to read confidently with proper pronunciation, for all ages.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		},
+		{
+			"slug": "english-for-complete-idiots",
+			"title": "English for Complete Idiots",
+			"level": "Beginner",
+			"price": 0,
+			"enrollment_open": false,
+			"summary": "No English knowledge? No problem! Start speaking, reading, and writing English with ease.",
+			"outcomes": "",
+			"requirements": "",
+			"description": "This course is not currently available online: we are developing its online version and hope to launch it soon. In the meantime, please look at our other courses, and check back later for updates on this one."
+		}
+	],
+	"reviews": [
+		[
+			"Asif Mahmud",
+			"University of Dhaka",
+			"The live classes and practice sessions helped me boost my confidence in interviews."
+		],
+		[
+			"Ayesha Rahman",
+			"Rajshahi University",
+			"A great initiative for real-world English. The instructor was very supportive."
+		],
+		[
+			"Mahmud Tanvir",
+			"Jahangirnagar University",
+			"The personalized attention helped me fix my writing problems quickly and effectively."
+		],
+		[
+			"Sadia Islam",
+			"Khulna University",
+			"Simple, practical, and so effective. I felt supported every step of the way."
+		],
+		[
+			"Abdullah Khan",
+			"Chittagong University",
+			"This course gave me the push I needed to apply for international internships confidently."
+		]
+	],
+	"posts": [
+		{
+			"slug": "why-my-wi-fi-hates-me",
+			"title": "Why My Wi-Fi Hates Me — And Other Digital Conspiracies",
+			"excerpt": "If you're reading this, congratulations — your internet is working. Give it a round of applause! Now, let me tell you about the emotional rollercoaster that is my Wi-Fi connection. It’s more…",
+			"body": "If you're reading this, congratulations — your internet is working. Give it a round of applause! Now, let me tell you about the emotional rollercoaster that is **my Wi-Fi connection**. It’s more unstable than my New Year’s resolutions and vanishes quicker than my paycheck after payday.\n\nI swear my Wi-Fi has a personality. And not a good one — more like the grumpy old man who yells at kids to stay off his lawn. Every time I sit down to binge-watch my favorite show or attend a \"very important Zoom meeting\" (aka me in pajamas nodding occasionally), the Wi-Fi suddenly remembers it has other plans.\n\n### Suspect #1: The Microwave\n\nTurns out, when I heat leftovers, the microwave and router get into a turf war. Apparently, microwaves operate on the same frequency as Wi-Fi. Seriously. Who decided this? Was it the same person who thought adding a Windows Update during a deadline was a good idea?\n\n### My Router Has Trust Issues\n\nI've tried everything — moving the router, whispering sweet nothings to it, even sacrificing a USB stick under a full moon. Nothing works. It still cuts out when I need it most — especially during online quizzes or while watching cat fail compilations. **Suspicious, right?**\n\n### Signs Your Wi-Fi Is Petty:\n\n- Works fine for everyone else, but not for you.\n\n- Decides to buffer just as the killer is revealed in a thriller.\n\n- Perfect signal — until you enter a Zoom call.\n\n- Mocks you with “Connected. No Internet.”\n\n### How to Fight Back\n\n- Restart the router. This is the digital equivalent of slapping it awake.\n\n- Name your network something threatening. Mine’s now called “CONNECT_AND_DIE.”\n\n- Switch providers. Then your old provider will magically call and say, “We noticed you’re having issues.” OH NOW you care?\n\nSo if you’re out there fighting your tech demons, remember: you’re not alone. Somewhere, someone’s printer is also refusing to print, claiming it’s out of magenta even though the document is black and white.\n\n**Stay strong, stay connected (hopefully), and don’t trust microwaves.**",
+			"image": "posts/why-my-wi-fi-hates-me.jpg",
+			"published_at": "2025-07-13T06:00:00Z"
+		},
+		{
+			"slug": "fitness-goals-and-the-missing-motivation",
+			"title": "Fitness Goals and the Mysterious Case of the Missing Motivation",
+			"excerpt": "Ah, fitness goals — that beautiful time of year when we promise ourselves we’ll become leaner, stronger, and able to walk up stairs without seeing our ancestors.",
+			"body": "Ah, fitness goals — that beautiful time of year when we promise ourselves we’ll become leaner, stronger, and able to walk up stairs without seeing our ancestors.\n\nI bought new gym clothes, downloaded a calorie tracker, and told everyone I was “starting my fitness journey.” I even stood in front of the mirror flexing like The Rock. Fast forward a week later: I’m still out of breath from tying my shoes, and my main workout is chasing the delivery guy to the elevator.\n\n### The Gym Is a Jungle\n\nStepping into a gym is like entering the wild. There are alpha lifters, confused newbies (hi), and people who treat the treadmill like a fashion runway. I tried to lift weights once. It felt less like building muscle and more like playing tug-of-war with gravity.\n\n### Protein Shakes Taste Like Regret\n\nThey say “no pain, no gain.” I say “no taste, all waste.” Every protein shake I’ve tried tastes like chalk mixed with sadness. I once drank one that was “Cookies and Cream”. Lies. It was mostly “Cement and Disappointment.”\n\n### Workout Equipment is Out to Get Me\n\n- The rowing machine? More like the regret express.\n\n- The elliptical? It laughs at me as I pant like an asthmatic goat.\n\n- That yoga ball? I sat on it and flew backward into a plant. Namaste, my dignity.\n\n### Why I Work Out (Allegedly)\n\n- To live longer (to suffer through more workouts apparently).\n\n- So I can carry all the grocery bags in one trip like a legend.\n\n- To post one gym selfie and ghost the gym forever.\n\nSo if you’ve ever bought resistance bands that now resist being found, or if your running shoes have only seen daylight during errands, welcome. You’re doing great, sweetie.\n\n**Your health journey is valid — even if it takes you 2 years to do a 30-day challenge.**",
+			"image": "posts/fitness-goals-and-the-missing-motivation.jpg",
+			"published_at": "2025-07-13T06:00:00Z"
+		},
+		{
+			"slug": "cooking-disasters",
+			"title": "Cooking Disasters That Turned Me Into a Professional Takeout Critic",
+			"excerpt": "They say cooking is an art. If that’s true, then I’ve been finger-painting with expired ingredients. Welcome to my TED Talk: “Why I Shouldn’t Be Allowed Near a Stove.”",
+			"body": "They say cooking is an art. If that’s true, then I’ve been finger-painting with expired ingredients. Welcome to my TED Talk: “Why I Shouldn’t Be Allowed Near a Stove.”\n\nIt started with good intentions. I watched cooking videos, bought spices I can’t pronounce, and even wore an apron that says “Kiss the Cook.” No one kissed me. The fire alarm, however, did go off. Twice.\n\n### Recipe Roulette\n\nI once tried to follow a recipe that said “simmer gently.” I took that personally and whispered encouragement to the pot while it boiled over. The chicken was so dry it could’ve absorbed climate change.\n\n### Common Signs You're Not a MasterChef:\n\n- You mistake salt for sugar (dessert ruined, marriage questioned).\n\n- You set a timer but forget to turn the oven on.\n\n- Your smoke detector doubles as your sous-chef.\n\n### Why I Embraced Takeout Culture\n\nEventually, I gave up. The local food delivery guy knows me by name now. He once asked if I wanted “the usual.” I’ve become a loyal customer, a food connoisseur, a modern-day food critic with zero actual cooking skills.\n\n### Ranking Takeout Based on Scientific* Criteria:\n\n- Speed: The faster it arrives, the less guilty I feel.\n\n- Packaging: Bonus points if it doesn’t leak and comes with extra napkins.\n\n- Taste: Must be flavorful enough to forget my failed lasagna experiment.\n\n*Scientific = me in pajamas at 1am, chewing thoughtfully.\n\n### Final Thoughts\n\nIf you're a culinary failure like me, don't worry. Not everyone is Gordon Ramsay. Some of us are more like...Gordon Clumsy. And that’s okay. Because in the end, the real spice of life is knowing how to find the best takeout within 2km.\n\n**Bon appétit, fellow survivors of burnt toast and shattered dreams!**",
+			"image": "posts/cooking-disasters.jpg",
+			"published_at": "2025-07-13T06:00:00Z"
+		}
+	],
+	"pages": [
+		{
+			"slug": "about",
+			"title": "About us",
+			"body": "DELTA was born from a simple mission: to teach English differently, and teach it right. We're here to deliver real, measurable progress to learners across Bangladesh.\n\n## Our Mission\n\nAt DELTA, our mission is simple yet bold: To make high-quality English education accessible to students across Bangladesh—regardless of location, background, or past experience. We believe that every learner deserves more than empty promises. We’re here to deliver real, measurable progress by:\n\n- Breaking free from outdated and ineffective English teaching practices.\n- Focusing on practical, proven methods that actually work.\n- Reaching students nationwide through flexible, online-first learning.\n\n## What We Value\n\n### Access for All\n\nOur courses are designed for nationwide accessibility — no travel, no limitations.\n\n### Practical Results\n\nWe teach English the way it should be taught: clearly, step-by-step, and with real-life application.\n\n### Integrity & Impact\n\nWe deliver what we promise, aiming to change lives by building confidence and unlocking doors.\n\n### Quality at a Fair Price\n\nWe keep our courses affordable without compromising on quality. You don’t have to pay more to learn better.\n\n## Our Story\n\nDELTA began in 2016—not in a shiny office, but as a response to a deep frustration. Across Bangladesh, the English language training landscape was (and still is) dominated by unqualified trainers who overpromise and underdeliver. Students were being misled, their time and money wasted. Having completed my BA and MA in English at the University of Rajshahi, I witnessed this problem up close. That’s where DELTA was born—with a simple mission: to teach English differently, and teach it right.\n\nWe started in Rajshahi with offline, classroom-based training, mostly helping job seekers. It was personal, practical, and it worked. But we were limited by geography. That changed in 2021. When the pandemic hit, we moved online—not just to adapt, but to grow. We discovered that by going digital, we could teach students from all over the country.\n\nOur first online course, \"English for Job Seekers,\" was a quiet success, driven by honest Facebook posts and the powerful voices of our satisfied students. Today, we are reaching students we’ve never met and may never meet in person. Yet they trust us, they learn with us, and they message us years later to say how a single course changed their path. That’s what DELTA is all about.\n\n## Why the Name \"DELTA\"?\n\nThe name DELTA carries both inspiration and purpose. It draws from \"Diploma in English Language Teaching to Adults\" (DELTA) — a globally respected qualification in English language education. While we’re not affiliated with that program, the excellence it represents inspired our own mission.\n\nFor us, DELTA also stands for: **A Different English Language Training Academy** — a name we chose deliberately.\n\n**Why “Different”?** Because we believe learners in Bangladesh deserve better than the outdated methods, broken promises, and ineffective courses that have held them back for years. We’re committed to doing things differently — with clarity, care, and real results.\n\n## Our Logo, Our Philosophy\n\nOur logo represents the synergy of language skills through four interlocking puzzle pieces. Each piece signifies a fundamental language skill — listening, speaking, reading, and writing. When brought together, they form a complete square, emphasizing the harmonious integration of these skills. The protruded and sunken half-circle hands symbolize the collaborative nature of language learning, where each skill complements the others to create a cohesive and comprehensive language proficiency.\n\n## Meet the Founder\n\n### Abdul Ahad\n\nFounder, CEO & Mentor\n\nBA & MA in English (RU) | 15+ Years Experience | EFL Instructor (KSA & Oman)\n\nDELTA is the brainchild of Abdul Ahad. He personally designs, develops, and teaches all DELTA courses — driven by a passion for honest, effective English training."
+		},
+		{
+			"slug": "contact",
+			"title": "Contact us",
+			"body": "Questions? We're here to help. Message us on WhatsApp or Messenger, or send an email, and we will get back to you within 24 hours."
+		},
+		{
+			"slug": "privacy",
+			"title": "Privacy policy",
+			"body": "Last updated: November 2026\n\nWelcome to DELTA (A Different English Language Training Academy). Your privacy matters to us. This policy explains what we collect, how we use it and how we protect it when you use this website and your student account.\n\n## Information we collect\n\n- **Account details:** your name, email address and, if you give it, your phone number.\n- **Payment details:** the bKash or Nagad number you paid from and the transaction ID you enter. We don't store card details or PINs; payments are made in the bKash or Nagad app.\n- **Your learning:** the lessons you finish, your quiz results and the assignments you hand in.\n- **Sign-in:** your password is stored only in a scrambled (hashed) form that we cannot read.\n\n## How we use your information\n\n- To confirm your payment and open your course\n- To give you your lessons, feedback and certificate\n- To answer your questions and send password-reset emails\n\n## Sharing your information\n\nWe do not sell your information. It is seen only by your instructor and our support staff, or shared when the law requires it. A certificate can be checked by anyone who has its number; it shows your name, the course and the date.\n\n## Data security\n\nWe take reasonable steps to protect your data. Please use a strong password and keep your devices secure.\n\n## Third-party links\n\nOur website links to services such as Facebook, YouTube, WhatsApp and video players. Their own policies apply to them.\n\n## Your choices\n\nYou can ask to see, correct or delete your personal data. Message us and we will do it, where the law allows.\n\n## Changes to this policy\n\nThis policy may be updated. The current version is always shown here with its date.\n\n## Contact us\n\nMessage us on Messenger at https://m.me/mydelta.online\n\nThank you for trusting DELTA with your learning journey."
+		}
+	]
+}
