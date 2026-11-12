@@ -11,3 +11,5 @@ First version.
 - Admin: payments, students, assignment review, courses and lessons, and the website's content
 - Courses can be listed as "Coming soon" before they open for enrollment
 - On phones, the portal and admin have a bottom tab bar like a mobile app
+- Fixed: a student enrolled in a course with no lessons yet saw "page not found"; they now see that lessons are being added, with any live classes
+- Lesson notes can contain tables

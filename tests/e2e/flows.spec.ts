@@ -66,7 +66,7 @@ test('a paid course opens after an admin confirms the payment', async ({ browser
 	await expect(admin.getByText('No payments are waiting')).toBeVisible();
 
 	await student.goto('/portal/courses/english-for-beginners');
-	await expect(student.getByRole('heading', { level: 1, name: 'How this course works' })).toBeVisible();
+	await expect(student.getByRole('heading', { level: 1, name: 'Introduction to the Noun Phrase' })).toBeVisible();
 });
 
 test('students are kept out of the admin area, and visitors out of both', async ({ page }) => {
@@ -74,4 +74,28 @@ test('students are kept out of the admin area, and visitors out of both', async 
 	await expect(page).toHaveURL(/\/login\?next=%2Fadmin/);
 	await signIn(page, 'student@example.com', 'student12345');
 	await expect(page.getByText('This area is for staff only.')).toBeVisible();
+});
+
+test('an enrolled student sees a waiting screen, not an error, while the course has no lessons', async ({ browser }) => {
+	const student = await (await browser.newContext()).newPage();
+	await register(student, 'Nadia');
+
+	// Staff open a course that has no lessons yet for her.
+	const admin = await (await browser.newContext()).newPage();
+	await admin.goto('/login');
+	await signIn(admin, 'admin@example.com', 'admin12345');
+	await expect(admin).toHaveURL('/admin');
+	await admin.goto('/admin/students');
+	const course = admin.getByLabel('Open a course without payment');
+	await expect(async () => {
+		await admin.getByRole('button', { name: 'Nadia' }).click();
+		await expect(course).toBeVisible({ timeout: 1000 });
+	}).toPass();
+	await course.selectOption({ label: 'English for Today' });
+	await admin.getByRole('button', { name: 'Enroll' }).click();
+	await expect(admin.getByText('Course opened for this student.')).toBeVisible();
+
+	await student.goto('/portal/courses/english-for-today');
+	await expect(student.getByRole('heading', { level: 1, name: 'English for Today' })).toBeVisible();
+	await expect(student.getByText('Lessons are being added')).toBeVisible();
 });
