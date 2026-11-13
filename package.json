@@ -23,7 +23,8 @@
 		"admin:create": "node --env-file=.env scripts/create-admin.ts",
 		"db:seed:sample": "node --env-file=.env scripts/seed.ts --sample",
 		"db:seed:activity": "node --env-file=.env scripts/seed-activity.ts",
-		"db:seed:activity:clear": "node --env-file=.env scripts/seed-activity.ts --clear"
+		"db:seed:activity:clear": "node --env-file=.env scripts/seed-activity.ts --clear",
+		"db:seed:showcase": "node --env-file=.env scripts/seed-showcase.ts"
 	},
 	"devDependencies": {
 		"@neon/config": "^1.14.0",
@@ -40,14 +41,18 @@
 		"vitest": "^5.1.0"
 	},
 	"dependencies": {
+		"@fontsource-variable/cabin": "^5.3.0",
 		"@fontsource-variable/geist-mono": "^5.3.0",
-		"@fontsource-variable/google-sans-flex": "^5.3.2",
+		"@fontsource-variable/sora": "^5.3.0",
 		"@hugeicons/core-free-icons": "^4.4.0",
+		"@internationalized/date": "^3.12.4",
 		"@tanstack/charts": "0.18.0",
+		"@tanstack/svelte-query": "^6.4.1",
 		"@tiptap/core": "^3.33.1",
 		"@tiptap/extensions": "^3.33.1",
 		"@tiptap/starter-kit": "^3.33.1",
 		"aws4fetch": "^1.0.20",
+		"devalue": "^6.0.3",
 		"marked": "^18.2.0",
 		"nodemailer": "^10.5.0",
 		"postgres": "^4.1.0",

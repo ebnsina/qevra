@@ -30,7 +30,7 @@
 				{#snippet actions()}<Button size="sm" variant="outline" href="/forgot-password">Get a new link</Button>{/snippet}
 			</Alert>
 		{/if}
-		<PasswordInput label="New password" name="password" isNew required error={form && 'errors' in form ? form.errors?.password : undefined} hint="At least 8 characters." />
+		<PasswordInput label="New password" placeholder="Choose a password" name="password" isNew required error={form && 'errors' in form ? form.errors?.password : undefined} hint="At least 8 characters." />
 		<Button type="submit" loading={busy}>Save password</Button>
 	</form>
 </Card>

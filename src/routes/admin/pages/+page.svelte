@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { adminPage } from '#lib/admin-query.svelte.ts';
 	import CrudPage from '#lib/components/CrudPage.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 
-	let { data } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
 </script>
 
 <Seo title="Pages | Admin" description="Text pages on the website." noindex />

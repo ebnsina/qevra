@@ -5,6 +5,13 @@ import * as v from 'valibot';
 export const checkbox = v.pipe(v.optional(v.string()), v.transform((value) => Boolean(value)));
 export const text = (max = 200) => v.pipe(v.string(), v.trim(), v.maxLength(max, `Keep this under ${max} characters`));
 export const requiredText = (max = 200) => v.pipe(text(max), v.minLength(1, 'This is required'));
+/** A phone number people can be reached on: digits, with spaces, dashes or a leading + allowed. */
+export const phone = v.pipe(
+	v.string(),
+	v.trim(),
+	v.minLength(1, 'Enter your phone number'),
+	v.regex(/^\+?[\d\s-]{7,20}$/, 'Enter a phone number like +880 1700-000000')
+);
 export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const id = v.pipe(v.string(), v.regex(UUID, 'Choose one from the list'));
 /** A row's id when editing; empty (null) when adding a new one. */

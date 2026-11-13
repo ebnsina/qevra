@@ -29,10 +29,10 @@
 
 	<Card title="Your details" icon={UserIcon} level={2} description="Your name is printed on your certificates.">
 		<form method="post" action="?/profile" class="app-form" use:enhance={profile.enhance}>
-			<Input label="Full name" name="name" required value={data.user?.name ?? ''} error={errors?.name} />
+			<Input label="Full name" placeholder="Nusrat Jahan" name="name" required value={data.user?.name ?? ''} error={errors?.name} />
 			<div class="app-form-row">
 				<Input label="Email" value={data.user?.email ?? ''} disabled hint="Contact us to change your email." />
-				<Input label="Phone" name="phone" type="tel" value={data.user?.phone ?? ''} error={errors?.phone} hint="Optional." />
+				<Input label="Phone" placeholder="+880 1700-000000" name="phone" type="tel" required value={data.user?.phone ?? ''} error={errors?.phone} />
 			</div>
 			<div class="app-form-actions"><Button type="submit" loading={profile.busy}>Save details</Button></div>
 		</form>
@@ -40,8 +40,8 @@
 
 	<Card title="Password" icon={LockIcon} level={2}>
 		<form method="post" action="?/password" class="app-form" use:enhance={password.enhance}>
-			<PasswordInput label="Current password" name="current_password" autocomplete="current-password" required error={errors?.current_password} />
-			<PasswordInput label="New password" name="new_password" isNew required error={errors?.new_password} hint="At least 8 characters." />
+			<PasswordInput label="Current password" placeholder="Your current password" name="current_password" autocomplete="current-password" required error={errors?.current_password} />
+			<PasswordInput label="New password" placeholder="Choose a password" name="new_password" isNew required error={errors?.new_password} hint="At least 8 characters." />
 			<div class="app-form-actions"><Button type="submit" loading={password.busy}>Change password</Button></div>
 		</form>
 	</Card>

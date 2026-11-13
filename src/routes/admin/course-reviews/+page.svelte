@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { adminPage, mutating, withRow } from '#lib/admin-query.svelte.ts';
 	import { goto } from '$app/navigation';
 	import { BookOpen01Icon, Calendar03Icon, StarIcon, UserIcon } from '@hugeicons/core-free-icons';
 	import DetailSheet from '#lib/sinaui/blocks/studio/DetailSheet.svelte';
@@ -10,16 +10,24 @@
 	import Card from '#lib/sinaui/ui/Card.svelte';
 	import ConfirmButton from '#lib/sinaui/ui/ConfirmButton.svelte';
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { dateTime } from '#lib/format.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
 	let openId = $state<string>();
 	const selected = $derived(data.reviews.find((r) => r.id === openId));
-	const act = submitting(() => (openId = undefined));
+	// Shown at once: published, hidden or deleted before the server answers.
+	const act = mutating<typeof loaded>(
+		() => (openId = undefined),
+		(old, sent, action) => {
+			if (action === '?/delete' || (action === '?/approve' && old.show === 'waiting')) return withRow(old, sent.get('id'), null);
+			return withRow(old, sent.get('id'), { approved: action === '?/approve' });
+		}
+	);
 	let deleteForm = $state<HTMLFormElement>();
 	const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 </script>
@@ -29,10 +37,7 @@
 <div class="app-page">
 	<PageHeader title="Course reviews" description="Students' ratings. A review shows on its course page, and counts toward the stars, once you approve it.">
 		{#snippet actions()}
-			<Select label="Show" hideLabel value={data.show} onchange={(e) => goto(`?show=${e.currentTarget.value}`)}>
-				<option value="waiting">Waiting for approval</option>
-				<option value="all">All reviews</option>
-			</Select>
+			<CustomSelect label="Show" hideLabel value={data.show} onchange={(value) => goto(`?show=${value}`)} options={[{ value: 'waiting', label: 'Waiting for approval' }, { value: 'all', label: 'All reviews' }]} />
 		{/snippet}
 	</PageHeader>
 
@@ -77,10 +82,10 @@
 	{/snippet}
 	{#if selected}
 		<p class="body">{selected.body || 'No written review, only the rating.'}</p>
-		<form id="review" method="post" action={selected.approved ? '?/hide' : '?/approve'} use:enhance={act.enhance} hidden>
+		<form id="review" method="post" action={selected.approved ? '?/hide' : '?/approve'} onsubmit={act.submit} hidden>
 			<input type="hidden" name="id" value={selected.id} />
 		</form>
-		<form method="post" action="?/delete" bind:this={deleteForm} use:enhance={act.enhance} hidden>
+		<form method="post" action="?/delete" bind:this={deleteForm} onsubmit={act.submit} hidden>
 			<input type="hidden" name="id" value={selected.id} />
 		</form>
 	{/if}

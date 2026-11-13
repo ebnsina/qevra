@@ -33,8 +33,13 @@
 		justify-content: space-between;
 		gap: 1.5rem 3rem;
 		padding: clamp(2rem, 5vw, 3.5rem);
-		border-radius: calc(var(--ui-radius) + 0.5rem);
-		background: var(--ui-accent);
+		border-radius: var(--radius-xl);
+		/* Aurora: clouds of lighter and deeper blue over the brand color. */
+		background:
+			radial-gradient(60% 120% at 12% 0%, color-mix(in oklab, var(--ui-accent) 55%, #22d3ee) 0%, transparent 60%),
+			radial-gradient(50% 110% at 88% 100%, color-mix(in oklab, var(--ui-accent) 60%, #a5b4fc) 0%, transparent 62%),
+			radial-gradient(45% 90% at 60% 10%, color-mix(in oklab, var(--ui-accent) 70%, #1e3a8a) 0%, transparent 65%),
+			var(--ui-accent);
 		color: var(--ui-on-accent);
 	}
 	.band :global(.site-h2) {

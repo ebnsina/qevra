@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { adminPage, mutating } from '#lib/admin-query.svelte.ts';
 	import { Calendar03Icon, Download01Icon, DragDropVerticalIcon, File01Icon, Megaphone01Icon, Quiz01Icon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
 	import RowLink from '#lib/sinaui/blocks/studio/RowLink.svelte';
@@ -11,7 +11,7 @@
 	import FileDrop from '#lib/sinaui/ui/FileDrop.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Sortable from '#lib/sinaui/ui/Sortable.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
@@ -19,9 +19,13 @@
 	import type { Field } from '#lib/components/fields.ts';
 	import Seo from '#lib/components/Seo.svelte';
 	import { date, dateTime, plural } from '#lib/format.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data, form } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
+	// Saves with nothing to do afterwards (the list simply refreshes).
+	const quiet = mutating();
 
 	// One sheet is open at a time: which kind, and which row (null adds a new one).
 	type Kind = 'module' | 'lesson' | 'live' | 'announcement';
@@ -45,8 +49,8 @@
 	const files = $derived(lesson ? data.files.filter((f) => f.lesson_id === lesson.id) : []);
 	const quizCount = (lessonId: string) => data.questions.filter((q) => q.lesson_id === lessonId).length;
 	const fileCount = (lessonId: string) => data.files.filter((f) => f.lesson_id === lessonId).length;
-	const question = submitting();
-	const upload = submitting();
+	const question = mutating();
+	const upload = mutating();
 
 	// Dragging a section or a lesson sends the new order through this hidden form.
 	let orderForm = $state<HTMLFormElement>();
@@ -58,24 +62,24 @@
 		orderForm?.requestSubmit();
 	}
 
-	const moduleFields: Field[] = [{ name: 'title', label: 'Section title', required: true }];
+	const moduleFields: Field[] = [{ name: 'title', label: 'Section title', placeholder: 'The noun phrase', required: true }];
 	const lessonFields = $derived<Field[]>([
-		{ name: 'title', label: 'Lesson title', required: true },
+		{ name: 'title', label: 'Lesson title', placeholder: 'Introduction to determiners', required: true },
 		{ name: 'module_id', label: 'Section', type: 'select', required: true, options: data.modules.map((m) => ({ value: m.id, label: m.title })) },
-		{ name: 'video_url', label: 'Video link', hint: 'A YouTube, Vimeo or Bunny Stream link. Use an unlisted video for paid lessons.' },
-		{ name: 'body', label: 'Notes under the video', type: 'textarea', rows: 6, hint: 'Markdown: ## for a heading, - for a list, **bold**.' },
-		{ name: 'assignment', label: 'Assignment', type: 'textarea', rows: 3, hint: 'The task students hand in as a file. Leave empty for no assignment.' },
+		{ name: 'video_url', label: 'Video link', placeholder: 'https://www.youtube.com/watch?v=…', hint: 'A YouTube, Vimeo or Bunny Stream link. Use an unlisted video for paid lessons.' },
+		{ name: 'body', label: 'Notes under the video', placeholder: '## Key points\n- A determiner comes before a noun', type: 'textarea', rows: 6, hint: 'Markdown: ## for a heading, - for a list, **bold**.' },
+		{ name: 'assignment', label: 'Assignment', placeholder: 'Write five sentences using this, that, these and those. Upload them as a PDF or photo.', type: 'textarea', rows: 3, hint: 'The task students hand in as a file. Leave empty for no assignment.' },
 		{ name: 'is_preview', label: 'Free preview', type: 'switch', hint: 'Anyone can watch this lesson on the course page before enrolling.' }
 	]);
 	const liveFields: Field[] = [
 		{ name: 'title', label: 'Title', required: true },
 		{ name: 'starts_at', label: 'Starts (Bangladesh time)', type: 'datetime', required: true },
-		{ name: 'meeting_url', label: 'Zoom or Google Meet link', type: 'url', required: true },
-		{ name: 'recording_url', label: 'Recording link', type: 'url', hint: 'Add it after the class so students can watch again.' }
+		{ name: 'meeting_url', label: 'Zoom or Google Meet link', placeholder: 'https://meet.google.com/abc-defg-hij', type: 'url', required: true },
+		{ name: 'recording_url', label: 'Recording link', placeholder: 'https://www.youtube.com/watch?v=…', type: 'url', hint: 'Add it after the class so students can watch again.' }
 	];
 	const announcementFields: Field[] = [
 		{ name: 'title', label: 'Title', required: true },
-		{ name: 'body', label: 'Message', type: 'textarea', rows: 6, hint: "Shown in every enrolled student's portal, and emailed to them when you first post it." }
+		{ name: 'body', label: 'Message', placeholder: 'Friday\'s live class moves to 8 pm. The link is on your course page.', type: 'textarea', rows: 6, hint: "Shown in every enrolled student's portal, and emailed to them when you first post it." }
 	];
 	// A new lesson goes into the section whose "Add lesson" was pressed.
 	const newLesson = $derived({ module_id: sheet?.moduleId ?? '' });
@@ -92,12 +96,13 @@
 		{/snippet}
 	</PageHeader>
 
-	{#if form && 'announced' in form && form.announced}
+	{#if form?.announced}
+		{@const sent = form.announced as { students: number; unsent: number }}
 		<Alert
-			tone={form.announced.unsent ? 'warning' : 'success'}
-			title={form.announced.unsent
-				? `Posted. The email could not be sent to ${plural(form.announced.unsent, 'student')}; they will still see it in their portal.`
-				: `Posted and emailed to ${plural(form.announced.students, 'student')}.`}
+			tone={sent.unsent ? 'warning' : 'success'}
+			title={sent.unsent
+				? `Posted. The email could not be sent to ${plural(sent.unsent, 'student')}; they will still see it in their portal.`
+				: `Posted and emailed to ${plural(sent.students, 'student')}.`}
 			live
 		/>
 	{/if}
@@ -187,7 +192,7 @@
 	</Card>
 </div>
 
-<form method="post" action="?/reorder" bind:this={orderForm} use:enhance hidden>
+<form method="post" action="?/reorder" bind:this={orderForm} onsubmit={quiet.submit} hidden>
 	<input type="hidden" name="kind" value={order.kind} />
 	<input type="hidden" name="ids" value={order.ids} />
 </form>
@@ -214,7 +219,7 @@
 						<li>
 							<Icon icon={File01Icon} size={16} />
 							<a href="/files/{file.file_key}" download={file.file_name}>{file.title}</a>
-							<form method="post" action="?/deleteFile" use:enhance>
+							<form method="post" action="?/deleteFile" onsubmit={quiet.submit}>
 								<input type="hidden" name="id" value={file.id} />
 								<Button type="submit" variant="ghost" size="sm">Remove</Button>
 							</form>
@@ -222,7 +227,7 @@
 					{/each}
 				</ul>
 			{/if}
-			<form method="post" action="?/saveFile" enctype="multipart/form-data" class="app-form block" use:enhance={upload.enhance}>
+			<form method="post" action="?/saveFile" enctype="multipart/form-data" class="app-form block" onsubmit={upload.submit}>
 				<input type="hidden" name="lesson_id" value={lesson.id} />
 				<Input label="Name of the download" name="title" required maxlength={120} placeholder="Lecture sheet" />
 				<FileDrop label="File" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" maxSize={4 * 1024 * 1024} hint="PDF, Word or an image, up to 4 MB." />
@@ -239,16 +244,14 @@
 				</div>
 			</div>
 			{#each [...questions, null] as item, i (item?.id ?? 'new')}
-				<form method="post" action="?/saveQuestion" class="app-form block" use:enhance={question.enhance}>
+				<form method="post" action="?/saveQuestion" class="app-form block" onsubmit={question.submit}>
 					<input type="hidden" name="lesson_id" value={lesson.id} />
 					<input type="hidden" name="position" value={item?.position ?? questions.length} />
 					{#if item}<input type="hidden" name="id" value={item.id} />{/if}
-					<Textarea label={item ? `Question ${i + 1}` : 'New question'} name="question" rows={2} required value={item?.question ?? ''} />
-					<Textarea label="Answers" name="options" rows={4} required value={item?.options.join('\n') ?? ''} hint="One answer per line, 2 to 4 answers." />
+					<Textarea label={item ? `Question ${i + 1}` : 'New question'} placeholder="Which word comes before a singular noun that starts with a vowel sound?" name="question" rows={2} required value={item?.question ?? ''} />
+					<Textarea label="Answers" placeholder={'a\nan\nthe'} name="options" rows={4} required value={item?.options.join('\n') ?? ''} hint="One answer per line, 2 to 4 answers." />
 					<div class="app-form-row">
-						<Select label="Right answer" name="correct" required value={String((item?.correct ?? 0) + 1)}>
-							{#each [1, 2, 3, 4] as n (n)}<option value={String(n)}>Answer {n}</option>{/each}
-						</Select>
+						<CustomSelect label="Right answer" name="correct" required value={String((item?.correct ?? 0) + 1)} options={[1, 2, 3, 4].map((n) => ({ value: String(n), label: `Answer ${n}` }))} />
 						<div class="app-form-actions">
 							{#if item}<Button type="submit" variant="ghost" formaction="?/deleteQuestion" formnovalidate>Delete</Button>{/if}
 							<Button type="submit" variant="outline" loading={question.busy}>{item ? 'Save question' : 'Add question'}</Button>

@@ -143,10 +143,8 @@
 			<ul class="site-grid four">
 				{#each points as point, i (point.first)}
 					<li class="site-card">
-						<div class="card-head">
-							<h3 class="site-h3">{point.first}</h3>
-							<span class="app-icon"><Icon icon={pointIcons[i % pointIcons.length]} size={20} /></span>
-						</div>
+						<span class="site-mark" aria-hidden="true"><Icon icon={pointIcons[i % pointIcons.length]} size={128} /></span>
+						<h3 class="site-h3">{point.first}</h3>
 						<p class="muted">{point.second}</p>
 					</li>
 				{/each}
@@ -188,7 +186,8 @@
 		<ol class="site-grid four">
 			{#each steps as step, i (step.title)}
 				<li class="site-card">
-					<div class="card-head"><h3 class="site-h3">{step.title}</h3><span class="app-icon">{i + 1}</span></div>
+					<span class="site-mark" aria-hidden="true">{i + 1}</span>
+					<h3 class="site-h3">{step.title}</h3>
 					<p class="muted">{step.text}</p>
 				</li>
 			{/each}

@@ -32,29 +32,42 @@ export async function load({ locals, params }) {
 		const [lesson] = await tx<{ id: string; title: string; video_url: string; body: string; assignment: string }[]>`
 			select id, title, video_url, body, assignment from lessons where id = ${params.lesson}`;
 		// The right answers stay on the server.
-		const questions = await tx<{ id: string; question: string; options: string[] }[]>`
-			select id, question, options from quiz_questions where lesson_id = ${lesson.id} order by position, id`;
-		const [attempt] = await tx<{ score: number; total: number; passed: boolean }[]>`
+		// Sent together: one trip to the database instead of one per query.
+		const [
+			questions,
+			[attempt],
+			[submission],
+			live,
+			[certificate],
+			files,
+			posts,
+			[note],
+			[review]
+		] = await Promise.all([
+		tx<{ id: string; question: string; options: string[] }[]>`
+			select id, question, options from quiz_questions where lesson_id = ${lesson.id} order by position, id`,
+		tx<{ score: number; total: number; passed: boolean }[]>`
 			select score, total, passed from quiz_attempts
 			where lesson_id = ${lesson.id} and user_id = ${userId}
-			order by passed desc, created_at desc limit 1`;
-		const [submission] = await tx<{ file_key: string; file_name: string; note: string; grade: string; feedback: string; reviewed_at: Date | null }[]>`
+			order by passed desc, created_at desc limit 1`,
+		tx<{ file_key: string; file_name: string; note: string; grade: string; feedback: string; reviewed_at: Date | null }[]>`
 			select file_key, file_name, note, grade, feedback, reviewed_at from submissions
-			where lesson_id = ${lesson.id} and user_id = ${userId}`;
-		const live = await tx<{ id: string; title: string; starts_at: Date; meeting_url: string; recording_url: string }[]>`
+			where lesson_id = ${lesson.id} and user_id = ${userId}`,
+		tx<{ id: string; title: string; starts_at: Date; meeting_url: string; recording_url: string }[]>`
 			select id, title, starts_at, meeting_url, recording_url from live_classes
-			where course_id = ${course.id} order by starts_at`;
-		const [certificate] = await tx<{ code: string }[]>`
-			select code from certificates where course_id = ${course.id} and user_id = ${userId}`;
-		const files = await tx<{ id: string; title: string; file_key: string; file_name: string }[]>`
-			select id, title, file_key, file_name from lesson_files where lesson_id = ${lesson.id} order by position, title`;
-		const posts = await tx<{ id: string; parent_id: string | null; user_id: string; author_name: string; by_staff: boolean; body: string; created_at: Date }[]>`
+			where course_id = ${course.id} order by starts_at`,
+		tx<{ code: string }[]>`
+			select code from certificates where course_id = ${course.id} and user_id = ${userId}`,
+		tx<{ id: string; title: string; file_key: string; file_name: string }[]>`
+			select id, title, file_key, file_name from lesson_files where lesson_id = ${lesson.id} order by position, title`,
+		tx<{ id: string; parent_id: string | null; user_id: string; author_name: string; by_staff: boolean; body: string; created_at: Date }[]>`
 			select id, parent_id, user_id, author_name, by_staff, body, created_at
-			from lesson_posts where lesson_id = ${lesson.id} order by created_at`;
-		const [note] = await tx<{ body: string }[]>`
-			select body from lesson_notes where lesson_id = ${lesson.id} and user_id = ${userId}`;
-		const [review] = await tx<{ rating: number; body: string; approved: boolean }[]>`
-			select rating, body, approved from course_reviews where course_id = ${course.id} and user_id = ${userId}`;
+			from lesson_posts where lesson_id = ${lesson.id} order by created_at`,
+		tx<{ body: string }[]>`
+			select body from lesson_notes where lesson_id = ${lesson.id} and user_id = ${userId}`,
+		tx<{ rating: number; body: string; approved: boolean }[]>`
+			select rating, body, approved from course_reviews where course_id = ${course.id} and user_id = ${userId}`,
+		]);
 
 		return {
 			course,

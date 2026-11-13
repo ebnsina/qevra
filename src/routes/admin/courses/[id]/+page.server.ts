@@ -59,23 +59,33 @@ export async function load({ locals, params }) {
 	return locals.db(async (tx) => {
 		const [course] = await tx<{ id: string; title: string; slug: string }[]>`select id, title, slug from courses where id = ${params.id}`;
 		if (!course) error(404, 'Course not found');
-		const modules = await tx<{ id: string; title: string; position: number }[]>`
-			select id, title, position from modules where course_id = ${course.id} order by position, title`;
-		const lessons = await tx<{ id: string; module_id: string; title: string; position: number; video_url: string; body: string; assignment: string; is_preview: boolean }[]>`
+		// Sent together: one trip to the database instead of one per query.
+		const [
+			modules,
+			lessons,
+			questions,
+			live,
+			files,
+			announcements
+		] = await Promise.all([
+		tx<{ id: string; title: string; position: number }[]>`
+			select id, title, position from modules where course_id = ${course.id} order by position, title`,
+		tx<{ id: string; module_id: string; title: string; position: number; video_url: string; body: string; assignment: string; is_preview: boolean }[]>`
 			select id, module_id, title, position, video_url, body, assignment, is_preview
-			from lessons where course_id = ${course.id} order by position, title`;
-		const questions = await tx<{ id: string; lesson_id: string; question: string; options: string[]; correct: number; position: number }[]>`
+			from lessons where course_id = ${course.id} order by position, title`,
+		tx<{ id: string; lesson_id: string; question: string; options: string[]; correct: number; position: number }[]>`
 			select q.id, q.lesson_id, q.question, q.options, q.correct, q.position
 			from quiz_questions q join lessons l on l.id = q.lesson_id
-			where l.course_id = ${course.id} order by q.position, q.id`;
-		const live = await tx<{ id: string; title: string; starts_at: Date; meeting_url: string; recording_url: string }[]>`
-			select id, title, starts_at, meeting_url, recording_url from live_classes where course_id = ${course.id} order by starts_at`;
-		const files = await tx<{ id: string; lesson_id: string; title: string; file_key: string; file_name: string }[]>`
+			where l.course_id = ${course.id} order by q.position, q.id`,
+		tx<{ id: string; title: string; starts_at: Date; meeting_url: string; recording_url: string }[]>`
+			select id, title, starts_at, meeting_url, recording_url from live_classes where course_id = ${course.id} order by starts_at`,
+		tx<{ id: string; lesson_id: string; title: string; file_key: string; file_name: string }[]>`
 			select f.id, f.lesson_id, f.title, f.file_key, f.file_name
 			from lesson_files f join lessons l on l.id = f.lesson_id
-			where l.course_id = ${course.id} order by f.position, f.title`;
-		const announcements = await tx<{ id: string; title: string; body: string; created_at: Date }[]>`
-			select id, title, body, created_at from announcements where course_id = ${course.id} order by created_at desc`;
+			where l.course_id = ${course.id} order by f.position, f.title`,
+		tx<{ id: string; title: string; body: string; created_at: Date }[]>`
+			select id, title, body, created_at from announcements where course_id = ${course.id} order by created_at desc`,
+		]);
 		return { course, modules, lessons, questions, live, files, announcements };
 	});
 }

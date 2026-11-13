@@ -89,9 +89,17 @@
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
+		position: relative;
 		padding-top: var(--space-4);
-		border-top: 1px solid var(--ui-line);
 		font-size: var(--text-sm);
+	}
+	/* A dashed rule that fades out toward both ends. */
+	.who::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 auto;
+		border-top: 1px dashed var(--ui-field-line, var(--ui-line));
+		mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
 	}
 	.who > span {
 		display: grid;

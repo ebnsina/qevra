@@ -27,26 +27,37 @@ export async function load({ locals, params }) {
 			from courses where slug = ${params.slug} and published`;
 		if (!course) error(404, 'Course not found');
 
-		const modules = await tx<{ id: string; title: string }[]>`
-			select id, title from modules where course_id = ${course.id} order by position, title`;
+		// Sent together: one trip to the database instead of one per query.
+		const [
+			modules,
+			lessons,
+			[{ live }],
+			[enrollment],
+			reviews,
+			[{ downloads }],
+			{ home }
+		] = await Promise.all([
+		tx<{ id: string; title: string }[]>`
+			select id, title from modules where course_id = ${course.id} order by position, title`,
 		// Only free-preview lessons give out their video; the rest show their title.
-		const lessons = await tx<{ id: string; module_id: string; title: string; is_preview: boolean; video_url: string; has_quiz: boolean; has_assignment: boolean }[]>`
+		tx<{ id: string; module_id: string; title: string; is_preview: boolean; video_url: string; has_quiz: boolean; has_assignment: boolean }[]>`
 			select l.id, l.module_id, l.title, l.is_preview,
 				case when l.is_preview then l.video_url else '' end as video_url,
 				exists (select 1 from quiz_questions q where q.lesson_id = l.id) as has_quiz,
 				l.assignment <> '' as has_assignment
-			from lessons l where l.course_id = ${course.id} order by l.position, l.title`;
-		const [{ live }] = await tx<{ live: number }[]>`
-			select count(*)::int as live from live_classes where course_id = ${course.id} and starts_at > now()`;
-		const [enrollment] = locals.user
-			? await tx`select 1 from enrollments where course_id = ${course.id} and user_id = ${locals.user.id}`
-			: [];
-		const reviews = await tx<{ id: string; author_name: string; rating: number; body: string; created_at: Date }[]>`
+			from lessons l where l.course_id = ${course.id} order by l.position, l.title`,
+		tx<{ live: number }[]>`
+			select count(*)::int as live from live_classes where course_id = ${course.id} and starts_at > now()`,
+		locals.user
+			? tx`select 1 from enrollments where course_id = ${course.id} and user_id = ${locals.user.id}`
+			: [],
+		tx<{ id: string; author_name: string; rating: number; body: string; created_at: Date }[]>`
 			select id, author_name, rating, body, created_at from course_reviews
-			where course_id = ${course.id} and approved order by created_at desc limit 30`;
-		const [{ downloads }] = await tx<{ downloads: number }[]>`
-			select count(*)::int as downloads from lesson_files f join lessons l on l.id = f.lesson_id where l.course_id = ${course.id}`;
-		const { home } = await getContent(tx);
+			where course_id = ${course.id} and approved order by created_at desc limit 30`,
+		tx<{ downloads: number }[]>`
+			select count(*)::int as downloads from lesson_files f join lessons l on l.id = f.lesson_id where l.course_id = ${course.id}`,
+		getContent(tx),
+		]);
 
 		const preview = lessons.find((l) => l.is_preview && embedUrl(l.video_url));
 		const { description, outcomes, requirements, ...rest } = course;

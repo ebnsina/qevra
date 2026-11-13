@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
+	import { adminPage, mutating } from '#lib/admin-query.svelte.ts';
 	import { Calendar03Icon, CallIcon, Mail01Icon, UserGroupIcon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
 	import RowLink from '#lib/sinaui/blocks/studio/RowLink.svelte';
@@ -11,17 +12,21 @@
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
+	import PasswordInput from '#lib/sinaui/ui/PasswordInput.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { date, number, plural } from '#lib/format.ts';
 	import { message } from '#lib/messages.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data, form } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
 	let query = $state('');
-	let openId = $state<string>();
+	// A link from the Overview names the one to open (?open=<id>), so nobody has to find it in the list again.
+	let openId = $state(page.url.searchParams.get('open') ?? undefined);
 	const shown = $derived.by(() => {
 		const q = query.trim().toLowerCase();
 		return q ? data.students.filter((s) => `${s.name} ${s.email} ${s.phone}`.toLowerCase().includes(q)) : data.students;
@@ -31,7 +36,8 @@
 	const count = (id: string) => data.enrollments.filter((e) => e.user_id === id).length;
 	// Only courses the student isn't in yet can be added.
 	const available = $derived(data.courses.filter((c) => !enrollments.some((e) => e.course_id === c.id)));
-	const enroll = submitting();
+	const enroll = mutating();
+	const password = mutating();
 </script>
 
 <Seo title="Students | Admin" description="Students and their courses." noindex />
@@ -72,6 +78,7 @@
 	{#if selected}
 		{#if form && 'code' in form}<Alert tone="danger" title={message(form.code)} live />{/if}
 		{#if form && 'enrolled' in form}<Alert tone="success" title="Course opened for this student." live />{/if}
+		{#if form && 'passwordSet' in form}<Alert tone="success" title="Password changed. Tell the student the new one; they are signed out everywhere." live />{/if}
 		<dl class="app-fields">
 			<dt><Icon icon={Mail01Icon} size={16} /> Email</dt>
 			<dd><a href="mailto:{selected.email}">{selected.email}</a></dd>
@@ -99,14 +106,27 @@
 		{/if}
 
 		{#if available.length}
-			<form method="post" action="?/enroll" class="app-form-row add" use:enhance={enroll.enhance}>
+			<form method="post" action="?/enroll" class="app-form-row add" onsubmit={enroll.submit}>
 				<input type="hidden" name="user_id" value={selected.id} />
-				<Select label="Open a course without payment" name="course_id" required placeholder="Choose a course">
-					{#each available as course (course.id)}<option value={course.id}>{course.title}</option>{/each}
-				</Select>
+				<CustomSelect label="Open a course without payment" name="course_id" required placeholder="Choose a course" options={available.map((c) => ({ value: c.id, label: c.title }))} />
 				<Button type="submit" variant="outline" loading={enroll.busy}>Enroll</Button>
 			</form>
 		{/if}
+
+		<h3 class="sub">Password</h3>
+		<form method="post" action="?/password" class="app-form-row add" onsubmit={password.submit}>
+			<input type="hidden" name="user_id" value={selected.id} />
+			<PasswordInput
+				label="Set a new password"
+				name="new_password"
+				isNew
+				required
+				placeholder="Choose a password"
+				hint="For a student who can't sign in. Tell them the new password yourself."
+				error={form && 'errors' in form ? form.errors?.new_password : undefined}
+			/>
+			<Button type="submit" variant="outline" loading={password.busy}>Change password</Button>
+		</form>
 	{/if}
 </Dialog>
 

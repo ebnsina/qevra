@@ -1,9 +1,11 @@
 <script lang="ts">
 	import FileDrop from '#lib/sinaui/ui/FileDrop.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import ColorPicker from '#lib/sinaui/ui/ColorPicker.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Switch from '#lib/sinaui/ui/Switch.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
+	import DateTimeField from './DateTimeField.svelte';
 	import RichField from './RichField.svelte';
 	import { toLocalInput } from '#lib/format.ts';
 	import type { Field, Item } from './fields.ts';
@@ -39,16 +41,18 @@
 		{@const key = item?.[field.name]}
 		<div class={{ wide: wide(field) }}>
 			{#if field.type === 'textarea'}
-				<Textarea label={field.label} name={field.name} rows={field.rows ?? 4} required={field.required} hint={field.hint} value={text(field)} error={errors?.[field.name]} />
+				<Textarea label={field.label} name={field.name} rows={field.rows ?? 4} required={field.required} hint={field.hint} placeholder={field.placeholder} value={text(field)} error={errors?.[field.name]} />
 			{:else if field.type === 'richtext'}
 				<RichField label={field.label} name={field.name} value={text(field)} hint={field.hint} error={errors?.[field.name]} />
 			{:else if field.type === 'switch'}
 				<Switch name={field.name} checked={Boolean(item?.[field.name])}>{field.label}</Switch>
 				{#if field.hint}<p class="hint">{field.hint}</p>{/if}
 			{:else if field.type === 'select'}
-				<Select label={field.label} name={field.name} required={field.required} hint={field.hint} value={text(field)} error={errors?.[field.name]}>
-					{#each field.options ?? [] as option (option.value)}<option value={option.value}>{option.label}</option>{/each}
-				</Select>
+				<CustomSelect label={field.label} name={field.name} required={field.required} hint={field.hint} value={text(field)} error={errors?.[field.name]} options={field.options ?? []} />
+			{:else if field.type === 'datetime'}
+				<DateTimeField label={field.label} name={field.name} required={field.required} hint={field.hint} value={text(field)} error={errors?.[field.name]} />
+			{:else if field.type === 'color'}
+				<ColorPicker label={field.label} name={field.name} hint={field.hint} value={text(field)} />
 			{:else if field.type === 'image' || field.type === 'file'}
 				{#if typeof key === 'string' && key}
 					{#if field.type === 'image'}
@@ -68,10 +72,11 @@
 				<Input
 					label={field.label}
 					name={field.name}
-					type={field.type === 'datetime' ? 'datetime-local' : field.type === 'number' ? 'text' : (field.type ?? 'text')}
+					type={field.type === 'number' ? 'text' : (field.type ?? 'text')}
 					inputmode={field.type === 'number' ? 'numeric' : undefined}
 					required={field.required}
 					hint={field.hint}
+					placeholder={field.placeholder}
 					value={text(field)}
 					error={errors?.[field.name]}
 				/>

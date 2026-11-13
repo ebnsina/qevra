@@ -28,10 +28,10 @@
 		}}
 	>
 		{#if form?.code}<Alert tone="danger" title={message(form.code)} live />{/if}
-		<Input label="Full name" name="name" autocomplete="name" required value={form?.values?.name ?? ''} error={form?.errors?.name} hint="Shown on your certificate." />
-		<Input label="Email" name="email" type="email" autocomplete="email" required value={form?.values?.email ?? ''} error={form?.errors?.email} />
-		<Input label="Phone (optional)" name="phone" type="tel" autocomplete="tel" value={form?.values?.phone ?? ''} error={form?.errors?.phone} />
-		<PasswordInput label="Password" name="password" isNew required error={form?.errors?.password} hint="At least 8 characters." />
+		<Input label="Full name" placeholder="Nusrat Jahan" name="name" autocomplete="name" required value={form?.values?.name ?? ''} error={form?.errors?.name} hint="Shown on your certificate." />
+		<Input label="Email" placeholder="you@example.com" name="email" type="email" autocomplete="email" required value={form?.values?.email ?? ''} error={form?.errors?.email} />
+		<Input label="Phone" placeholder="+880 1700-000000" name="phone" type="tel" autocomplete="tel" required hint="So we can reach you about your course." value={form?.values?.phone ?? ''} error={form?.errors?.phone} />
+		<PasswordInput label="Password" placeholder="Choose a password" name="password" isNew required error={form?.errors?.password} hint="At least 8 characters." />
 		<Button type="submit" loading={busy}>Create account</Button>
 	</form>
 	{#snippet footer()}

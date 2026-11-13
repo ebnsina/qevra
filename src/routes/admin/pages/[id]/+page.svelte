@@ -1,9 +1,13 @@
 <script lang="ts">
+	import { adminPage } from '#lib/admin-query.svelte.ts';
 	import Button from '#lib/sinaui/ui/Button.svelte';
 	import EditorPage from '#lib/components/EditorPage.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 
-	let { data, form } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
 </script>
 
 <Seo title="{data.page?.title ?? 'New page'} | Admin" description="Write a page for the website." noindex />
@@ -15,17 +19,17 @@
 		item={data.page}
 		{form}
 		main={[
-			{ name: 'title', label: 'Title', required: true },
+			{ name: 'title', label: 'Title', placeholder: 'About us', required: true },
 			{ name: 'body', label: 'Text', type: 'richtext' }
 		]}
 		publish={[]}
 		side={[
 			{
 				title: 'Link',
-				fields: [{ name: 'slug', label: 'Web address', required: true, hint: 'The header and footer link to about, contact and privacy.' }]
+				fields: [{ name: 'slug', label: 'Web address', placeholder: 'about', required: true, hint: 'The header and footer link to about, contact and privacy.' }]
 			}
 		]}
 	>
-		{#snippet actions(page)}<Button variant="outline" size="sm" href="/{page.slug}" target="_blank">View</Button>{/snippet}
+		{#snippet actions(page)}<Button variant="outline" href="/{page.slug}" target="_blank">View</Button>{/snippet}
 	</EditorPage>
 {/key}

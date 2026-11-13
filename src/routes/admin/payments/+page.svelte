@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
+	import { adminPage, mutating, withRow } from '#lib/admin-query.svelte.ts';
 	import { goto } from '$app/navigation';
 	import { BookOpen01Icon, Calendar03Icon, CallIcon, Mail01Icon, Payment01Icon, Tag01Icon, UserIcon, Wallet01Icon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
@@ -10,30 +11,35 @@
 	import Dialog from '#lib/sinaui/ui/Dialog.svelte';
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
 	import PaymentStatus from '#lib/components/PaymentStatus.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { dateTime, money } from '#lib/format.ts';
 	import { message } from '#lib/messages.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data, form } = $props();
-	let openId = $state<string>();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
+	// A link from the Overview names the one to open (?open=<id>), so nobody has to find it in the list again.
+	let openId = $state(page.url.searchParams.get('open') ?? undefined);
 	const selected = $derived(data.payments.find((p) => p.id === openId));
 	const methods = { bkash: 'bKash', nagad: 'Nagad' } as Record<string, string>;
-	const review = submitting(() => (openId = undefined));
+	// Shown at once: the payment leaves the waiting list, or changes its status in the full list.
+	const review = mutating<typeof loaded>(
+		() => (openId = undefined),
+		(old, sent, action) =>
+			withRow(old, sent.get('id'), old.status === 'pending' ? null : { status: action === '?/reject' ? 'rejected' : 'approved', reviewed_at: new Date() })
+	);
 </script>
 
 <Seo title="Payments | Admin" description="Confirm students' payments." noindex />
 
 <div class="app-page">
 	<PageHeader title="Payments">
-		{#snippet actions()}<Select label="Show" hideLabel value={data.status} onchange={(e) => goto(`?status=${e.currentTarget.value}`)}>
-				<option value="pending">Waiting for confirmation</option>
-				<option value="all">All payments</option>
-			</Select>{/snippet}
+		{#snippet actions()}<CustomSelect label="Show" hideLabel value={data.status} onchange={(value) => goto(`?status=${value}`)} options={[{ value: 'pending', label: 'Waiting for confirmation' }, { value: 'all', label: 'All payments' }]} />{/snippet}
 	</PageHeader>
 
 	<Card flush>
@@ -97,9 +103,9 @@
 			{/if}
 		</dl>
 		{#if selected.status === 'pending'}
-			<form id="review" method="post" action="?/approve" class="app-form review" use:enhance={review.enhance}>
+			<form id="review" method="post" action="?/approve" class="app-form review" onsubmit={review.submit}>
 				<input type="hidden" name="id" value={selected.id} />
-				<Textarea label="Note to the student (optional)" name="note" rows={2} maxlength={300} hint="Shown to the student. Say why if you can't confirm it." />
+				<Textarea label="Note to the student (optional)" placeholder="We could not find this transaction ID. Please check it and send again." name="note" rows={2} maxlength={300} hint="Shown to the student. Say why if you can't confirm it." />
 			</form>
 		{/if}
 	{/if}

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
+	import { adminPage, mutating, withRow } from '#lib/admin-query.svelte.ts';
 	import { goto } from '$app/navigation';
 	import { BookOpen01Icon, Calendar03Icon, File01Icon, Mail01Icon, Task01Icon, UserIcon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
@@ -12,28 +13,33 @@
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { dateTime } from '#lib/format.ts';
 	import { message } from '#lib/messages.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data, form } = $props();
-	let openId = $state<string>();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
+	// A link from the Overview names the one to open (?open=<id>), so nobody has to find it in the list again.
+	let openId = $state(page.url.searchParams.get('open') ?? undefined);
 	const selected = $derived(data.submissions.find((s) => s.id === openId));
-	const review = submitting(() => (openId = undefined));
+	// Shown at once: a marked assignment leaves the waiting list, or shows its grade in the full list.
+	const review = mutating<typeof loaded>(
+		() => (openId = undefined),
+		(old, sent) =>
+			withRow(old, sent.get('id'), old.show === 'waiting' ? null : { grade: String(sent.get('grade') ?? ''), feedback: String(sent.get('feedback') ?? ''), reviewed_at: new Date() })
+	);
 </script>
 
 <Seo title="Submissions | Admin" description="Review students' assignments." noindex />
 
 <div class="app-page">
 	<PageHeader title="Submissions">
-		{#snippet actions()}<Select label="Show" hideLabel value={data.show} onchange={(e) => goto(`?show=${e.currentTarget.value}`)}>
-				<option value="waiting">Waiting for review</option>
-				<option value="all">All submissions</option>
-			</Select>{/snippet}
+		{#snippet actions()}<CustomSelect label="Show" hideLabel value={data.show} onchange={(value) => goto(`?show=${value}`)} options={[{ value: 'waiting', label: 'Waiting for review' }, { value: 'all', label: 'All submissions' }]} />{/snippet}
 	</PageHeader>
 
 	<Card flush>
@@ -83,10 +89,10 @@
 			<dt><Icon icon={Calendar03Icon} size={16} /> Handed in</dt>
 			<dd>{dateTime(selected.created_at)}</dd>
 		</dl>
-		<form id="grade" method="post" action="?/review" class="app-form grade" use:enhance={review.enhance}>
+		<form id="grade" method="post" action="?/review" class="app-form grade" onsubmit={review.submit}>
 			<input type="hidden" name="id" value={selected.id} />
-			<Input label="Grade" name="grade" value={selected.grade} maxlength={40} hint="A mark or a word: 8/10, Good, Needs work." />
-			<Textarea label="Feedback" name="feedback" rows={5} value={selected.feedback} maxlength={2000} hint="The student sees this under their assignment." />
+			<Input label="Grade" placeholder="8/10" name="grade" value={selected.grade} maxlength={40} hint="A mark or a word: 8/10, Good, Needs work." />
+			<Textarea label="Feedback" placeholder="Good use of articles. Check the tense in sentence three." name="feedback" rows={5} value={selected.feedback} maxlength={2000} hint="The student sees this under their assignment." />
 		</form>
 	{/if}
 	{#snippet footer()}

@@ -1,9 +1,9 @@
 {
 	"settings": {
-		"name": "Alif Academy",
+		"name": "Lisan Academy",
 		"brand_color": "#2563eb",
 		"tagline": "English for work, study and everyday life",
-		"description": "Alif Academy is an online English academy: recorded lessons, live classes, quizzes, feedback on your writing and a certificate when you finish.",
+		"description": "Lisan Academy is an online English academy: recorded lessons, live classes, quizzes, feedback on your writing and a certificate when you finish.",
 		"email": "hello@example.com",
 		"phone": "+880 1700-000000",
 		"whatsapp": "+880 1700-000000",
@@ -23,7 +23,7 @@
 		"facts": "10 | courses\nLive + recorded | lessons\nQuizzes | after every topic\nCertificate | when you finish",
 		"trusted_title": "",
 		"about_title": "One idea at a time, explained properly.",
-		"about_text": "Alif Academy began as evening classes for job seekers and moved online to reach learners everywhere. Each lesson covers a single point, explains the reason behind it and asks you to use it before you move on.",
+		"about_text": "Lisan Academy began as evening classes for job seekers and moved online to reach learners everywhere. Each lesson covers a single point, explains the reason behind it and asks you to use it before you move on.",
 		"about_quote": "A rule you understand stays with you. A rule you memorised leaves after the exam.",
 		"about_name": "Farid Hasan",
 		"about_role": "Founder and lead teacher",
@@ -190,17 +190,17 @@
 		{
 			"slug": "about",
 			"title": "About us",
-			"body": "Alif Academy teaches English to learners who want to use it: in an exam hall, in an office, in a message to a client.\n\n## Our mission\n\nGood English teaching should not depend on where you live. We teach online so that a student in a small town gets the same lessons, the same teacher and the same feedback as one in the capital.\n\n## How we teach\n\n- **One idea at a time.** Each lesson covers a single point, and you use it before moving on.\n- **Reasons, not rules.** We explain why an answer is right, so the next question is easier.\n- **Feedback from a person.** Your written work is read and answered by your teacher.\n\n## Our story\n\nThe academy began as evening classes for a handful of job seekers. The classes filled, then filled again, and moving online was the only way to say yes to everyone who asked.\n\n## Our name\n\n*Alif* is the first letter of the alphabet: where every reader begins."
+			"body": "Lisan Academy teaches English to learners who want to use it: in an exam hall, in an office, in a message to a client.\n\n## Our mission\n\nGood English teaching should not depend on where you live. We teach online so that a student in a small town gets the same lessons, the same teacher and the same feedback as one in the capital.\n\n## How we teach\n\n- **One idea at a time.** Each lesson covers a single point, and you use it before moving on.\n- **Reasons, not rules.** We explain why an answer is right, so the next question is easier.\n- **Feedback from a person.** Your written work is read and answered by your teacher.\n\n## Our story\n\nThe academy began as evening classes for a handful of job seekers. The classes filled, then filled again, and moving online was the only way to say yes to everyone who asked.\n\n## Our name\n\n*Lisan* is the Arabic word for tongue, and for language. It is what we help you find in English."
 		},
 		{
 			"slug": "contact",
 			"title": "Contact us",
-			"body": "Questions about a course? Message us on WhatsApp or send an email, and we will get back to you within 24 hours."
+			"body": "Questions about a course, a payment or which level suits you? Message us on WhatsApp or send an email, and a person will answer within 24 hours.\n\n## When we answer\n\nSaturday to Thursday, 10 am to 8 pm (Bangladesh time). Messages sent on Friday are answered on Saturday morning.\n\n## To get a faster answer, tell us\n\n- The course you are asking about\n- What you need English for: a job exam, university, work or everyday use\n- For a payment question, the transaction ID and the number you paid from"
 		},
 		{
 			"slug": "privacy",
 			"title": "Privacy policy",
-			"body": "Last updated: November 2026\n\nYour privacy matters to us. This policy explains what we collect, how we use it and how we protect it when you use this website and your student account.\n\n## Information we collect\n\n- **Account details:** your name, email address and, if you give it, your phone number.\n- **Payment details:** the bKash or Nagad number you paid from and the transaction ID you enter. We don't store card details or PINs; payments are made in the bKash or Nagad app.\n- **Your learning:** the lessons you finish, your quiz results, your questions, and the assignments you hand in.\n- **Sign-in:** your password is stored only in a scrambled (hashed) form that we cannot read.\n\n## How we use your information\n\n- To confirm your payment and open your course\n- To give you your lessons, feedback and certificate\n- To answer your questions and send password-reset emails\n\n## Sharing your information\n\nWe do not sell your information. It is seen only by your teacher and our support staff, or shared when the law requires it. A certificate can be checked by anyone who has its number; it shows your name, the course and the date.\n\n## Your choices\n\nYou can ask to see, correct or delete your personal data. Message us and we will do it, where the law allows.\n\n## Changes to this policy\n\nThis policy may be updated. The current version is always shown here with its date."
+			"body": "Last updated: November 2026\n\nYour privacy matters to us. This policy explains what we collect, how we use it and how we protect it when you use this website and your student account.\n\n## Information we collect\n\n- **Account details:** your name, email address and phone number.\n- **Payment details:** the bKash or Nagad number you paid from and the transaction ID you enter. We don't store card details or PINs; payments are made in the bKash or Nagad app.\n- **Your learning:** the lessons you finish, your quiz results, your questions, and the assignments you hand in.\n- **Sign-in:** your password is stored only in a scrambled (hashed) form that we cannot read.\n\n## How we use your information\n\n- To confirm your payment and open your course\n- To give you your lessons, feedback and certificate\n- To answer your questions and send password-reset emails\n\n## Sharing your information\n\nWe do not sell your information. It is seen only by your teacher and our support staff, or shared when the law requires it. A certificate can be checked by anyone who has its number; it shows your name, the course and the date.\n\n## Your choices\n\nYou can ask to see, correct or delete your personal data. Message us and we will do it, where the law allows.\n\n## Changes to this policy\n\nThis policy may be updated. The current version is always shown here with its date."
 		}
 	]
 }

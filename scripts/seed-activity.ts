@@ -8,10 +8,10 @@
 // Everything hangs off students whose email ends in @demo.tadris.test, so removing those accounts
 // removes all of it. None of these people are real: clear it before the academy takes real students.
 import { randomBytes } from 'node:crypto';
-import { AwsClient } from 'aws4fetch';
 import postgres from 'postgres';
 import { hashPassword } from '../src/lib/server/password.ts';
 import { tablePdf } from './pdf.ts';
+import { upload } from './storage.ts';
 
 const DOMAIN = 'demo.tadris.test';
 const STUDENTS = 640;
@@ -128,13 +128,10 @@ const [coupon] = await sql<{ id: string; percent_off: number }[]>`select id, per
 
 // One stand-in file for every handed-in assignment; staff can open it.
 const WORK_KEY = 'submissions/demo/assignment.pdf';
-const storage = new AwsClient({ accessKeyId: env('AWS_ACCESS_KEY_ID'), secretAccessKey: env('AWS_SECRET_ACCESS_KEY'), region: env('AWS_REGION'), service: 's3' });
-const put = await storage.fetch(`${env('AWS_ENDPOINT_URL_S3')}/files/${WORK_KEY}`, {
-	method: 'PUT',
-	headers: { 'content-type': 'application/pdf' },
-	body: tablePdf({ title: 'Assignment', note: 'A stand-in for a student\'s handed-in work (demo data).', footer: 'Demo', headers: ['Sentence'], rows: [['Yesterday I went to the library with my friend.'], ['We read a book about the history of Dhaka.'], ['After that we had some tea and talked about our exams.']] })
-});
-if (!put.ok) throw new Error(`uploading the demo assignment failed with ${put.status}`);
+await upload(
+	WORK_KEY,
+	tablePdf({ title: 'Assignment', note: "A stand-in for a student's handed-in work (demo data).", footer: 'Demo', headers: ['Sentence'], rows: [['Yesterday I went to the library with my friend.'], ['We read a book about the history of Dhaka.'], ['After that we had some tea and talked about our exams.']] })
+);
 
 // Nobody can sign in as a demo student: the password is random and thrown away.
 const passwordHash = await hashPassword(randomBytes(24).toString('base64url'));

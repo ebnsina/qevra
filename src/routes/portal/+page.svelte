@@ -18,6 +18,7 @@
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
+	import * as Tabs from '#lib/sinaui/ui/tabs/index.ts';
 	import Seo from '#lib/components/Seo.svelte';
 	import TrendChart from '#lib/components/TrendChart.svelte';
 	import { date, dateTime, dayShort, number, plural } from '#lib/format.ts';
@@ -75,7 +76,16 @@
 			{#each stats as stat (stat.label)}<Stat label={stat.label} value={stat.value} hint={stat.hint} icon={stat.icon} />{/each}
 		</div>
 
-		<div class="two">
+		<Tabs.Root variant="pill" fit>
+			<Tabs.List label="Overview sections">
+				<Tabs.Tab value="activity">Your last 14 days</Tabs.Tab>
+				<Tabs.Tab value="live">Live classes</Tabs.Tab>
+				<Tabs.Tab value="courses">My courses</Tabs.Tab>
+				<Tabs.Tab value="news">Announcements</Tabs.Tab>
+				<Tabs.Tab value="answers">Answers</Tabs.Tab>
+				<Tabs.Tab value="finished">Recently finished</Tabs.Tab>
+			</Tabs.List>
+			<Tabs.Panel value="activity" class="tab-panel">
 			<Card title="Your last 14 days" level={2} description="{plural(twoWeeks, 'lesson')} finished. A little every day adds up.">
 				{#if twoWeeks}
 					<TrendChart
@@ -88,7 +98,9 @@
 					<p class="muted">Finish a lesson and your progress starts drawing here.</p>
 				{/if}
 			</Card>
+			</Tabs.Panel>
 
+			<Tabs.Panel value="live" class="tab-panel">
 			<Card title="Upcoming live classes" icon={Calendar03Icon} level={2} flush>
 				{#if data.live.length}
 					<ul class="rows">
@@ -106,8 +118,9 @@
 					<p class="muted none">No live classes are planned for your courses right now.</p>
 				{/if}
 			</Card>
-		</div>
+			</Tabs.Panel>
 
+			<Tabs.Panel value="courses" class="tab-panel">
 		<section class="block">
 			<h2 class="block-title">My courses</h2>
 			<div class="app-cards">
@@ -124,8 +137,9 @@
 				{/each}
 			</div>
 		</section>
+			</Tabs.Panel>
 
-		<div class="three">
+			<Tabs.Panel value="news" class="tab-panel">
 			<Card title="Announcements" icon={News01Icon} level={2} flush>
 				{#if data.announcements.length}
 					<ul class="rows">
@@ -143,7 +157,9 @@
 					<p class="muted none">Nothing new from your teacher.</p>
 				{/if}
 			</Card>
+			</Tabs.Panel>
 
+			<Tabs.Panel value="answers" class="tab-panel">
 			<Card title="Answers to your questions" icon={MessageQuestionIcon} level={2} flush>
 				{#if data.answers.length}
 					<ul class="rows">
@@ -163,7 +179,9 @@
 					<p class="muted none">Ask a question under any lesson. Your teacher's answers appear here.</p>
 				{/if}
 			</Card>
+			</Tabs.Panel>
 
+			<Tabs.Panel value="finished" class="tab-panel">
 			<Card title="Recently finished" icon={CheckmarkCircle02Icon} level={2} flush>
 				{#if data.finished.length}
 					<ul class="rows">
@@ -182,7 +200,8 @@
 					<p class="muted none">Lessons you finish are listed here.</p>
 				{/if}
 			</Card>
-		</div>
+			</Tabs.Panel>
+		</Tabs.Root>
 	{:else}
 		<Card>
 			<EmptyState title="You have no courses yet" icon={BookOpen01Icon}>
@@ -238,18 +257,6 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
 		gap: var(--app-gap);
-	}
-	.two,
-	.three {
-		display: grid;
-		gap: var(--app-gap);
-		align-items: start;
-	}
-	.two {
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
-	}
-	.three {
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
 	}
 	.block {
 		display: grid;

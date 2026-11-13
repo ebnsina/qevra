@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { enhance } from '$app/forms';
 	import Alert from '#lib/sinaui/ui/Alert.svelte';
 	import Button from '#lib/sinaui/ui/Button.svelte';
 	import ConfirmButton from '#lib/sinaui/ui/ConfirmButton.svelte';
 	import Dialog from '#lib/sinaui/ui/Dialog.svelte';
 	import { message } from '#lib/messages.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
+	import { mutating, withRow } from '#lib/admin-query.svelte.ts';
 	import Fields from './Fields.svelte';
 	import type { Field, Item } from './fields.ts';
 
@@ -46,8 +45,12 @@
 	}: Props = $props();
 
 	const uid = $props.id();
-	const save = submitting(() => (open = false));
-	const remove = submitting(() => (open = false));
+	const save = mutating(() => (open = false));
+	// A deleted record disappears from its list at once.
+	const remove = mutating(
+		() => (open = false),
+		(old, sent) => withRow(old, sent.get('id'), null)
+	);
 	let deleteForm = $state<HTMLFormElement>();
 	const hasFile = $derived(fields.some((f) => f.type === 'image' || f.type === 'file'));
 </script>
@@ -60,7 +63,7 @@
 			action={saveAction}
 			enctype={hasFile ? 'multipart/form-data' : undefined}
 			class="app-form"
-			use:enhance={save.enhance}
+			onsubmit={save.submit}
 		>
 			{#if form?.code}<Alert tone="danger" title={message(form.code)} live />{/if}
 			{#if item}<input type="hidden" name="id" value={String(item.id)} />{/if}
@@ -68,7 +71,7 @@
 			<Fields {fields} item={item ?? defaults} values={form?.errors ? form.values : undefined} errors={form?.errors} />
 		</form>
 		{#if item}
-			<form method="post" action={deleteAction} bind:this={deleteForm} use:enhance={remove.enhance} hidden>
+			<form method="post" action={deleteAction} bind:this={deleteForm} onsubmit={remove.submit} hidden>
 				<input type="hidden" name="id" value={String(item.id)} />
 			</form>
 		{/if}

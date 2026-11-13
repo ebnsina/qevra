@@ -35,10 +35,8 @@
 			<ul class="site-grid">
 				{#each data.resources as resource (resource.id)}
 					<li class="site-card sheet">
-						<div class="card-head">
-							<h2 class="site-h3">{resource.title}</h2>
-							<span class="app-icon"><Icon icon={File01Icon} size={20} /></span>
-						</div>
+						<span class="site-mark" aria-hidden="true"><Icon icon={File01Icon} size={128} /></span>
+						<h2 class="site-h3">{resource.title}</h2>
 						<p class="muted">{resource.description}</p>
 						<div class="foot">
 							<Badge icon={false}>{kind(resource.file_name)}</Badge>
@@ -61,6 +59,9 @@
 	.sheet {
 		display: flex;
 		flex-direction: column;
+	}
+	.sheet > .foot {
+		max-width: none;
 	}
 	.foot {
 		display: flex;

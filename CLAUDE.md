@@ -2,7 +2,7 @@
 
 A learning platform one academy runs for itself (one setup per academy, not multi-tenant): the
 academy's public website, a student portal and an admin area with a CMS for the website.
-The seed loads a generic sample academy ("Alif Academy"); a real academy replaces it in the admin area.
+The seed loads a generic sample academy ("Lisan Academy"); a real academy replaces it in the admin area.
 
 SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storage). Deploys to Vercel.
 
@@ -10,7 +10,7 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - `pnpm db:up` local Postgres, storage and mail (Docker) · `pnpm db:migrate`
 - Seeding (each is safe to rerun): `pnpm db:seed` the website's content only · `pnpm db:seed:sample` also sample
   teaching material (lessons with license-free placeholder films, quizzes, assignments, live classes, study
-  sheets) · `pnpm db:seed:demo` all of that plus demo accounts (local and tests only) · `pnpm db:seed:activity` 640 demo students with payments, progress and reviews (`db:seed:activity:clear` removes them)
+  sheets) · `pnpm db:seed:demo` all of that plus demo accounts (local and tests only) · `pnpm db:seed:activity` 640 demo students with payments, progress and reviews (`db:seed:activity:clear` removes them) · `pnpm db:seed:showcase <student email>` gives one existing student a full history for a demo
 - `pnpm admin:create <email> "<name>"` creates a staff account and prints its password once
 - `pnpm dev` · `pnpm check` (keep 0 errors, 0 warnings)
 - `pnpm test` unit + database tests against `tadris_test` · `pnpm test:e2e` browser flows (starts its own server on 5174)
@@ -29,6 +29,10 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - **Every query goes through `locals.db(tx => …)`** (or `db(actor, …)`): it sets who is asking, and row-level security
   decides what they see. The app connects as `DATABASE_APP_URL` (a restricted role, `tadris_app` locally; the hosted databases still use `qevra_app`); the owner `DATABASE_URL` is for
   migrations and the seed only. Never use the owner in app code: it bypasses row-level security.
+- **Admin screens read and save through TanStack Query** (`src/lib/admin-query.svelte.ts`): `adminPage(() => loaded)` for the
+  screen's data, `mutating(done, optimistic)` for each save, `<form onsubmit={x.submit}>`. Saves still post to the page's
+  form actions; refetches come from `/admin/data/<screen>`, which runs that screen's own `load`. Never add `use:enhance`
+  or read the `data` prop directly in `/admin`. The portal and website keep plain form actions.
 - `db('system', …)` is only for sign-in and bookkeeping no person may do directly (sessions, completing lessons,
   issuing certificates, checking a certificate number).
 - `hooks.server.ts` is the only gate for `/portal` (signed in) and `/admin` (admin role).
@@ -42,9 +46,12 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - Money is whole taka; dates and numbers format through `src/lib/format.ts` (Bangladesh time).
 
 ## Design
-- Website: Google Sans Flex (self-hosted through `@fontsource-variable`), bold headings, large radii, white with one brand color
+- Website: Sora headings (bold) and Cabin text (its @ swapped for Geist Mono's) (self-hosted through `@fontsource-variable`), white with one brand color
   (blue `#2563eb` by default, the same on light and dark, set per academy in Site settings). Tinted sections and `.site-card` cards.
   It is the academy's own site: content about the academy, not about the software.
+- Radii follow size (`--radius-sm` chips and tiles, `--ui-radius-control` buttons and fields, `--ui-radius` cards and dialogs,
+  `--radius-xl` full-width bands). Website surfaces lift with shadows, not outlines; cards in the portal and admin use a hairline and no shadow (a shadow hides their edges on the white page); no decorative grid patterns. Covers are
+  Unsplash photos kept in `scripts/content/covers` (800 × 420 WebP); the sign-in photo is in `static/images`. People in photos: women shown wear hijab.
 - Portal and admin: the same font at calmer weights, on sinaui's **Studio block** (`src/lib/sinaui/blocks/studio`): `AppShell.svelte` wraps
   `Studio` (sidebar with search, breadcrumbs, account menu, bottom tab bar on phones); pages use its `PageHeader`,
   `Stat`, `RowLink`, and a wide side sheet per table row.

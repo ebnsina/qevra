@@ -2,7 +2,7 @@
 const MESSAGES = {
 	email_taken: 'An account with this email already exists. Sign in instead.',
 	bad_login: "That email and password don't match. Check both and try again.",
-	too_many_attempts: 'Too many failed attempts. Wait 15 minutes, or reset your password.',
+	too_many_attempts: 'Too many failed attempts. Wait 15 minutes and try again. If you forgot your password, message us and we will set a new one.',
 	reset_expired: 'This reset link has been used or has expired. Ask for a new one.',
 	wrong_password: 'Your current password is not right.',
 	file_missing: 'Choose a file first.',
