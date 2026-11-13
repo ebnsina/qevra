@@ -25,6 +25,8 @@ First version.
 - The seed now loads a generic sample academy instead of one academy's own content, and can add demo activity
 - Renamed to Tadris
 - Website headings are set in Fraunces, a serif
-- Arimo across the website and the dashboard, with bold website headings; blue is the default brand color, the same on light and dark
+- Sora headings and DM Sans text across the website and the dashboard, with bold website headings; blue is the default brand color, the same on light and dark
 - Corners now scale with the size of what they round; cards and the header lift with shadows instead of outlines; the banner's grid pattern is gone
 - Course and post covers are aurora gradients
+- The website header blends into each page's opening section and gains its own surface on scroll
+- The sample academy is named Lisan Academy

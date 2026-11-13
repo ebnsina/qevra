@@ -8,10 +8,13 @@ importers:
 
   .:
     dependencies:
-      '@fontsource-variable/arimo':
+      '@fontsource-variable/dm-sans':
         specifier: ^5.3.0
         version: 5.3.0
       '@fontsource-variable/geist-mono':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/sora':
         specifier: ^5.3.0
         version: 5.3.0
       '@hugeicons/core-free-icons':
@@ -84,11 +87,14 @@ importers:
 
 packages:
 
-  '@fontsource-variable/arimo@5.3.0':
-    resolution: {integrity: sha512-t34ntseQmQX5nLt4nbAmjm4a2sZK5jzcYNBkehOqTg9xlbctc2ZrzlGZlptibfl9Trvsg9buhuoiqBBdm8VK8Q==}
+  '@fontsource-variable/dm-sans@5.3.0':
+    resolution: {integrity: sha512-BpUG5bqePiDFMBM4ZtLSlPdAIOM990uB1dlXzIf4aw21yQR7BmykedLXXXMqGWsR18aMLOsbWccwJNh3ztTQaA==}
 
   '@fontsource-variable/geist-mono@5.3.0':
     resolution: {integrity: sha512-vBbuwDEo9AkrqADMXOrlAR3DFcJi4/JxeuU43FoiQERnNwsfXNnvxvReZG02cQKmyk4DZkZdBZX3oTDvy2zBAw==}
+
+  '@fontsource-variable/sora@5.3.0':
+    resolution: {integrity: sha512-h8kHta4Z8SkfUGeI82TUy1n3rbrKpBRGwuk4t4qCwto5oEHxlbOFD2yGP+Df5fbmTXwKGn+o667vYp0E4K8Whw==}
 
   '@hugeicons/core-free-icons@4.4.0':
     resolution: {integrity: sha512-7Mz8bmGoY6tZ6l3C2TXwNMLVSr0I8HPwjjFIERAuJFj3rWwLxdF2ZLkDqdrVuEE1dx5b/VXyIsP4WoSU6Q40KQ==}
@@ -1221,9 +1227,11 @@ packages:
 
 snapshots:
 
-  '@fontsource-variable/arimo@5.3.0': {}
+  '@fontsource-variable/dm-sans@5.3.0': {}
 
   '@fontsource-variable/geist-mono@5.3.0': {}
+
+  '@fontsource-variable/sora@5.3.0': {}
 
   '@hugeicons/core-free-icons@4.4.0': {}
 

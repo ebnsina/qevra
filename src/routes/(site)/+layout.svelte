@@ -11,6 +11,8 @@
 	let { data, children } = $props();
 	const settings = $derived(data.settings);
 	let menu = $state(false);
+	// The header sits clear over the page's opening section, and gains its own surface once the page moves.
+	let scrollY = $state(0);
 
 	// Re-arm the scroll reveal for each page's own cards.
 	$effect(() => {
@@ -60,7 +62,8 @@
 	</div>
 {/if}
 
-<header class="top">
+<svelte:window bind:scrollY />
+<header class="top" class:scrolled={scrollY > 8}>
 	<div class="site-wrap bar">
 		<Logo name={settings.name} logoKey={settings.logo_key} />
 		<nav aria-label="Main">
@@ -192,6 +195,22 @@
 		background: color-mix(in srgb, var(--ui-bg) 85%, transparent);
 		backdrop-filter: blur(12px);
 		box-shadow: var(--ui-shadow-xs);
+		transition:
+			background var(--ui-dur) var(--ui-ease-out),
+			box-shadow var(--ui-dur) var(--ui-ease-out);
+	}
+	/* At the top of the page the header is clear, so the opening section's color runs up behind it.
+	   Only with JavaScript running: without it, the header keeps its surface the whole way down. */
+	:global(.js) .top:not(.scrolled) {
+		background: transparent;
+		backdrop-filter: none;
+		box-shadow: none;
+	}
+	/* The opening section slides up under the header; its background fills the strip, its content stays put. */
+	main > :global(:first-child) {
+		margin-top: -4.25rem;
+		border-top: 4.25rem solid transparent;
+		background-origin: border-box;
 	}
 	.bar {
 		display: flex;

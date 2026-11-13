@@ -1,11 +1,12 @@
 @import '@fontsource-variable/geist-mono';
-@import '@fontsource-variable/arimo';
+@import '@fontsource-variable/dm-sans';
+@import '@fontsource-variable/sora';
 
 /* Tokens */
 :root {
-	/* One family everywhere (Arimo, served from this site); the website sets its headings bold. */
-	--ui-font: 'Arimo Variable', ui-sans-serif, system-ui, sans-serif;
-	--ui-font-heading: var(--ui-font);
+	/* DM Sans for text and Sora for headings, both served from this site; website headings are bold. */
+	--ui-font: 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+	--ui-font-heading: 'Sora Variable', var(--ui-font);
 	--app-heading-weight: 700;
 	--ui-font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
 
@@ -371,7 +372,7 @@ a.site-card.in:hover {
 	border-radius: 0.3em;
 }
 
-/* Signed-in app (portal and admin): the same family, with calmer headings and smaller text. */
+/* Signed-in app (portal and admin): the same pair, with calmer headings and smaller text. */
 .app-area {
 	--app-heading-weight: 600;
 	font-family: var(--ui-font);

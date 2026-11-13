@@ -2,7 +2,7 @@
 
 A learning platform one academy runs for itself (one setup per academy, not multi-tenant): the
 academy's public website, a student portal and an admin area with a CMS for the website.
-The seed loads a generic sample academy ("Alif Academy"); a real academy replaces it in the admin area.
+The seed loads a generic sample academy ("Lisan Academy"); a real academy replaces it in the admin area.
 
 SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storage). Deploys to Vercel.
 
@@ -42,7 +42,7 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - Money is whole taka; dates and numbers format through `src/lib/format.ts` (Bangladesh time).
 
 ## Design
-- Website: Arimo (self-hosted through `@fontsource-variable`), bold headings, white with one brand color
+- Website: Sora headings (bold) and DM Sans text (self-hosted through `@fontsource-variable`), white with one brand color
   (blue `#2563eb` by default, the same on light and dark, set per academy in Site settings). Tinted sections and `.site-card` cards.
   It is the academy's own site: content about the academy, not about the software.
 - Radii follow size (`--radius-sm` chips and tiles, `--ui-radius-control` buttons and fields, `--ui-radius` cards and dialogs,
