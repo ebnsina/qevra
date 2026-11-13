@@ -13,8 +13,10 @@ export type Actor = { id: string; role: Role } | 'system' | 'anon';
 export function db<T>(actor: Actor, fn: (tx: Tx) => Promise<T>): Promise<T> {
 	const [id, role] = typeof actor === 'string' ? ['', actor] : [actor.id, actor.role];
 	return sql.begin(async (tx) => {
-		await tx`select set_config('app.user_id', ${id}, true), set_config('app.role', ${role}, true)`;
-		return fn(tx);
+		// Started but not awaited, so it travels with fn's first query instead of costing its own trip.
+		const actorSet = tx`select set_config('app.user_id', ${id}, true), set_config('app.role', ${role}, true)`.execute();
+		const [result] = await Promise.all([fn(tx), actorSet]);
+		return result;
 	}) as Promise<T>;
 }
 
