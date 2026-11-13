@@ -33,7 +33,7 @@ export function coverPng(seed: number): Uint8Array<ArrayBuffer> {
 		state = (state * 1664525 + 1013904223) % 4294967296;
 		return state / 4294967296;
 	};
-	const hue = 140 + random() * 30; // forest green to teal
+	const hue = 212 + random() * 22; // forest green to teal
 	const top = hsl(hue, 0.6, 0.2 + random() * 0.08);
 	const bottom = hsl(hue + 14, 0.5, 0.38 + random() * 0.1);
 	const circles = Array.from({ length: 4 }, () => ({
