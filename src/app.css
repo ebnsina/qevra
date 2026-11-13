@@ -413,8 +413,11 @@ a.site-card.in:hover {
 	font-size: 0.9375rem;
 	line-height: 1.55;
 }
-/* Cards in the app: no border, lifted off the tinted page by a light shadow; their title icons in the brand color. */
+/* Cards in the app sit on a white page, where a shadow alone hides their edges: a hairline, no shadow.
+   Their title icons take the brand color. */
 .app-area {
+	--ui-card-line: var(--ui-line);
+	--ui-card-shadow: none;
 	--ui-card-icon: var(--ui-accent);
 	/* Six hues for icon tiles, so a row of numbers can be told apart at a glance. Icons only:
 	   buttons and links stay in the brand color. */
@@ -431,6 +434,8 @@ a.site-card.in:hover {
 	--ui-surface: color-mix(in oklab, var(--tile) 7%, var(--ui-bg));
 	--ui-stat-icon-bg: color-mix(in oklab, var(--tile) 20%, var(--ui-bg));
 	--ui-stat-icon-fg: var(--tile);
+	/* The tint already marks the tile's edge. */
+	--ui-card-line: transparent;
 }
 .app-area .stats > :nth-child(6n + 1) {
 	--tile: var(--tile-1);

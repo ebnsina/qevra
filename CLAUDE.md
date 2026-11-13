@@ -50,7 +50,7 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
   (blue `#2563eb` by default, the same on light and dark, set per academy in Site settings). Tinted sections and `.site-card` cards.
   It is the academy's own site: content about the academy, not about the software.
 - Radii follow size (`--radius-sm` chips and tiles, `--ui-radius-control` buttons and fields, `--ui-radius` cards and dialogs,
-  `--radius-xl` full-width bands). Surfaces lift with shadows, not outlines; no decorative grid patterns. Covers are
+  `--radius-xl` full-width bands). Website surfaces lift with shadows, not outlines; cards in the portal and admin use a hairline and no shadow (a shadow hides their edges on the white page); no decorative grid patterns. Covers are
   Unsplash photos kept in `scripts/content/covers` (800 × 420 WebP); the sign-in photo is in `static/images`. People in photos: women shown wear hijab.
 - Portal and admin: the same font at calmer weights, on sinaui's **Studio block** (`src/lib/sinaui/blocks/studio`): `AppShell.svelte` wraps
   `Studio` (sidebar with search, breadcrumbs, account menu, bottom tab bar on phones); pages use its `PageHeader`,
