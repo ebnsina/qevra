@@ -246,6 +246,9 @@
 		--ui-subtle: color-mix(in oklab, var(--on-brand) 25%, transparent);
 	}
 	.continue-end :global(> :first-child) {
+		/* The bar's label and track read these two; without them the label is dark on the brand color. */
+		--ui-fg: var(--on-brand);
+		--ui-hover: color-mix(in oklab, var(--on-brand) 25%, transparent);
 		width: 100%;
 	}
 	@media (max-width: 48rem) {
