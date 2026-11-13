@@ -23,10 +23,13 @@
 	let { label, role, home, groups, user, menu, children }: Props = $props();
 
 	let signOut = $state<HTMLFormElement>();
+
+	// A lesson is for watching and reading: its page gets the room, the sidebar shrinks to icons.
+	const LESSON = '/portal/courses/[slug]/[lesson]';
 </script>
 
 <div class="app-area">
-	<Studio name={label} {home} {groups} path={page.url.pathname} {user} {menu} search={false} onsignout={() => signOut?.requestSubmit()}>
+	<Studio rail={page.route.id === LESSON} name={label} {home} {groups} path={page.url.pathname} {user} {menu} search={false} onsignout={() => signOut?.requestSubmit()}>
 		{#snippet brand(collapsed)}
 			{#if collapsed}
 				<span class="mark" aria-hidden="true">{role.slice(0, 1)}</span>

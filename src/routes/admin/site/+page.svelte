@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as Tabs from '#lib/sinaui/ui/tabs/index.ts';
 	import { adminPage, mutating } from '#lib/admin-query.svelte.ts';
 	import { Home01Icon, Payment01Icon, Settings01Icon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
@@ -56,36 +57,65 @@
 		{ name: 'closing_title', label: 'Closing banner: heading', placeholder: 'Not sure which course fits you?', wide: true },
 		{ name: 'closing_text', label: 'Closing banner: text', placeholder: 'Tell us what you need English for and we will point you to the right course.', type: 'textarea', rows: 2 }
 	];
+
+	let tab = $state('academy');
+	const tabFields = { academy: identity, contact, payments: payment, home: homeFields };
+	// A field the server turned down may sit on a tab that is not open: go to it.
+	$effect(() => {
+		const hit = errors && Object.entries(tabFields).find(([, fields]) => fields.some((f) => f.name in errors));
+		if (hit) tab = hit[0];
+	});
 </script>
 
 <Seo title="Site settings | Admin" description="The academy's details and home page content." noindex />
 
 <div class="app-page">
 	<PageHeader title="Site settings">
-		{#snippet actions()}<Button variant="outline" href="/" target="_blank">View website</Button>{/snippet}
+		{#snippet actions()}
+			<Button variant="outline" href="/" target="_blank">View website</Button>
+			<!-- One Save, in the header like the editors: it sends the form of the tab that is open. -->
+			<Button type="submit" form={tab === 'home' ? 'home-form' : 'settings-form'} loading={settings.busy || home.busy}>
+				{tab === 'home' ? 'Save home page' : 'Save settings'}
+			</Button>
+		{/snippet}
 	</PageHeader>
 
 	{#if form && 'saved' in form}<Alert tone="success" title="Saved. The website shows the changes now." live />{/if}
 	{#if form && 'code' in form}<Alert tone="danger" title={message(form.code)} live />{/if}
 	{#if errors}<Alert tone="danger" title="Some fields need a look. They are marked below." live />{/if}
 
-	<form method="post" action="?/settings" enctype="multipart/form-data" class="app-form" onsubmit={settings.submit}>
-		<Card title="Academy" icon={Settings01Icon} level={2} description="Name, logo and brand color, used on every page.">
-			<Fields fields={identity} item={data.settings} {errors} columns={2} />
-		</Card>
-		<Card title="Contact and social" level={2} description="Shown in the top bar, the footer and the Contact page. Empty ones are hidden.">
-			<Fields fields={contact} item={data.settings} {errors} columns={2} />
-		</Card>
-		<Card title="Payments" icon={Payment01Icon} level={2} description="Where students send course fees.">
-			<Fields fields={payment} item={data.settings} {errors} columns={2} />
-		</Card>
-		<div class="app-form-actions"><Button type="submit" loading={settings.busy}>Save settings</Button></div>
-	</form>
-
-	<form method="post" action="?/home" class="app-form" onsubmit={home.submit}>
-		<Card title="Home page" icon={Home01Icon} level={2} description="The words on the home page, top to bottom.">
-			<Fields fields={homeFields} item={data.home} {errors} columns={2} />
-		</Card>
-		<div class="app-form-actions"><Button type="submit" loading={home.busy}>Save home page</Button></div>
-	</form>
+	<!-- One group per tab. Panels stay in the page when hidden, so one Save still sends all three settings groups. -->
+	<Tabs.Root variant="pill" fit bind:value={tab}>
+		<Tabs.List label="Settings sections">
+			<Tabs.Tab value="academy">Academy</Tabs.Tab>
+			<Tabs.Tab value="contact">Contact and social</Tabs.Tab>
+			<Tabs.Tab value="payments">Payments</Tabs.Tab>
+			<Tabs.Tab value="home">Home page</Tabs.Tab>
+		</Tabs.List>
+		<!-- novalidate: the browser cannot point at a required field on a hidden tab; the server's answer opens that tab instead. -->
+		<form id="settings-form" method="post" action="?/settings" enctype="multipart/form-data" class="app-form" novalidate style:display={tab === 'home' ? 'none' : undefined} onsubmit={settings.submit}>
+			<Tabs.Panel value="academy" class="tab-panel">
+				<Card title="Academy" icon={Settings01Icon} level={2} description="Name, logo and brand color, used on every page.">
+					<Fields fields={identity} item={data.settings} {errors} columns={2} />
+				</Card>
+			</Tabs.Panel>
+			<Tabs.Panel value="contact" class="tab-panel">
+				<Card title="Contact and social" level={2} description="Shown in the top bar, the footer and the Contact page. Empty ones are hidden.">
+					<Fields fields={contact} item={data.settings} {errors} columns={2} />
+				</Card>
+			</Tabs.Panel>
+			<Tabs.Panel value="payments" class="tab-panel">
+				<Card title="Payments" icon={Payment01Icon} level={2} description="Where students send course fees.">
+					<Fields fields={payment} item={data.settings} {errors} columns={2} />
+				</Card>
+			</Tabs.Panel>
+		</form>
+		<form id="home-form" method="post" action="?/home" class="app-form" novalidate style:display={tab === 'home' ? undefined : 'none'} onsubmit={home.submit}>
+			<Tabs.Panel value="home" class="tab-panel">
+				<Card title="Home page" icon={Home01Icon} level={2} description="The words on the home page, top to bottom.">
+					<Fields fields={homeFields} item={data.home} {errors} columns={2} />
+				</Card>
+			</Tabs.Panel>
+		</form>
+	</Tabs.Root>
 </div>

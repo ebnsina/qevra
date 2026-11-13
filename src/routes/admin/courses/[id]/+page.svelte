@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as Tabs from '#lib/sinaui/ui/tabs/index.ts';
 	import { adminPage, mutating } from '#lib/admin-query.svelte.ts';
 	import { Calendar03Icon, Download01Icon, DragDropVerticalIcon, File01Icon, Megaphone01Icon, Quiz01Icon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
@@ -107,6 +108,13 @@
 		/>
 	{/if}
 
+	<Tabs.Root variant="pill" fit>
+		<Tabs.List label="Course sections">
+			<Tabs.Tab value="lessons">Lessons</Tabs.Tab>
+			<Tabs.Tab value="live">Live classes</Tabs.Tab>
+			<Tabs.Tab value="announcements">Announcements</Tabs.Tab>
+		</Tabs.List>
+		<Tabs.Panel value="lessons" class="tab-panel">
 	{#if data.modules.length}
 		<Sortable items={data.modules} key={(m) => m.id} itemLabel={(m) => m.title} label="Sections" onreorder={(rows) => saveOrder('modules', rows)}>
 			{#snippet children(section, handle)}
@@ -151,7 +159,8 @@
 			</EmptyState>
 		</Card>
 	{/if}
-
+		</Tabs.Panel>
+		<Tabs.Panel value="live" class="tab-panel">
 	<Card title="Live classes" icon={Calendar03Icon} level={2} description="Enrolled students see these with a Join button." flush>
 		{#snippet aside()}<Button size="sm" variant="outline" onclick={() => (sheet = { kind: 'live', id: null })}>Add live class</Button>{/snippet}
 		{#if data.live.length}
@@ -171,7 +180,8 @@
 			<p class="muted none">No live classes planned.</p>
 		{/if}
 	</Card>
-
+		</Tabs.Panel>
+		<Tabs.Panel value="announcements" class="tab-panel">
 	<Card title="Announcements" icon={Megaphone01Icon} level={2} description="News for everyone in this course: new lessons, a moved class." flush>
 		{#snippet aside()}<Button size="sm" variant="outline" onclick={() => (sheet = { kind: 'announcement', id: null })}>New announcement</Button>{/snippet}
 		{#if data.announcements.length}
@@ -190,6 +200,8 @@
 			<p class="muted none">Nothing posted yet.</p>
 		{/if}
 	</Card>
+		</Tabs.Panel>
+	</Tabs.Root>
 </div>
 
 <form method="post" action="?/reorder" bind:this={orderForm} onsubmit={quiet.submit} hidden>
