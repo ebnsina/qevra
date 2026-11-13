@@ -1,10 +1,10 @@
 @import '@fontsource-variable/geist-mono';
-@import '@fontsource-variable/google-sans-flex';
+@import '@fontsource-variable/arimo';
 
 /* Tokens */
 :root {
-	/* One family everywhere (Google Sans Flex, served from this site); the website sets its headings bold. */
-	--ui-font: 'Google Sans Flex Variable', ui-sans-serif, system-ui, sans-serif;
+	/* One family everywhere (Arimo, served from this site); the website sets its headings bold. */
+	--ui-font: 'Arimo Variable', ui-sans-serif, system-ui, sans-serif;
 	--ui-font-heading: var(--ui-font);
 	--app-heading-weight: 700;
 	--ui-font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
@@ -14,9 +14,16 @@
 	--ui-accent: var(--brand);
 	--ui-on-accent: var(--on-brand);
 
-	/* Rounder than sinaui's defaults. */
-	--ui-radius: 1.25rem;
-	--ui-radius-control: 0.875rem;
+	/* Corners grow with the thing they round, about a quarter of its short side: a chip or icon tile,
+	   a button or field, a card or dialog (sinaui's Card adds 0.25rem), a full-width band. */
+	--radius-sm: 0.5rem;
+	--ui-radius-control: 0.625rem;
+	--ui-radius: 1rem;
+	--radius-xl: 1.75rem;
+
+	/* Surfaces lift with a shadow, not an outline. */
+	--ui-card-line: transparent;
+	--ui-card-shadow: var(--ui-shadow-xs);
 	--app-tint: color-mix(in oklab, var(--ui-accent) 5%, var(--ui-bg));
 	--app-tint-strong: color-mix(in oklab, var(--ui-accent) 12%, var(--ui-bg));
 	--ui-sidebar-current-bg: var(--app-tint-strong);
@@ -151,26 +158,14 @@ img {
 	font-size: var(--text-lg);
 	max-width: 40rem;
 }
-/* Inner pages open with a banner in the brand's tint: a soft glow in one corner and a faint grid,
-   clearly set apart from the white page below. */
+/* Inner pages open with a banner in the brand's tint, with a soft glow in one corner. */
 .site-page-top {
 	position: relative;
 	padding-block: clamp(3rem, 7vw, 5rem) clamp(2.5rem, 5vw, 3.5rem);
 	background:
 		radial-gradient(38rem 20rem at 88% -10%, color-mix(in oklab, var(--ui-accent) 22%, transparent), transparent 70%),
 		linear-gradient(180deg, var(--app-tint-strong), var(--app-tint));
-	border-bottom: 1px solid var(--ui-line);
 	overflow: hidden;
-}
-.site-page-top::before {
-	content: '';
-	position: absolute;
-	inset: 0;
-	background-image:
-		linear-gradient(var(--ui-line) 1px, transparent 1px), linear-gradient(90deg, var(--ui-line) 1px, transparent 1px);
-	background-size: 3rem 3rem;
-	mask-image: radial-gradient(60rem 24rem at 80% 0%, #000, transparent 75%);
-	pointer-events: none;
 }
 .site-page-top > * {
 	position: relative;
@@ -248,7 +243,7 @@ img {
 	flex: none;
 	width: 2.75rem;
 	height: 2.75rem;
-	border-radius: var(--ui-radius);
+	border-radius: 0.75rem;
 	background: var(--ui-accent);
 	color: var(--ui-on-accent);
 	font-family: var(--ui-font-heading);
@@ -385,8 +380,6 @@ a.site-card.in:hover {
 }
 /* Cards in the app: no border, lifted off the tinted page by a light shadow; their title icons in the brand color. */
 .app-area {
-	--ui-card-line: transparent;
-	--ui-card-shadow: var(--ui-shadow-xs);
 	--ui-card-icon: var(--ui-accent);
 	/* Six hues for icon tiles, so a row of numbers can be told apart at a glance. Icons only:
 	   buttons and links stay in the brand color. */

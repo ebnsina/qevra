@@ -42,9 +42,12 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - Money is whole taka; dates and numbers format through `src/lib/format.ts` (Bangladesh time).
 
 ## Design
-- Website: Google Sans Flex (self-hosted through `@fontsource-variable`), bold headings, large radii, white with one brand color
+- Website: Arimo (self-hosted through `@fontsource-variable`), bold headings, white with one brand color
   (blue `#2563eb` by default, the same on light and dark, set per academy in Site settings). Tinted sections and `.site-card` cards.
   It is the academy's own site: content about the academy, not about the software.
+- Radii follow size (`--radius-sm` chips and tiles, `--ui-radius-control` buttons and fields, `--ui-radius` cards and dialogs,
+  `--radius-xl` full-width bands). Surfaces lift with shadows, not outlines; no decorative grid patterns. Covers are
+  aurora gradients drawn by `scripts/cover.ts`.
 - Portal and admin: the same font at calmer weights, on sinaui's **Studio block** (`src/lib/sinaui/blocks/studio`): `AppShell.svelte` wraps
   `Studio` (sidebar with search, breadcrumbs, account menu, bottom tab bar on phones); pages use its `PageHeader`,
   `Stat`, `RowLink`, and a wide side sheet per table row.

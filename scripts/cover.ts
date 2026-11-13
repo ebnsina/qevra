@@ -1,5 +1,5 @@
-// Draws a cover picture for a course or a post: a soft gradient with a few translucent circles, in
-// the green family of the default brand color. Generated when seeding, so the repository carries no
+// Draws a cover picture for a course or a post: an aurora gradient (soft clouds of blue melting into
+// each other, with a light film grain). Generated when seeding, so the repository carries no
 // photographs. Plain PNG, written by hand with Node's zlib; no dependency.
 import { crc32, deflateSync } from 'node:zlib';
 
@@ -8,14 +8,15 @@ const HEIGHT = 420;
 
 type Rgb = [number, number, number];
 
-function hsl(h: number, s: number, l: number): Rgb {
-	const a = s * Math.min(l, 1 - l);
-	const f = (n: number) => {
-		const k = (n + h / 30) % 12;
-		return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))));
-	};
-	return [f(0), f(8), f(4)];
-}
+const hex = (color: string): Rgb => [1, 3, 5].map((i) => parseInt(color.slice(i, i + 2), 16)) as Rgb;
+// Blue families, light to deep. Each cover takes one, so neighbors differ but all sit with a blue brand.
+const PALETTES = [
+	['#0077b6', '#00b4d8', '#90e0ef', '#caf0f8', '#023e8a'],
+	['#2563eb', '#60a5fa', '#bfdbfe', '#e0f2fe', '#1e3a8a'],
+	['#4f46e5', '#38bdf8', '#a5b4fc', '#e0e7ff', '#1d4ed8'],
+	['#0ea5e9', '#22d3ee', '#a5f3fc', '#dbeafe', '#1e40af']
+].map((palette) => palette.map(hex));
+const GRAIN = 6;
 
 function chunk(type: string, data: Buffer) {
 	const body = Buffer.concat([Buffer.from(type, 'ascii'), data]);
@@ -33,33 +34,41 @@ export function coverPng(seed: number): Uint8Array<ArrayBuffer> {
 		state = (state * 1664525 + 1013904223) % 4294967296;
 		return state / 4294967296;
 	};
-	const hue = 212 + random() * 22; // forest green to teal
-	const top = hsl(hue, 0.6, 0.2 + random() * 0.08);
-	const bottom = hsl(hue + 14, 0.5, 0.38 + random() * 0.1);
-	const circles = Array.from({ length: 4 }, () => ({
+	const palette = PALETTES[seed % PALETTES.length];
+	// One cloud per color, each with its own place and reach.
+	const clouds = palette.map((color) => ({
+		color,
 		x: random() * WIDTH,
 		y: random() * HEIGHT,
-		r: 90 + random() * 190,
-		light: random() > 0.4,
-		alpha: 0.1 + random() * 0.12
+		reach: (0.28 + random() * 0.3) * WIDTH
 	}));
+
+	// Film grain: specks two pixels wide on about a third of the picture. Finer or denser grain
+	// looks the same at card size but makes the file ten times heavier.
+	const grains = Int8Array.from({ length: (WIDTH >> 1) * (HEIGHT >> 1) }, () =>
+		random() < 0.35 ? (random() < 0.5 ? -GRAIN : GRAIN) : 0
+	);
 
 	const raw = Buffer.alloc((WIDTH * 3 + 1) * HEIGHT);
 	for (let y = 0; y < HEIGHT; y++) {
 		const row = y * (WIDTH * 3 + 1);
-		raw[row] = 0; // no filter on this line
+		raw[row] = 1; // "Sub" filter: each byte is stored as its difference from the pixel to its left
+		const before = [0, 0, 0];
 		for (let x = 0; x < WIDTH; x++) {
-			const t = (y / HEIGHT) * 0.7 + (x / WIDTH) * 0.3;
-			const pixel = top.map((c, i) => c + (bottom[i] - c) * t);
-			for (const circle of circles) {
-				const distance = Math.hypot(x - circle.x, y - circle.y);
-				if (distance > circle.r) continue;
-				// Soft edge: full strength inside, fading over the last tenth of the radius.
-				const strength = circle.alpha * Math.min(1, (circle.r - distance) / (circle.r * 0.1));
-				const toward = circle.light ? 255 : 0;
-				for (let i = 0; i < 3; i++) pixel[i] += (toward - pixel[i]) * strength;
+			// Every cloud pulls the pixel toward its color, more strongly the nearer it is.
+			const pixel = [0, 0, 0];
+			let total = 0;
+			for (const cloud of clouds) {
+				const pull = Math.exp(-((x - cloud.x) ** 2 + (y - cloud.y) ** 2) / (2 * (cloud.reach / 2) ** 2)) + 0.002;
+				total += pull;
+				for (let i = 0; i < 3; i++) pixel[i] += cloud.color[i] * pull;
 			}
-			for (let i = 0; i < 3; i++) raw[row + 1 + x * 3 + i] = Math.round(pixel[i]);
+			const grain = grains[(y >> 1) * (WIDTH >> 1) + (x >> 1)];
+			for (let i = 0; i < 3; i++) {
+				const value = Math.max(0, Math.min(255, Math.round(pixel[i] / total) + grain));
+				raw[row + 1 + x * 3 + i] = (value - before[i]) & 255;
+				before[i] = value;
+			}
 		}
 	}
 

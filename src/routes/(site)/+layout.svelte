@@ -191,7 +191,7 @@
 		z-index: 5;
 		background: color-mix(in srgb, var(--ui-bg) 85%, transparent);
 		backdrop-filter: blur(12px);
-		border-bottom: 1px solid var(--ui-line);
+		box-shadow: var(--ui-shadow-xs);
 	}
 	.bar {
 		display: flex;

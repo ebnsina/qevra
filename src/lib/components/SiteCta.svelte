@@ -33,7 +33,7 @@
 		justify-content: space-between;
 		gap: 1.5rem 3rem;
 		padding: clamp(2rem, 5vw, 3.5rem);
-		border-radius: calc(var(--ui-radius) + 0.5rem);
+		border-radius: var(--radius-xl);
 		background: var(--ui-accent);
 		color: var(--ui-on-accent);
 	}
