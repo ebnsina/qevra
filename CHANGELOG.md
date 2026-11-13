@@ -4,6 +4,8 @@
 
 First version.
 
+- Lesson page: the lesson text, quiz, assignment, questions, notes, downloads, live classes and rating each have a tab, and the sidebar shrinks to icons to give the lesson room
+- Site settings and the course lesson manager are split into tabs; Site settings has one Save button in the page header
 - A thin bar across the top of every page shows while the next page loads
 - Post, page and course editors: Save, View and Delete sit in the page header and stay in view while you scroll
 - Public website for the academy: home, courses, course pages with a free preview, reviews, resources, blog and text pages

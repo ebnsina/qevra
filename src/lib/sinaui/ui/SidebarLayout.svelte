@@ -22,7 +22,7 @@
 
 <script lang="ts">
 	import { ease, reduced } from './motion';
-	import { onMount, tick, type Snippet } from 'svelte';
+	import { onMount, tick, untrack, type Snippet } from 'svelte';
 	import { ArrowDown01Icon, Menu01Icon, SidebarLeftIcon } from '@hugeicons/core-free-icons';
 	import Breadcrumb from './Breadcrumb.svelte';
 	import Dialog from './Dialog.svelte';
@@ -40,6 +40,11 @@
 		/** href of the page being shown. */
 		current?: string;
 		collapsed?: boolean;
+		/**
+		 * Show the icon rail on this page (a lesson, a video, an editor) to give its content the room.
+		 * The person's own choice is not overwritten: it returns when this is false again.
+		 */
+		rail?: boolean;
 		/** Remember collapsed/expanded in this browser under this key. */
 		persist?: string;
 		/** Called when an item is chosen (links still navigate). */
@@ -68,6 +73,7 @@
 		groups,
 		current,
 		collapsed = $bindable(false),
+		rail = false,
 		persist,
 		onselect,
 		header,
@@ -98,8 +104,22 @@
 		!!item.children?.some((c) => c.href === current || holds(c));
 	const isOpen = (item: SidebarItem) => opened[item.href] ?? holds(item);
 
+	// What the person chose, kept aside while `rail` holds the sidebar collapsed.
+	let chosen: boolean | undefined;
 	onMount(() => {
-		if (persist) collapsed = load(persist, false);
+		if (!persist) return;
+		const saved = load(persist, false);
+		if (rail) chosen = saved;
+		else collapsed = saved;
+	});
+	$effect(() => {
+		if (rail) {
+			chosen ??= untrack(() => collapsed);
+			collapsed = true;
+		} else if (chosen !== undefined) {
+			collapsed = chosen;
+			chosen = undefined;
+		}
 	});
 
 	/**
@@ -109,7 +129,8 @@
 	async function toggle() {
 		const before = main.getBoundingClientRect().left;
 		collapsed = !collapsed;
-		if (persist) save(persist, collapsed);
+		// Expanding on a rail page is for now only; it is not the person's standing choice.
+		if (persist && !rail) save(persist, collapsed);
 		await tick();
 		const shift = before - main.getBoundingClientRect().left;
 		if (shift && !reduced())

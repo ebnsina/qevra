@@ -25,6 +25,7 @@
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
+	import * as Tabs from '#lib/sinaui/ui/tabs/index.ts';
 	import * as Radio from '#lib/sinaui/ui/radio/index.ts';
 	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
@@ -104,9 +105,30 @@
 					<iframe src={lesson.video} title={lesson.title} allow="fullscreen; picture-in-picture" allowfullscreen></iframe>
 				</div>
 			{/if}
-			{#if lesson.html}<Card><div class="prose">{@html lesson.html}</div></Card>{/if}
 
-			{#if data.questions.length}
+
+
+
+			<!-- One thing per tab, so the lesson is not a long scroll. Each lesson starts on its first tab. -->
+			{#key lesson.id}
+			<Tabs.Root variant="pill" fit>
+				<Tabs.List label="Lesson sections">
+					{#if lesson.html}<Tabs.Tab value="lesson">Lesson</Tabs.Tab>{/if}
+					{#if data.questions.length}<Tabs.Tab value="quiz">Quiz</Tabs.Tab>{/if}
+					{#if lesson.assignment}<Tabs.Tab value="assignment">Assignment</Tabs.Tab>{/if}
+					<Tabs.Tab value="questions">Questions</Tabs.Tab>
+					<Tabs.Tab value="notes">My notes</Tabs.Tab>
+					{#if data.files.length}<Tabs.Tab value="downloads">Downloads</Tabs.Tab>{/if}
+					{#if data.live.length}<Tabs.Tab value="live">Live classes</Tabs.Tab>{/if}
+					{#if !data.preview}<Tabs.Tab value="review">Rate this course</Tabs.Tab>{/if}
+				</Tabs.List>
+				{#if lesson.html}
+				<Tabs.Panel value="lesson" class="tab-panel">
+			<Card><div class="prose">{@html lesson.html}</div></Card>
+				</Tabs.Panel>
+				{/if}
+				{#if data.questions.length}
+				<Tabs.Panel value="quiz" class="tab-panel">
 				<Card title="Quiz" icon={Quiz01Icon} level={2} description="Get {PASS_MARK * 100}% right to pass. You can try as many times as you need.">
 					{#snippet aside()}
 						{#if data.attempt}
@@ -137,9 +159,10 @@
 						</div>
 					</form>
 				</Card>
-			{/if}
-
-			{#if lesson.assignment}
+				</Tabs.Panel>
+				{/if}
+				{#if lesson.assignment}
+				<Tabs.Panel value="assignment" class="tab-panel">
 				<Card title="Assignment" icon={Task01Icon} level={2} description={lesson.assignment}>
 					{#snippet aside()}
 						{#if data.submission}
@@ -178,14 +201,9 @@
 						</form>
 					{/if}
 				</Card>
-			{/if}
-
-			{#if !lesson.done && !data.questions.length && !lesson.assignment}
-				<form method="post" action="?/complete" class="app-form-actions" use:enhance={complete.enhance}>
-					<Button type="submit" loading={complete.busy}><Icon icon={CheckmarkCircle02Icon} /> Mark as complete</Button>
-				</form>
-			{/if}
-
+				</Tabs.Panel>
+				{/if}
+				<Tabs.Panel value="questions" class="tab-panel">
 			<Card title="Questions and answers" icon={Comment01Icon} level={2} description="Ask about this lesson. Your teacher and classmates can reply.">
 				<form method="post" action="?/post" class="app-form" use:enhance={ask.enhance}>
 					<Textarea label="Your question" placeholder="What part of this lesson is unclear?" name="body" rows={2} required maxlength={4000} />
@@ -213,27 +231,31 @@
 					<p class="muted quiet">No questions yet. Be the first to ask.</p>
 				{/if}
 			</Card>
-		</div>
-
-		<aside class="side">
-			<Card title="Lessons" level={2}>
-				<Progress label="{done} of {plural(data.lessons.length, 'lesson')} done" value={done} max={data.lessons.length} />
-				{#each modules as [module, lessons] (module)}
-					<p class="module">{module}</p>
-					<ol class="lessons">
-						{#each lessons ?? [] as item (item.id)}
-							<li>
-								<a href="{base}/{item.id}" aria-current={item.id === lesson.id ? 'page' : undefined}>
-									<Icon icon={item.done ? CheckmarkCircle02Icon : CircleIcon} size={16} label={item.done ? 'Done' : 'Not done'} />
-									<span>{item.title}</span>
-								</a>
-							</li>
-						{/each}
-					</ol>
-				{/each}
+				</Tabs.Panel>
+				<Tabs.Panel value="notes" class="tab-panel">
+			<Card title="My notes" icon={PencilEdit01Icon} level={2} description="Only you can see these.">
+				<form method="post" action="?/note" class="app-form" use:enhance={note.enhance}>
+					<Textarea label="Notes on this lesson" placeholder="Write your own notes here. Only you can see them." hideLabel name="body" rows={4} maxlength={10000} value={data.note} />
+					<div class="app-form-actions">
+						<Button variant="ghost" size="sm" href="/portal/notes">All my notes</Button>
+						<Button type="submit" variant="outline" size="sm" loading={note.busy}>Save notes</Button>
+					</div>
+				</form>
 			</Card>
-
-			{#if data.live.length}
+				</Tabs.Panel>
+				{#if data.files.length}
+				<Tabs.Panel value="downloads" class="tab-panel">
+				<Card title="Downloads" icon={Download01Icon} level={2}>
+					<ul class="files">
+						{#each data.files as file (file.id)}
+							<li><Icon icon={File01Icon} size={16} /><a href="/files/{file.file_key}" download={file.file_name}>{file.title}</a></li>
+						{/each}
+					</ul>
+				</Card>
+				</Tabs.Panel>
+				{/if}
+				{#if data.live.length}
+				<Tabs.Panel value="live" class="tab-panel">
 				<Card title="Live classes" icon={Calendar03Icon} level={2}>
 					<ul class="live">
 						{#each data.live as session (session.id)}
@@ -255,29 +277,10 @@
 						{/each}
 					</ul>
 				</Card>
-			{/if}
-
-			{#if data.files.length}
-				<Card title="Downloads" icon={Download01Icon} level={2}>
-					<ul class="files">
-						{#each data.files as file (file.id)}
-							<li><Icon icon={File01Icon} size={16} /><a href="/files/{file.file_key}" download={file.file_name}>{file.title}</a></li>
-						{/each}
-					</ul>
-				</Card>
-			{/if}
-
-			<Card title="My notes" icon={PencilEdit01Icon} level={2} description="Only you can see these.">
-				<form method="post" action="?/note" class="app-form" use:enhance={note.enhance}>
-					<Textarea label="Notes on this lesson" placeholder="Write your own notes here. Only you can see them." hideLabel name="body" rows={4} maxlength={10000} value={data.note} />
-					<div class="app-form-actions">
-						<Button variant="ghost" size="sm" href="/portal/notes">All my notes</Button>
-						<Button type="submit" variant="outline" size="sm" loading={note.busy}>Save notes</Button>
-					</div>
-				</form>
-			</Card>
-
-			{#if !data.preview}
+				</Tabs.Panel>
+				{/if}
+				{#if !data.preview}
+				<Tabs.Panel value="review" class="tab-panel">
 				<Card title="Rate this course" icon={StarIcon} level={2}>
 					{#snippet aside()}
 						{#if data.review}<Badge tone={data.review.approved ? 'accent' : 'neutral'}>{data.review.approved ? 'Published' : 'Waiting for approval'}</Badge>{/if}
@@ -290,13 +293,40 @@
 						</div>
 					</form>
 				</Card>
-			{/if}
+				</Tabs.Panel>
+				{/if}
+			</Tabs.Root>
+			{/key}
 
-			{#if data.certificate}
-				<Card title="Certificate" icon={Certificate01Icon} level={2}>
-					<Button variant="outline" href="/certificates/{data.certificate}">View certificate</Button>
-				</Card>
+			{#if !lesson.done && !data.questions.length && !lesson.assignment}
+				<form method="post" action="?/complete" class="app-form-actions" use:enhance={complete.enhance}>
+					<Button type="submit" loading={complete.busy}><Icon icon={CheckmarkCircle02Icon} /> Mark as complete</Button>
+				</form>
 			{/if}
+		</div>
+
+		<aside class="side">
+			<Card title="Lessons" level={2}>
+				<Progress label="{done} of {plural(data.lessons.length, 'lesson')} done" value={done} max={data.lessons.length} />
+				{#each modules as [module, lessons] (module)}
+					<p class="module">{module}</p>
+					<ol class="lessons">
+						{#each lessons ?? [] as item (item.id)}
+							<li>
+								<a href="{base}/{item.id}" aria-current={item.id === lesson.id ? 'page' : undefined}>
+									<Icon icon={item.done ? CheckmarkCircle02Icon : CircleIcon} size={16} label={item.done ? 'Done' : 'Not done'} />
+									<span>{item.title}</span>
+								</a>
+							</li>
+						{/each}
+					</ol>
+				{/each}
+			</Card>
+
+
+
+
+
 		</aside>
 	</div>
 </div>

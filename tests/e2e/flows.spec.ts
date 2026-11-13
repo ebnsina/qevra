@@ -120,7 +120,9 @@ test('a coupon lowers the fee, and a question under a lesson gets the teacher\'s
 	await student.getByRole('button', { name: 'Start the course' }).click();
 	const question = `Is there homework? ${Date.now()}`;
 	await expect(async () => {
-		await student.getByLabel('Your question').fill(question);
+		// Questions sit on their own tab of the lesson.
+		await student.getByRole('tab', { name: 'Questions' }).click({ timeout: 2000 });
+		await student.getByLabel('Your question').fill(question, { timeout: 2000 });
 		await student.getByRole('button', { name: 'Ask', exact: true }).click();
 		await expect(student.getByText(question)).toBeVisible({ timeout: 3000 });
 	}).toPass();
@@ -140,7 +142,10 @@ test('a coupon lowers the fee, and a question under a lesson gets the teacher\'s
 	await expect(admin.getByText('No questions are waiting')).toBeVisible();
 
 	await student.reload();
-	await expect(student.getByText('Yes: one short task after each section.')).toBeVisible();
+	await expect(async () => {
+		await student.getByRole('tab', { name: 'Questions' }).click({ timeout: 2000 });
+		await expect(student.getByText('Yes: one short task after each section.')).toBeVisible({ timeout: 1000 });
+	}).toPass();
 	await expect(student.getByText('Teacher', { exact: true })).toBeVisible();
 });
 

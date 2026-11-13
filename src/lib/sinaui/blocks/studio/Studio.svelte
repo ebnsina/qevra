@@ -33,6 +33,8 @@
 		tabs?: SidebarItem[] | false;
 		/** A field above the navigation that narrows it as you type. */
 		search?: boolean;
+		/** Show the sidebar as the icon rail on this page (a lesson, an editor); the person's choice returns after. */
+		rail?: boolean;
 		/** The page sits in a rounded panel; the sidebar shares the window's tint. */
 		inset?: boolean;
 		/** How tall the frame is. It fills the window by default. */
@@ -64,6 +66,7 @@
 		tabs,
 		search = true,
 		inset = true,
+		rail = false,
 		height = '100dvh',
 		labels = {},
 		children
@@ -112,6 +115,7 @@
 		current={current?.href}
 		{crumbs}
 		{inset}
+		{rail}
 		{onselect}
 		tabs={phoneTabs}
 		moreLabel={t.more}
