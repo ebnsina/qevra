@@ -18,8 +18,8 @@
 		{ label: 'Order', text: (p) => String(p.position), numeric: true }
 	]}
 	fields={[
-		{ name: 'name', label: 'Name', required: true, hint: 'Read out to people who can\'t see the logo.' },
+		{ name: 'name', label: 'Name', placeholder: 'University of Dhaka', required: true, hint: 'Read out to people who can\'t see the logo.' },
 		{ name: 'image_key', label: 'Logo', type: 'image' },
-		{ name: 'position', label: 'Order', type: 'number', required: true, hint: 'Lower numbers show first.' }
+		{ name: 'position', label: 'Order', placeholder: '1', type: 'number', required: true, hint: 'Lower numbers show first.' }
 	]}
 />

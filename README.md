@@ -35,6 +35,7 @@ pnpm db:up               # Postgres, storage and a mail catcher (http://localhos
 pnpm db:migrate
 pnpm db:seed:demo        # a sample academy's content, plus demo accounts and sample lessons
 pnpm db:seed:activity    # optional: 640 demo students with payments, progress and reviews
+pnpm db:seed:showcase student@example.com   # optional: one student with a full history, for a demo
 pnpm dev                 # http://localhost:5173
 ```
 

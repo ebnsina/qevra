@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import * as v from 'valibot';
+import { setStudentPassword } from '#lib/server/auth.ts';
 import { id, parseForm } from '#lib/server/form.ts';
 
 // shortcut: loads every student and enrollment at once; add paging and server search past a few thousand students.
@@ -28,5 +29,16 @@ export const actions = {
 			on conflict (user_id, course_id) do nothing returning id`);
 		if (!added) return fail(409, { code: 'already_enrolled' });
 		return { enrolled: true };
+	},
+
+	// For a student who can't sign in: staff set a new password and tell it to them.
+	password: async ({ request }) => {
+		const form = await parseForm(
+			v.object({ user_id: id, new_password: v.pipe(v.string(), v.minLength(8, 'Use at least 8 characters'), v.maxLength(200)) }),
+			request
+		);
+		if ('invalid' in form) return form.invalid;
+		if (!(await setStudentPassword(form.data.user_id, form.data.new_password))) return fail(404, { code: 'not_found' });
+		return { passwordSet: true };
 	}
 };

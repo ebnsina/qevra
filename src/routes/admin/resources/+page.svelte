@@ -19,9 +19,9 @@
 		{ label: 'Order', text: (r) => String(r.position), numeric: true }
 	]}
 	fields={[
-		{ name: 'title', label: 'Title', required: true },
-		{ name: 'description', label: 'Short description', type: 'textarea', rows: 2 },
+		{ name: 'title', label: 'Title', placeholder: 'Irregular Verbs', required: true },
+		{ name: 'description', label: 'Short description', placeholder: 'The 120 irregular verbs you will meet most, with all three forms.', type: 'textarea', rows: 2 },
 		{ name: 'file_key', label: 'File', type: 'file' },
-		{ name: 'position', label: 'Order', type: 'number', required: true, hint: 'Lower numbers show first.' }
+		{ name: 'position', label: 'Order', placeholder: '1', type: 'number', required: true, hint: 'Lower numbers show first.' }
 	]}
 />

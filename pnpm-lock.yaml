@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@fontsource-variable/dm-sans':
+      '@fontsource-variable/cabin':
         specifier: ^5.3.0
         version: 5.3.0
       '@fontsource-variable/geist-mono':
@@ -87,8 +87,8 @@ importers:
 
 packages:
 
-  '@fontsource-variable/dm-sans@5.3.0':
-    resolution: {integrity: sha512-BpUG5bqePiDFMBM4ZtLSlPdAIOM990uB1dlXzIf4aw21yQR7BmykedLXXXMqGWsR18aMLOsbWccwJNh3ztTQaA==}
+  '@fontsource-variable/cabin@5.3.0':
+    resolution: {integrity: sha512-VDe9LHdI/XrmYDPCgBVkY+9ZLxAZFrTD3KhpJ/I0y3Ug9uCMDiNr0uKRaI7l1s1InANj1xH/Nsc7mOjkFJfK9w==}
 
   '@fontsource-variable/geist-mono@5.3.0':
     resolution: {integrity: sha512-vBbuwDEo9AkrqADMXOrlAR3DFcJi4/JxeuU43FoiQERnNwsfXNnvxvReZG02cQKmyk4DZkZdBZX3oTDvy2zBAw==}
@@ -1227,7 +1227,7 @@ packages:
 
 snapshots:
 
-  '@fontsource-variable/dm-sans@5.3.0': {}
+  '@fontsource-variable/cabin@5.3.0': {}
 
   '@fontsource-variable/geist-mono@5.3.0': {}
 

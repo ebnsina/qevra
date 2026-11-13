@@ -20,10 +20,10 @@
 		{ label: 'Order', text: (r) => String(r.position), numeric: true }
 	]}
 	fields={[
-		{ name: 'name', label: 'Student name', required: true },
-		{ name: 'affiliation', label: 'University or workplace' },
-		{ name: 'body', label: 'What they said', type: 'textarea', required: true },
-		{ name: 'rating', label: 'Stars (1 to 5)', type: 'number', required: true },
-		{ name: 'position', label: 'Order', type: 'number', required: true, hint: 'Lower numbers show first.' }
+		{ name: 'name', label: 'Student name', placeholder: 'Nusrat Jahan', required: true },
+		{ name: 'affiliation', label: 'University or workplace', placeholder: 'Job seeker' },
+		{ name: 'body', label: 'What they said', placeholder: 'The reasons behind each answer were what I had been missing.', type: 'textarea', required: true },
+		{ name: 'rating', label: 'Stars (1 to 5)', placeholder: '5', type: 'number', required: true },
+		{ name: 'position', label: 'Order', placeholder: '1', type: 'number', required: true, hint: 'Lower numbers show first.' }
 	]}
 />

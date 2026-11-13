@@ -10,7 +10,7 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - `pnpm db:up` local Postgres, storage and mail (Docker) · `pnpm db:migrate`
 - Seeding (each is safe to rerun): `pnpm db:seed` the website's content only · `pnpm db:seed:sample` also sample
   teaching material (lessons with license-free placeholder films, quizzes, assignments, live classes, study
-  sheets) · `pnpm db:seed:demo` all of that plus demo accounts (local and tests only) · `pnpm db:seed:activity` 640 demo students with payments, progress and reviews (`db:seed:activity:clear` removes them)
+  sheets) · `pnpm db:seed:demo` all of that plus demo accounts (local and tests only) · `pnpm db:seed:activity` 640 demo students with payments, progress and reviews (`db:seed:activity:clear` removes them) · `pnpm db:seed:showcase <student email>` gives one existing student a full history for a demo
 - `pnpm admin:create <email> "<name>"` creates a staff account and prints its password once
 - `pnpm dev` · `pnpm check` (keep 0 errors, 0 warnings)
 - `pnpm test` unit + database tests against `tadris_test` · `pnpm test:e2e` browser flows (starts its own server on 5174)
@@ -42,12 +42,12 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - Money is whole taka; dates and numbers format through `src/lib/format.ts` (Bangladesh time).
 
 ## Design
-- Website: Sora headings (bold) and DM Sans text (self-hosted through `@fontsource-variable`), white with one brand color
+- Website: Sora headings (bold) and Cabin text (its @ swapped for Geist Mono's) (self-hosted through `@fontsource-variable`), white with one brand color
   (blue `#2563eb` by default, the same on light and dark, set per academy in Site settings). Tinted sections and `.site-card` cards.
   It is the academy's own site: content about the academy, not about the software.
 - Radii follow size (`--radius-sm` chips and tiles, `--ui-radius-control` buttons and fields, `--ui-radius` cards and dialogs,
   `--radius-xl` full-width bands). Surfaces lift with shadows, not outlines; no decorative grid patterns. Covers are
-  aurora gradients drawn by `scripts/cover.ts`.
+  Unsplash photos kept in `scripts/content/covers` (800 × 420 WebP); the sign-in and home hero photos are in `static/images`.
 - Portal and admin: the same font at calmer weights, on sinaui's **Studio block** (`src/lib/sinaui/blocks/studio`): `AppShell.svelte` wraps
   `Studio` (sidebar with search, breadcrumbs, account menu, bottom tab bar on phones); pages use its `PageHeader`,
   `Stat`, `RowLink`, and a wide side sheet per table row.

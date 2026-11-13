@@ -23,7 +23,8 @@
 		"admin:create": "node --env-file=.env scripts/create-admin.ts",
 		"db:seed:sample": "node --env-file=.env scripts/seed.ts --sample",
 		"db:seed:activity": "node --env-file=.env scripts/seed-activity.ts",
-		"db:seed:activity:clear": "node --env-file=.env scripts/seed-activity.ts --clear"
+		"db:seed:activity:clear": "node --env-file=.env scripts/seed-activity.ts --clear",
+		"db:seed:showcase": "node --env-file=.env scripts/seed-showcase.ts"
 	},
 	"devDependencies": {
 		"@neon/config": "^1.14.0",
@@ -40,7 +41,7 @@
 		"vitest": "^5.1.0"
 	},
 	"dependencies": {
-		"@fontsource-variable/dm-sans": "^5.3.0",
+		"@fontsource-variable/cabin": "^5.3.0",
 		"@fontsource-variable/geist-mono": "^5.3.0",
 		"@fontsource-variable/sora": "^5.3.0",
 		"@hugeicons/core-free-icons": "^4.4.0",

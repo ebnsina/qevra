@@ -1,12 +1,12 @@
 import { fail, redirect } from '@sveltejs/kit';
 import * as v from 'valibot';
 import { afterLogin, register, startSession } from '#lib/server/auth.ts';
-import { parseForm, requiredText, text } from '#lib/server/form.ts';
+import { parseForm, phone, requiredText } from '#lib/server/form.ts';
 
 const Register = v.object({
 	name: requiredText(80),
 	email: v.pipe(v.string(), v.trim(), v.email('Enter a valid email address'), v.maxLength(200)),
-	phone: text(30),
+	phone,
 	password: v.pipe(v.string(), v.minLength(8, 'Use at least 8 characters'), v.maxLength(200))
 });
 

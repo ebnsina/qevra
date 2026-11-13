@@ -31,12 +31,12 @@
 			<Alert tone="success" title="Password changed. Sign in with the new one." />
 		{/if}
 		{#if form?.code}<Alert tone="danger" title={message(form.code)} live />{/if}
-		<Input label="Email" name="email" type="email" autocomplete="email" required value={form?.values?.email ?? ''} error={form?.errors?.email} />
-		<PasswordInput label="Password" name="password" autocomplete="current-password" required error={form?.errors?.password} />
+		<Input label="Email" placeholder="you@example.com" name="email" type="email" autocomplete="email" required value={form?.values?.email ?? ''} error={form?.errors?.email} />
+		<PasswordInput label="Password" placeholder="Your password" name="password" autocomplete="current-password" required error={form?.errors?.password} />
 		<Button type="submit" loading={busy}>Sign in</Button>
 	</form>
 	{#snippet footer()}
-		<p class="links"><a href="/forgot-password">Forgot password?</a><a href="/register{page.url.search}">Create an account</a></p>
+		<p class="links"><span class="muted">New here?</span><a href="/register{page.url.search}">Create an account</a></p>
 	{/snippet}
 </Card>
 

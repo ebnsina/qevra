@@ -39,7 +39,7 @@
 		{@const key = item?.[field.name]}
 		<div class={{ wide: wide(field) }}>
 			{#if field.type === 'textarea'}
-				<Textarea label={field.label} name={field.name} rows={field.rows ?? 4} required={field.required} hint={field.hint} value={text(field)} error={errors?.[field.name]} />
+				<Textarea label={field.label} name={field.name} rows={field.rows ?? 4} required={field.required} hint={field.hint} placeholder={field.placeholder} value={text(field)} error={errors?.[field.name]} />
 			{:else if field.type === 'richtext'}
 				<RichField label={field.label} name={field.name} value={text(field)} hint={field.hint} error={errors?.[field.name]} />
 			{:else if field.type === 'switch'}
@@ -72,6 +72,7 @@
 					inputmode={field.type === 'number' ? 'numeric' : undefined}
 					required={field.required}
 					hint={field.hint}
+					placeholder={field.placeholder}
 					value={text(field)}
 					error={errors?.[field.name]}
 				/>

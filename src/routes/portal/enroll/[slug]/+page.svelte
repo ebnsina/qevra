@@ -84,7 +84,7 @@
 			{:else}
 				{#if data.coupon}<Alert tone="warning" title="That code can't be used on this course. Check the spelling, or it may have expired." />{/if}
 				<form method="get" class="app-form-row coupon">
-					<Input label="Coupon code" name="coupon" value={data.coupon?.code ?? ''} required maxlength={40} />
+					<Input label="Coupon code" placeholder="WELCOME10" name="coupon" value={data.coupon?.code ?? ''} required maxlength={40} />
 					<Button type="submit" variant="outline">Apply</Button>
 				</form>
 			{/if}

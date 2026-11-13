@@ -105,6 +105,18 @@ export async function resetPassword(token: string, password: string) {
 	});
 }
 
+/** Staff give a student a new password (the student asked in person or by phone). Signs the student out everywhere. */
+export async function setStudentPassword(userId: string, password: string) {
+	const hash = await hashPassword(password);
+	return db('system', async (tx) => {
+		// Students only: one admin can never take over another admin's account from here.
+		const [user] = await tx`update users set password_hash = ${hash} where id = ${userId} and role = 'student' returning id`;
+		if (!user) return false;
+		await tx`delete from sessions where user_id = ${userId}`;
+		return true;
+	});
+}
+
 /** Signs the browser in: a new session, kept in an httpOnly cookie. */
 export async function startSession(cookies: import('@sveltejs/kit').Cookies, userId: string) {
 	const { token, expires } = await createSession(userId);

@@ -11,6 +11,7 @@
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
+	import PasswordInput from '#lib/sinaui/ui/PasswordInput.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
 	import Select from '#lib/sinaui/ui/Select.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
@@ -32,6 +33,7 @@
 	// Only courses the student isn't in yet can be added.
 	const available = $derived(data.courses.filter((c) => !enrollments.some((e) => e.course_id === c.id)));
 	const enroll = submitting();
+	const password = submitting();
 </script>
 
 <Seo title="Students | Admin" description="Students and their courses." noindex />
@@ -72,6 +74,7 @@
 	{#if selected}
 		{#if form && 'code' in form}<Alert tone="danger" title={message(form.code)} live />{/if}
 		{#if form && 'enrolled' in form}<Alert tone="success" title="Course opened for this student." live />{/if}
+		{#if form && 'passwordSet' in form}<Alert tone="success" title="Password changed. Tell the student the new one; they are signed out everywhere." live />{/if}
 		<dl class="app-fields">
 			<dt><Icon icon={Mail01Icon} size={16} /> Email</dt>
 			<dd><a href="mailto:{selected.email}">{selected.email}</a></dd>
@@ -107,6 +110,21 @@
 				<Button type="submit" variant="outline" loading={enroll.busy}>Enroll</Button>
 			</form>
 		{/if}
+
+		<h3 class="sub">Password</h3>
+		<form method="post" action="?/password" class="app-form-row add" use:enhance={password.enhance}>
+			<input type="hidden" name="user_id" value={selected.id} />
+			<PasswordInput
+				label="Set a new password"
+				name="new_password"
+				isNew
+				required
+				placeholder="Choose a password"
+				hint="For a student who can't sign in. Tell them the new password yourself."
+				error={form && 'errors' in form ? form.errors?.new_password : undefined}
+			/>
+			<Button type="submit" variant="outline" loading={password.busy}>Change password</Button>
+		</form>
 	{/if}
 </Dialog>
 

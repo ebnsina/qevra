@@ -58,24 +58,24 @@
 		orderForm?.requestSubmit();
 	}
 
-	const moduleFields: Field[] = [{ name: 'title', label: 'Section title', required: true }];
+	const moduleFields: Field[] = [{ name: 'title', label: 'Section title', placeholder: 'The noun phrase', required: true }];
 	const lessonFields = $derived<Field[]>([
-		{ name: 'title', label: 'Lesson title', required: true },
+		{ name: 'title', label: 'Lesson title', placeholder: 'Introduction to determiners', required: true },
 		{ name: 'module_id', label: 'Section', type: 'select', required: true, options: data.modules.map((m) => ({ value: m.id, label: m.title })) },
-		{ name: 'video_url', label: 'Video link', hint: 'A YouTube, Vimeo or Bunny Stream link. Use an unlisted video for paid lessons.' },
-		{ name: 'body', label: 'Notes under the video', type: 'textarea', rows: 6, hint: 'Markdown: ## for a heading, - for a list, **bold**.' },
-		{ name: 'assignment', label: 'Assignment', type: 'textarea', rows: 3, hint: 'The task students hand in as a file. Leave empty for no assignment.' },
+		{ name: 'video_url', label: 'Video link', placeholder: 'https://www.youtube.com/watch?v=…', hint: 'A YouTube, Vimeo or Bunny Stream link. Use an unlisted video for paid lessons.' },
+		{ name: 'body', label: 'Notes under the video', placeholder: '## Key points\n- A determiner comes before a noun', type: 'textarea', rows: 6, hint: 'Markdown: ## for a heading, - for a list, **bold**.' },
+		{ name: 'assignment', label: 'Assignment', placeholder: 'Write five sentences using this, that, these and those. Upload them as a PDF or photo.', type: 'textarea', rows: 3, hint: 'The task students hand in as a file. Leave empty for no assignment.' },
 		{ name: 'is_preview', label: 'Free preview', type: 'switch', hint: 'Anyone can watch this lesson on the course page before enrolling.' }
 	]);
 	const liveFields: Field[] = [
 		{ name: 'title', label: 'Title', required: true },
 		{ name: 'starts_at', label: 'Starts (Bangladesh time)', type: 'datetime', required: true },
-		{ name: 'meeting_url', label: 'Zoom or Google Meet link', type: 'url', required: true },
-		{ name: 'recording_url', label: 'Recording link', type: 'url', hint: 'Add it after the class so students can watch again.' }
+		{ name: 'meeting_url', label: 'Zoom or Google Meet link', placeholder: 'https://meet.google.com/abc-defg-hij', type: 'url', required: true },
+		{ name: 'recording_url', label: 'Recording link', placeholder: 'https://www.youtube.com/watch?v=…', type: 'url', hint: 'Add it after the class so students can watch again.' }
 	];
 	const announcementFields: Field[] = [
 		{ name: 'title', label: 'Title', required: true },
-		{ name: 'body', label: 'Message', type: 'textarea', rows: 6, hint: "Shown in every enrolled student's portal, and emailed to them when you first post it." }
+		{ name: 'body', label: 'Message', placeholder: 'Friday\'s live class moves to 8 pm. The link is on your course page.', type: 'textarea', rows: 6, hint: "Shown in every enrolled student's portal, and emailed to them when you first post it." }
 	];
 	// A new lesson goes into the section whose "Add lesson" was pressed.
 	const newLesson = $derived({ module_id: sheet?.moduleId ?? '' });
@@ -243,8 +243,8 @@
 					<input type="hidden" name="lesson_id" value={lesson.id} />
 					<input type="hidden" name="position" value={item?.position ?? questions.length} />
 					{#if item}<input type="hidden" name="id" value={item.id} />{/if}
-					<Textarea label={item ? `Question ${i + 1}` : 'New question'} name="question" rows={2} required value={item?.question ?? ''} />
-					<Textarea label="Answers" name="options" rows={4} required value={item?.options.join('\n') ?? ''} hint="One answer per line, 2 to 4 answers." />
+					<Textarea label={item ? `Question ${i + 1}` : 'New question'} placeholder="Which word comes before a singular noun that starts with a vowel sound?" name="question" rows={2} required value={item?.question ?? ''} />
+					<Textarea label="Answers" placeholder={'a\nan\nthe'} name="options" rows={4} required value={item?.options.join('\n') ?? ''} hint="One answer per line, 2 to 4 answers." />
 					<div class="app-form-row">
 						<Select label="Right answer" name="correct" required value={String((item?.correct ?? 0) + 1)}>
 							{#each [1, 2, 3, 4] as n (n)}<option value={String(n)}>Answer {n}</option>{/each}

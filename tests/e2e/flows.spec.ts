@@ -8,6 +8,7 @@ async function register(page: Page, name: string) {
 	await page.goto('/register');
 	await page.getByLabel('Full name').fill(name);
 	await page.getByLabel('Email').fill(email);
+	await page.getByLabel('Phone').fill('+880 1700-000000');
 	await page.getByLabel('Password', { exact: true }).fill(password);
 	await page.getByRole('button', { name: 'Create account' }).click();
 	await expect(page).toHaveURL('/portal');
@@ -175,4 +176,30 @@ test('analytics follows the chosen period', async ({ page }) => {
 	// An unknown period falls back to 30 days rather than failing.
 	await page.goto('/admin/analytics?days=7');
 	await expect(page.getByText('In the last 30 days', { exact: true })).toBeVisible();
+});
+
+test('staff set a new password for a student who cannot sign in', async ({ page, browser }) => {
+	const email = await register(page, 'Salma');
+	await page.goto('/logout');
+
+	const staff = await (await browser.newContext()).newPage();
+	await staff.goto('/login?next=/admin/students');
+	await signIn(staff, 'admin@example.com', 'admin12345');
+	await expect(async () => {
+		await staff.getByRole('button', { name: 'Salma', exact: true }).click();
+		await expect(staff.getByLabel('Set a new password')).toBeVisible({ timeout: 1000 });
+	}).toPass();
+	await staff.getByLabel('Set a new password').fill('brand-new-pass-9');
+	await staff.getByRole('button', { name: 'Change password' }).click();
+	await expect(staff.getByText('Password changed.')).toBeVisible();
+
+	await page.goto('/login');
+	await signIn(page, email, password);
+	await expect(page.getByText(/don't match/)).toBeVisible();
+	await signIn(page, email, 'brand-new-pass-9');
+	await expect(page).toHaveURL('/portal');
+	// The sign-in page no longer offers a reset by email.
+	await page.goto('/logout');
+	await page.goto('/login');
+	await expect(page.getByRole('link', { name: 'Forgot password?' })).toHaveCount(0);
 });

@@ -79,7 +79,7 @@
 		{/if}
 		<form id="answer" method="post" action="?/answer" class="app-form answer" use:enhance={answer.enhance}>
 			<input type="hidden" name="id" value={selected.id} />
-			<Textarea label="Your answer" name="body" rows={5} required maxlength={4000} />
+			<Textarea label="Your answer" placeholder="Write a clear answer the whole class can learn from" name="body" rows={5} required maxlength={4000} />
 		</form>
 		<form method="post" action="?/delete" bind:this={deleteForm} use:enhance={answer.enhance} hidden>
 			<input type="hidden" name="id" value={selected.id} />

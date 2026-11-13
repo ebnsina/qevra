@@ -99,7 +99,7 @@
 		{#if selected.status === 'pending'}
 			<form id="review" method="post" action="?/approve" class="app-form review" use:enhance={review.enhance}>
 				<input type="hidden" name="id" value={selected.id} />
-				<Textarea label="Note to the student (optional)" name="note" rows={2} maxlength={300} hint="Shown to the student. Say why if you can't confirm it." />
+				<Textarea label="Note to the student (optional)" placeholder="We could not find this transaction ID. Please check it and send again." name="note" rows={2} maxlength={300} hint="Shown to the student. Say why if you can't confirm it." />
 			</form>
 		{/if}
 	{/if}

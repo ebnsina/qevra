@@ -9,12 +9,11 @@
 //                                                   tests. Never on production: the demo passwords
 //                                                   are public.
 import { readFile } from 'node:fs/promises';
-import { AwsClient } from 'aws4fetch';
 import postgres from 'postgres';
 import { hashPassword } from '../src/lib/server/password.ts';
 import { resources } from './content/resources.ts';
-import { coverPng } from './cover.ts';
 import { tablePdf } from './pdf.ts';
+import { upload } from './storage.ts';
 
 interface Course {
 	slug: string;
@@ -69,31 +68,15 @@ const curriculum: Curriculum = JSON.parse(await readFile(new URL('curriculum.jso
 const sql = postgres(env('DATABASE_URL'), { max: 1, onnotice: () => {} });
 
 // Where each file lives in storage. The database rows below point at the same keys.
-const courseImage = (slug: string) => `public/courses/${slug}.png`;
-const postImage = (slug: string) => `public/posts/${slug}.png`;
-
-const storage = new AwsClient({
-	accessKeyId: env('AWS_ACCESS_KEY_ID'),
-	secretAccessKey: env('AWS_SECRET_ACCESS_KEY'),
-	region: env('AWS_REGION'),
-	service: 's3'
-});
-const TYPES: Record<string, string> = { png: 'image/png', jpg: 'image/jpeg', pdf: 'application/pdf' };
-
-async function upload(key: string, body: string | Uint8Array<ArrayBuffer>) {
-	const res = await storage.fetch(`${env('AWS_ENDPOINT_URL_S3')}/files/${key}`, {
-		method: 'PUT',
-		body,
-		headers: { 'content-type': TYPES[key.split('.').pop()!] }
-	});
-	if (!res.ok) throw new Error(`uploading ${key} failed with ${res.status}`);
-}
+const courseImage = (slug: string) => `public/courses/${slug}.webp`;
+const postImage = (slug: string) => `public/posts/${slug}.webp`;
 
 /** Puts every file in storage. Run each time, so a new or emptied bucket is filled again. */
 async function uploadFiles() {
-	// Cover pictures are drawn here, one per course and post, so no photographs live in the repository.
-	for (const [i, course] of content.courses.entries()) await upload(courseImage(course.slug), coverPng(i));
-	for (const [i, post] of content.posts.entries()) await upload(postImage(post.slug), coverPng(100 + i));
+	// One cover photo per course and post (scripts/content/covers, from Unsplash, 800 x 420 WebP).
+	const cover = async (slug: string) => new Uint8Array(await readFile(new URL(`covers/${slug}.webp`, dir)));
+	for (const course of content.courses) await upload(courseImage(course.slug), await cover(course.slug));
+	for (const post of content.posts) await upload(postImage(post.slug), await cover(post.slug));
 	if (sample) {
 		const footer = `${content.settings.name} - ${content.settings.tagline}`;
 		for (const sheet of resources) await upload(sheet.key, tablePdf({ ...sheet, footer }));

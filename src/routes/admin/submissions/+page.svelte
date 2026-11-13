@@ -85,8 +85,8 @@
 		</dl>
 		<form id="grade" method="post" action="?/review" class="app-form grade" use:enhance={review.enhance}>
 			<input type="hidden" name="id" value={selected.id} />
-			<Input label="Grade" name="grade" value={selected.grade} maxlength={40} hint="A mark or a word: 8/10, Good, Needs work." />
-			<Textarea label="Feedback" name="feedback" rows={5} value={selected.feedback} maxlength={2000} hint="The student sees this under their assignment." />
+			<Input label="Grade" placeholder="8/10" name="grade" value={selected.grade} maxlength={40} hint="A mark or a word: 8/10, Good, Needs work." />
+			<Textarea label="Feedback" placeholder="Good use of articles. Check the tense in sentence three." name="feedback" rows={5} value={selected.feedback} maxlength={2000} hint="The student sees this under their assignment." />
 		</form>
 	{/if}
 	{#snippet footer()}

@@ -1,11 +1,21 @@
 @import '@fontsource-variable/geist-mono';
-@import '@fontsource-variable/dm-sans';
+@import '@fontsource-variable/cabin';
 @import '@fontsource-variable/sora';
+
+/* One character only: Geist Mono's @, used in place of Cabin's. */
+@font-face {
+	font-family: 'At Sign';
+	src: url('../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2') format('woff2-variations');
+	font-weight: 100 900;
+	font-display: swap;
+	unicode-range: U+0040;
+}
 
 /* Tokens */
 :root {
-	/* DM Sans for text and Sora for headings, both served from this site; website headings are bold. */
-	--ui-font: 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+	/* Cabin for text and Sora for headings, both served from this site; website headings are bold.
+	   "At Sign" comes first so the @ in emails is Geist Mono's, not Cabin's. */
+	--ui-font: 'At Sign', 'Cabin Variable', ui-sans-serif, system-ui, sans-serif;
 	--ui-font-heading: 'Sora Variable', var(--ui-font);
 	--app-heading-weight: 700;
 	--ui-font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
@@ -249,6 +259,30 @@ img {
 	color: var(--ui-on-accent);
 	font-family: var(--ui-font-heading);
 	font-weight: 600;
+}
+/* A card's icon as a watermark: large, faint, and cut off by the card's top right corner. */
+.site-card:has(> .site-mark) {
+	position: relative;
+	overflow: clip;
+}
+.site-card:has(> .site-mark) > :not(.site-mark) {
+	position: relative;
+	max-width: calc(100% - 3.5rem);
+}
+.site-mark {
+	position: absolute;
+	top: -1.5rem;
+	inset-inline-end: -1.5rem;
+	display: grid;
+	place-items: center;
+	width: 8rem;
+	height: 8rem;
+	color: color-mix(in oklab, var(--ui-accent) 14%, transparent);
+	font-family: var(--ui-font-heading);
+	font-size: 8.5rem;
+	font-weight: 800;
+	line-height: 1;
+	pointer-events: none;
 }
 /* Icon cards: title left, icon right, then the content below a gap. */
 .card-head {

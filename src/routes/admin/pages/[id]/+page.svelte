@@ -15,14 +15,14 @@
 		item={data.page}
 		{form}
 		main={[
-			{ name: 'title', label: 'Title', required: true },
+			{ name: 'title', label: 'Title', placeholder: 'About us', required: true },
 			{ name: 'body', label: 'Text', type: 'richtext' }
 		]}
 		publish={[]}
 		side={[
 			{
 				title: 'Link',
-				fields: [{ name: 'slug', label: 'Web address', required: true, hint: 'The header and footer link to about, contact and privacy.' }]
+				fields: [{ name: 'slug', label: 'Web address', placeholder: 'about', required: true, hint: 'The header and footer link to about, contact and privacy.' }]
 			}
 		]}
 	>

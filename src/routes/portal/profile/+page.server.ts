@@ -1,9 +1,9 @@
 import { fail } from '@sveltejs/kit';
 import * as v from 'valibot';
-import { parseForm, requiredText, text } from '#lib/server/form.ts';
+import { parseForm, phone, requiredText } from '#lib/server/form.ts';
 import { hashPassword, verifyPassword } from '#lib/server/password.ts';
 
-const Profile = v.object({ name: requiredText(80), phone: text(30) });
+const Profile = v.object({ name: requiredText(80), phone });
 const Password = v.object({
 	current_password: v.pipe(v.string(), v.minLength(1, 'Enter your current password')),
 	new_password: v.pipe(v.string(), v.minLength(8, 'Use at least 8 characters'), v.maxLength(200))

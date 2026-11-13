@@ -25,8 +25,14 @@ First version.
 - The seed now loads a generic sample academy instead of one academy's own content, and can add demo activity
 - Renamed to Tadris
 - Website headings are set in Fraunces, a serif
-- Sora headings and DM Sans text across the website and the dashboard, with bold website headings; blue is the default brand color, the same on light and dark
+- Sora headings and Cabin text across the website and the dashboard, with bold website headings; blue is the default brand color, the same on light and dark
 - Corners now scale with the size of what they round; cards and the header lift with shadows instead of outlines; the banner's grid pattern is gone
-- Course and post covers are aurora gradients
+- Course and post covers are photographs; the closing band has an aurora gradient
 - The website header blends into each page's opening section and gains its own surface on scroll
 - The sample academy is named Lisan Academy
+- Sign-in pages show a photo beside the form on wide screens; the home hero has a photo behind its text
+- Strength, step and resource cards show their icon as a large watermark
+- Contact page: WhatsApp and email buttons and common questions
+- Every input shows an example of what to type
+- Phone number is required when creating an account
+- "Forgot password?" is gone from the sign-in page; staff set a new password for a student from the Students screen

@@ -171,7 +171,7 @@
 								maxSize={4 * 1024 * 1024}
 								hint="PDF, Word or a photo, up to 4 MB."
 							/>
-							<Textarea label="Note to the teacher (optional)" name="note" maxlength={1000} />
+							<Textarea label="Note to the teacher (optional)" placeholder="Anything the teacher should know about this work" name="note" maxlength={1000} />
 							<div class="app-form-actions">
 								<Button type="submit" loading={submit.busy}>{data.submission ? 'Send again' : 'Hand in'}</Button>
 							</div>
@@ -188,7 +188,7 @@
 
 			<Card title="Questions and answers" icon={Comment01Icon} level={2} description="Ask about this lesson. Your teacher and classmates can reply.">
 				<form method="post" action="?/post" class="app-form" use:enhance={ask.enhance}>
-					<Textarea label="Your question" name="body" rows={2} required maxlength={4000} />
+					<Textarea label="Your question" placeholder="What part of this lesson is unclear?" name="body" rows={2} required maxlength={4000} />
 					<div class="app-form-actions"><Button type="submit" variant="outline" loading={ask.busy}>Ask</Button></div>
 				</form>
 				{#if data.threads.length}
@@ -269,7 +269,7 @@
 
 			<Card title="My notes" icon={PencilEdit01Icon} level={2} description="Only you can see these.">
 				<form method="post" action="?/note" class="app-form" use:enhance={note.enhance}>
-					<Textarea label="Notes on this lesson" hideLabel name="body" rows={4} maxlength={10000} value={data.note} />
+					<Textarea label="Notes on this lesson" placeholder="Write your own notes here. Only you can see them." hideLabel name="body" rows={4} maxlength={10000} value={data.note} />
 					<div class="app-form-actions">
 						<Button variant="ghost" size="sm" href="/portal/notes">All my notes</Button>
 						<Button type="submit" variant="outline" size="sm" loading={note.busy}>Save notes</Button>
@@ -286,7 +286,7 @@
 						<Select label="Your rating" name="rating" required value={String(data.review?.rating ?? 5)}>
 							{#each [5, 4, 3, 2, 1] as stars (stars)}<option value={String(stars)}>{'★'.repeat(stars)} {stars} of 5</option>{/each}
 						</Select>
-						<Textarea label="What did you think? (optional)" name="body" rows={3} maxlength={2000} value={data.review?.body ?? ''} />
+						<Textarea label="What did you think? (optional)" placeholder="What helped, and what could be better?" name="body" rows={3} maxlength={2000} value={data.review?.body ?? ''} />
 						<div class="app-form-actions">
 							<Button type="submit" variant="outline" size="sm" loading={rate.busy}>{data.review ? 'Update review' : 'Send review'}</Button>
 						</div>

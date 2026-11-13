@@ -27,11 +27,11 @@
 		{ label: 'Status' }
 	]}
 	fields={[
-		{ name: 'code', label: 'Code', required: true, hint: 'What students type, like WELCOME10. Capitals or not, it works the same.' },
-		{ name: 'percent_off', label: 'Percent off', type: 'number', required: true, hint: '1 to 100.' },
+		{ name: 'code', label: 'Code', placeholder: 'WELCOME10', required: true, hint: 'What students type, like WELCOME10. Capitals or not, it works the same.' },
+		{ name: 'percent_off', label: 'Percent off', placeholder: '10', type: 'number', required: true, hint: '1 to 100.' },
 		{ name: 'course_id', label: 'Works on', type: 'select', options: [{ value: '', label: 'Every course' }, ...data.courses.map((c) => ({ value: c.id, label: c.title }))] },
 		{ name: 'expires_at', label: 'Ends (Bangladesh time)', type: 'datetime', hint: 'Leave empty for no end date.' },
-		{ name: 'max_uses', label: 'How many times it can be used', type: 'number', hint: 'Leave empty for no limit. Payments you could not confirm do not count.' },
+		{ name: 'max_uses', label: 'How many times it can be used', placeholder: '100', type: 'number', hint: 'Leave empty for no limit. Payments you could not confirm do not count.' },
 		{ name: 'active', label: 'Switched on', type: 'switch', hint: 'Off stops the code working without deleting it.' }
 	]}
 >

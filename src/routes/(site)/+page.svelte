@@ -143,10 +143,8 @@
 			<ul class="site-grid four">
 				{#each points as point, i (point.first)}
 					<li class="site-card">
-						<div class="card-head">
-							<h3 class="site-h3">{point.first}</h3>
-							<span class="app-icon"><Icon icon={pointIcons[i % pointIcons.length]} size={20} /></span>
-						</div>
+						<span class="site-mark" aria-hidden="true"><Icon icon={pointIcons[i % pointIcons.length]} size={128} /></span>
+						<h3 class="site-h3">{point.first}</h3>
 						<p class="muted">{point.second}</p>
 					</li>
 				{/each}
@@ -188,7 +186,8 @@
 		<ol class="site-grid four">
 			{#each steps as step, i (step.title)}
 				<li class="site-card">
-					<div class="card-head"><h3 class="site-h3">{step.title}</h3><span class="app-icon">{i + 1}</span></div>
+					<span class="site-mark" aria-hidden="true">{i + 1}</span>
+					<h3 class="site-h3">{step.title}</h3>
 					<p class="muted">{step.text}</p>
 				</li>
 			{/each}
@@ -254,7 +253,12 @@
 
 <style>
 	.hero {
-		background: radial-gradient(60rem 28rem at 50% -6rem, var(--app-tint-strong), transparent 70%), var(--ui-bg);
+		/* A library photo (Unsplash, photo-1481627834876-b7833e8f5570) under a wash of the page color, so the
+		   text above it stays easy to read; it fades out toward the bottom. */
+		background:
+			linear-gradient(180deg, color-mix(in srgb, var(--ui-bg) 72%, transparent) 0%, color-mix(in srgb, var(--ui-bg) 86%, transparent) 55%, var(--ui-bg) 100%),
+			url('/images/hero.webp') center 30% / cover no-repeat,
+			var(--ui-bg);
 		padding-block: clamp(3.5rem, 8vw, 6rem) clamp(3rem, 6vw, 4.5rem);
 		text-align: center;
 	}

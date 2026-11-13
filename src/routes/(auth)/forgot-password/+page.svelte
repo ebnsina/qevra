@@ -29,7 +29,7 @@
 				};
 			}}
 		>
-			<Input label="Email" name="email" type="email" autocomplete="email" required error={form?.errors?.email} />
+			<Input label="Email" placeholder="you@example.com" name="email" type="email" autocomplete="email" required error={form?.errors?.email} />
 			<Button type="submit" loading={busy}>Send reset link</Button>
 		</form>
 	{/if}

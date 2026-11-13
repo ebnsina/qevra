@@ -58,6 +58,7 @@
 {#if data.user}
 	<AppShell label="Admin" role="Admin" home="/admin" {groups} user={data.user}>
 		{#snippet menu()}
+			<Menu.Item href="/portal/profile"><Icon icon={UserIcon} size={16} />Profile and password</Menu.Item>
 			<Menu.Item href="/portal"><Icon icon={UserIcon} size={16} />Student portal</Menu.Item>
 			<Menu.Item href="/"><Icon icon={Globe02Icon} size={16} />View website</Menu.Item>
 		{/snippet}

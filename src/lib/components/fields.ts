@@ -5,6 +5,8 @@ export interface Field {
 	type?: 'text' | 'textarea' | 'richtext' | 'number' | 'switch' | 'image' | 'file' | 'select' | 'datetime' | 'email' | 'url' | 'color';
 	required?: boolean;
 	hint?: string;
+	/** An example of what to type, shown while the input is empty. */
+	placeholder?: string;
 	rows?: number;
 	options?: { value: string; label: string }[];
 	/** Takes the whole row in a two-column form. Long text, files and switches always do. */
