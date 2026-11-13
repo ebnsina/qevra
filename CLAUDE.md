@@ -42,10 +42,10 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - Money is whole taka; dates and numbers format through `src/lib/format.ts` (Bangladesh time).
 
 ## Design
-- Website: Fraunces headings, Amulya text (self-hosted in `static/fonts`), white with one brand color
-  (forest green `#166534` by default, set per academy in Site settings). Tinted sections and `.site-card` cards.
+- Website: Google Sans Flex (self-hosted through `@fontsource-variable`), bold headings, large radii, white with one brand color
+  (blue `#2563eb` by default, the same on light and dark, set per academy in Site settings). Tinted sections and `.site-card` cards.
   It is the academy's own site: content about the academy, not about the software.
-- Portal and admin: Geist, on sinaui's **Studio block** (`src/lib/sinaui/blocks/studio`): `AppShell.svelte` wraps
+- Portal and admin: the same font at calmer weights, on sinaui's **Studio block** (`src/lib/sinaui/blocks/studio`): `AppShell.svelte` wraps
   `Studio` (sidebar with search, breadcrumbs, account menu, bottom tab bar on phones); pages use its `PageHeader`,
   `Stat`, `RowLink`, and a wide side sheet per table row.
 - The Studio block and `SidebarLayout`'s `tabs` live on sinaui's local `studio-block` branch (not on main yet). To

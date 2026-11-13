@@ -25,3 +25,4 @@ First version.
 - The seed now loads a generic sample academy instead of one academy's own content, and can add demo activity
 - Renamed to Tadris
 - Website headings are set in Fraunces, a serif
+- Google Sans Flex across the website and the dashboard, with bold website headings; blue is the default brand color, the same on light and dark; rounder corners
