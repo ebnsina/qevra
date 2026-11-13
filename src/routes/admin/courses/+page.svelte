@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { adminPage } from '#lib/admin-query.svelte.ts';
 	import Badge from '#lib/sinaui/ui/Badge.svelte';
 	import CrudPage from '#lib/components/CrudPage.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { money, number } from '#lib/format.ts';
 
-	let { data } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
 </script>
 
 <Seo title="Courses | Admin" description="Courses and their lessons." noindex />

@@ -29,6 +29,10 @@ SvelteKit 3 + Svelte 5 + TypeScript, one service. Neon (Postgres + Object Storag
 - **Every query goes through `locals.db(tx => …)`** (or `db(actor, …)`): it sets who is asking, and row-level security
   decides what they see. The app connects as `DATABASE_APP_URL` (a restricted role, `tadris_app` locally; the hosted databases still use `qevra_app`); the owner `DATABASE_URL` is for
   migrations and the seed only. Never use the owner in app code: it bypasses row-level security.
+- **Admin screens read and save through TanStack Query** (`src/lib/admin-query.svelte.ts`): `adminPage(() => loaded)` for the
+  screen's data, `mutating(done, optimistic)` for each save, `<form onsubmit={x.submit}>`. Saves still post to the page's
+  form actions; refetches come from `/admin/data/<screen>`, which runs that screen's own `load`. Never add `use:enhance`
+  or read the `data` prop directly in `/admin`. The portal and website keep plain form actions.
 - `db('system', …)` is only for sign-in and bookkeeping no person may do directly (sessions, completing lessons,
   issuing certificates, checking a certificate number).
 - `hooks.server.ts` is the only gate for `/portal` (signed in) and `/admin` (admin role).

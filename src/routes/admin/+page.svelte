@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { adminPage } from '#lib/admin-query.svelte.ts';
 	import {
 		BookOpen01Icon,
 		Certificate01Icon,
@@ -19,7 +20,9 @@
 	import TrendChart from '#lib/components/TrendChart.svelte';
 	import { date, dayShort, money, number, plural } from '#lib/format.ts';
 
-	let { data } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
 	const taka = (amount: number) => (amount ? money(amount) : '৳0');
 	const sum = (values: number[]) => values.reduce((a, b) => a + b, 0);
 	const short = (text: string) => (text.length > 60 ? `${text.slice(0, 60)}…` : text);
@@ -92,7 +95,7 @@
 					<ul class="rows">
 						{#each list.rows as row (row.id)}
 							<li>
-								<a href={list.href}>
+								<a href="{list.href}?open={row.id}">
 									<span><strong>{row.main}</strong><span class="muted">{row.sub}</span></span>
 									<span class="end">{#if row.end}<strong>{row.end}</strong>{/if}<span class="muted">{date(row.when)}</span></span>
 								</a>
@@ -113,10 +116,10 @@
 				<ul class="rows">
 					{#each data.recent as row (row.id)}
 						<li>
-							<div class="row">
+							<a href="/admin/students?open={row.user_id}">
 								<span><strong>{row.student}</strong><span class="muted">{row.course}</span></span>
 								<span class="end"><span class="muted">{date(row.created_at)}</span></span>
-							</div>
+							</a>
 						</li>
 					{/each}
 				</ul>
@@ -170,8 +173,7 @@
 		margin: 0;
 		padding: 0;
 	}
-	.rows a,
-	.row {
+	.rows a {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

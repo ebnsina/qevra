@@ -38,3 +38,5 @@ First version.
 - "Forgot password?" is gone from the sign-in page; staff set a new password for a student from the Students screen
 - Overview and Analytics are split into tabs instead of one long page; number tiles are tinted in their color
 - Dates, times, colors and dropdowns in forms use the app's own pickers instead of the browser's
+- Admin: lists refresh by themselves, and confirming a payment, answering a question, publishing a review, marking an assignment or deleting a record shows at once (and is undone with a message if saving fails)
+- Admin Overview: each waiting item opens that payment, question, assignment or student directly

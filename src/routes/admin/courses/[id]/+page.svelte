@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { adminPage, mutating } from '#lib/admin-query.svelte.ts';
 	import { Calendar03Icon, Download01Icon, DragDropVerticalIcon, File01Icon, Megaphone01Icon, Quiz01Icon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
 	import RowLink from '#lib/sinaui/blocks/studio/RowLink.svelte';
@@ -19,9 +19,13 @@
 	import type { Field } from '#lib/components/fields.ts';
 	import Seo from '#lib/components/Seo.svelte';
 	import { date, dateTime, plural } from '#lib/format.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data, form } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
+	// Saves with nothing to do afterwards (the list simply refreshes).
+	const quiet = mutating();
 
 	// One sheet is open at a time: which kind, and which row (null adds a new one).
 	type Kind = 'module' | 'lesson' | 'live' | 'announcement';
@@ -45,8 +49,8 @@
 	const files = $derived(lesson ? data.files.filter((f) => f.lesson_id === lesson.id) : []);
 	const quizCount = (lessonId: string) => data.questions.filter((q) => q.lesson_id === lessonId).length;
 	const fileCount = (lessonId: string) => data.files.filter((f) => f.lesson_id === lessonId).length;
-	const question = submitting();
-	const upload = submitting();
+	const question = mutating();
+	const upload = mutating();
 
 	// Dragging a section or a lesson sends the new order through this hidden form.
 	let orderForm = $state<HTMLFormElement>();
@@ -92,12 +96,13 @@
 		{/snippet}
 	</PageHeader>
 
-	{#if form && 'announced' in form && form.announced}
+	{#if form?.announced}
+		{@const sent = form.announced as { students: number; unsent: number }}
 		<Alert
-			tone={form.announced.unsent ? 'warning' : 'success'}
-			title={form.announced.unsent
-				? `Posted. The email could not be sent to ${plural(form.announced.unsent, 'student')}; they will still see it in their portal.`
-				: `Posted and emailed to ${plural(form.announced.students, 'student')}.`}
+			tone={sent.unsent ? 'warning' : 'success'}
+			title={sent.unsent
+				? `Posted. The email could not be sent to ${plural(sent.unsent, 'student')}; they will still see it in their portal.`
+				: `Posted and emailed to ${plural(sent.students, 'student')}.`}
 			live
 		/>
 	{/if}
@@ -187,7 +192,7 @@
 	</Card>
 </div>
 
-<form method="post" action="?/reorder" bind:this={orderForm} use:enhance hidden>
+<form method="post" action="?/reorder" bind:this={orderForm} onsubmit={quiet.submit} hidden>
 	<input type="hidden" name="kind" value={order.kind} />
 	<input type="hidden" name="ids" value={order.ids} />
 </form>
@@ -214,7 +219,7 @@
 						<li>
 							<Icon icon={File01Icon} size={16} />
 							<a href="/files/{file.file_key}" download={file.file_name}>{file.title}</a>
-							<form method="post" action="?/deleteFile" use:enhance>
+							<form method="post" action="?/deleteFile" onsubmit={quiet.submit}>
 								<input type="hidden" name="id" value={file.id} />
 								<Button type="submit" variant="ghost" size="sm">Remove</Button>
 							</form>
@@ -222,7 +227,7 @@
 					{/each}
 				</ul>
 			{/if}
-			<form method="post" action="?/saveFile" enctype="multipart/form-data" class="app-form block" use:enhance={upload.enhance}>
+			<form method="post" action="?/saveFile" enctype="multipart/form-data" class="app-form block" onsubmit={upload.submit}>
 				<input type="hidden" name="lesson_id" value={lesson.id} />
 				<Input label="Name of the download" name="title" required maxlength={120} placeholder="Lecture sheet" />
 				<FileDrop label="File" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" maxSize={4 * 1024 * 1024} hint="PDF, Word or an image, up to 4 MB." />
@@ -239,7 +244,7 @@
 				</div>
 			</div>
 			{#each [...questions, null] as item, i (item?.id ?? 'new')}
-				<form method="post" action="?/saveQuestion" class="app-form block" use:enhance={question.enhance}>
+				<form method="post" action="?/saveQuestion" class="app-form block" onsubmit={question.submit}>
 					<input type="hidden" name="lesson_id" value={lesson.id} />
 					<input type="hidden" name="position" value={item?.position ?? questions.length} />
 					{#if item}<input type="hidden" name="id" value={item.id} />{/if}

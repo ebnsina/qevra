@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { adminPage, mutating } from '#lib/admin-query.svelte.ts';
 	import { Home01Icon, Payment01Icon, Settings01Icon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
 	import Alert from '#lib/sinaui/ui/Alert.svelte';
@@ -9,12 +9,14 @@
 	import type { Field } from '#lib/components/fields.ts';
 	import Seo from '#lib/components/Seo.svelte';
 	import { message } from '#lib/messages.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data, form } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
 	const errors = $derived(form && 'errors' in form ? form.errors : undefined);
-	const settings = submitting();
-	const home = submitting();
+	const settings = mutating();
+	const home = mutating();
 
 	const identity: Field[] = [
 		{ name: 'name', label: 'Academy name', placeholder: 'Lisan Academy', required: true },
@@ -67,7 +69,7 @@
 	{#if form && 'code' in form}<Alert tone="danger" title={message(form.code)} live />{/if}
 	{#if errors}<Alert tone="danger" title="Some fields need a look. They are marked below." live />{/if}
 
-	<form method="post" action="?/settings" enctype="multipart/form-data" class="app-form" use:enhance={settings.enhance}>
+	<form method="post" action="?/settings" enctype="multipart/form-data" class="app-form" onsubmit={settings.submit}>
 		<Card title="Academy" icon={Settings01Icon} level={2} description="Name, logo and brand color, used on every page.">
 			<Fields fields={identity} item={data.settings} {errors} columns={2} />
 		</Card>
@@ -80,7 +82,7 @@
 		<div class="app-form-actions"><Button type="submit" loading={settings.busy}>Save settings</Button></div>
 	</form>
 
-	<form method="post" action="?/home" class="app-form" use:enhance={home.enhance}>
+	<form method="post" action="?/home" class="app-form" onsubmit={home.submit}>
 		<Card title="Home page" icon={Home01Icon} level={2} description="The words on the home page, top to bottom.">
 			<Fields fields={homeFields} item={data.home} {errors} columns={2} />
 		</Card>

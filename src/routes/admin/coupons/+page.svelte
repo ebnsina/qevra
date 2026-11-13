@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { adminPage } from '#lib/admin-query.svelte.ts';
 	import Badge from '#lib/sinaui/ui/Badge.svelte';
 	import CrudPage from '#lib/components/CrudPage.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { date } from '#lib/format.ts';
 
-	let { data, form } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
 	const working = (c: (typeof data.coupons)[number]) =>
 		c.active && (!c.expires_at || new Date(c.expires_at) > new Date()) && (c.max_uses === null || c.uses < c.max_uses);
 </script>

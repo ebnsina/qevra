@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
+	import { adminPage, mutating, withRow } from '#lib/admin-query.svelte.ts';
 	import { goto } from '$app/navigation';
 	import { MessageQuestionIcon } from '@hugeicons/core-free-icons';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
@@ -17,12 +18,19 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import { dateTime } from '#lib/format.ts';
 	import { message } from '#lib/messages.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
 
-	let { data, form } = $props();
-	let openId = $state<string>();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
+	// A link from the Overview names the one to open (?open=<id>), so nobody has to find it in the list again.
+	let openId = $state(page.url.searchParams.get('open') ?? undefined);
 	const selected = $derived(data.questions.find((q) => q.id === openId));
-	const answer = submitting(() => (openId = undefined));
+	// Shown at once: an answered question leaves the waiting list; a deleted one leaves every list.
+	const answer = mutating<typeof loaded>(
+		() => (openId = undefined),
+		(old, sent, action) => withRow(old, sent.get('id'), action === '?/delete' || old.show === 'open' ? null : { answered: true })
+	);
 	let deleteForm = $state<HTMLFormElement>();
 	const short = (text: string) => (text.length > 70 ? `${text.slice(0, 70)}…` : text);
 </script>
@@ -74,11 +82,11 @@
 				{/each}
 			</ul>
 		{/if}
-		<form id="answer" method="post" action="?/answer" class="app-form answer" use:enhance={answer.enhance}>
+		<form id="answer" method="post" action="?/answer" class="app-form answer" onsubmit={answer.submit}>
 			<input type="hidden" name="id" value={selected.id} />
 			<Textarea label="Your answer" placeholder="Write a clear answer the whole class can learn from" name="body" rows={5} required maxlength={4000} />
 		</form>
-		<form method="post" action="?/delete" bind:this={deleteForm} use:enhance={answer.enhance} hidden>
+		<form method="post" action="?/delete" bind:this={deleteForm} onsubmit={answer.submit} hidden>
 			<input type="hidden" name="id" value={selected.id} />
 		</form>
 	{/if}

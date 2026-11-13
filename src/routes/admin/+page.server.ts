@@ -33,8 +33,8 @@ export async function load({ locals }) {
 			from submissions s join users u on u.id = s.user_id join lessons l on l.id = s.lesson_id
 			where s.reviewed_at is null order by s.created_at limit 5`;
 
-		const recent = await tx<{ id: string; student: string; course: string; created_at: Date }[]>`
-			select e.id, u.name as student, c.title as course, e.created_at
+		const recent = await tx<{ id: string; user_id: string; student: string; course: string; created_at: Date }[]>`
+			select e.id, e.user_id, u.name as student, c.title as course, e.created_at
 			from enrollments e join users u on u.id = e.user_id join courses c on c.id = e.course_id
 			order by e.created_at desc limit 6`;
 		const courses = await tx<{ id: string; title: string; students: number; completed: number }[]>`

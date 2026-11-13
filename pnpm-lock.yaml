@@ -26,6 +26,9 @@ importers:
       '@tanstack/charts':
         specifier: 0.18.0
         version: 0.18.0(svelte@5.57.3)
+      '@tanstack/svelte-query':
+        specifier: ^6.4.1
+        version: 6.4.1(svelte@5.57.3)
       '@tiptap/core':
         specifier: ^3.33.1
         version: 3.33.1(@tiptap/pm@3.33.1)
@@ -38,6 +41,9 @@ importers:
       aws4fetch:
         specifier: ^1.0.20
         version: 1.0.20
+      devalue:
+        specifier: ^6.0.3
+        version: 6.0.3
       marked:
         specifier: ^18.2.0
         version: 18.2.0
@@ -343,6 +349,14 @@ packages:
         optional: true
       vue:
         optional: true
+
+  '@tanstack/query-core@5.107.1':
+    resolution: {integrity: sha512-PSyAik11oQBEVOiVy5hjZWHmoUqOXqK1WYy4v55mcxozEfKaQgpUMsgnXhWjuESzSht8JfzqMS1m6M/9CpNgvg==}
+
+  '@tanstack/svelte-query@6.4.1':
+    resolution: {integrity: sha512-5j0PrXJOx8Ay6s13UamdLL6oc4stG84kVv0/WwFN74y5mkWDR20wNs9idYD4wb3etAI/slmKzPQzNkAzumKkMg==}
+    peerDependencies:
+      svelte: ^5.25.0
 
   '@tiptap/core@3.33.1':
     resolution: {integrity: sha512-cWSLHe0Bp44SqEsNMpfSpJeeWenG9/g4pAMRjcEpm0IZN9cmY5fq7LEYZCpjBbVqpzjaT1q7HnkvbBOPTdhbrQ==}
@@ -734,6 +748,10 @@ packages:
 
   devalue@5.9.4:
     resolution: {integrity: sha512-sPAT4pztbu6586/hrhOnMKS17IJrvg12mXiSPSS3W5qDeN2RGgvZ0diZCm31dBbnevfVmujNO3IM2wrS4Y2Rhg==}
+
+  devalue@6.0.3:
+    resolution: {integrity: sha512-3woMEITftG1wKeO/4d/QXH1DVKctTSZg3jNGPpjp9hNr5Hos8MCFF5McTML5ZtgKDObm2R591B0spRp2IVernA==}
+    engines: {node: '>=18'}
 
   es-module-lexer@2.3.2:
     resolution: {integrity: sha512-poHGpORABojJJucnV9KbOavETW8lBVnphkW77ER5/BQ5Fz7oXSoCNek7IH3vR5nRjdsEz926ibFYX8KtLQmdyw==}
@@ -1422,6 +1440,13 @@ snapshots:
     optionalDependencies:
       svelte: 5.57.3
 
+  '@tanstack/query-core@5.107.1': {}
+
+  '@tanstack/svelte-query@6.4.1(svelte@5.57.3)':
+    dependencies:
+      '@tanstack/query-core': 5.107.1
+      svelte: 5.57.3
+
   '@tiptap/core@3.33.1(@tiptap/pm@3.33.1)':
     dependencies:
       '@tiptap/pm': 3.33.1
@@ -1805,6 +1830,8 @@ snapshots:
   detect-libc@2.1.2: {}
 
   devalue@5.9.4: {}
+
+  devalue@6.0.3: {}
 
   es-module-lexer@2.3.2: {}
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { adminPage } from '#lib/admin-query.svelte.ts';
 	import { goto } from '$app/navigation';
 	import {
 		Analytics01Icon,
@@ -26,7 +27,9 @@
 	import TrendChart from '#lib/components/TrendChart.svelte';
 	import { dayShort, money, number, plural } from '#lib/format.ts';
 
-	let { data } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
 	const percent = (part: number, whole: number) => (whole ? `${Math.round((part / whole) * 100)}%` : 'None yet');
 	const taka = (amount: number) => (amount ? money(amount) : '৳0');
 	const sum = (values: number[]) => values.reduce((a, b) => a + b, 0);

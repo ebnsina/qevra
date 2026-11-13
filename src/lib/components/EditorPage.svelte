@@ -2,7 +2,6 @@
 	// A full-page editor for one record, laid out like a publishing tool: the title and content in
 	// the main column, and a publish box with the settings down the side.
 	import type { Snippet } from 'svelte';
-	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
 	import PageHeader from '#lib/sinaui/blocks/studio/PageHeader.svelte';
 	import Alert from '#lib/sinaui/ui/Alert.svelte';
@@ -10,7 +9,7 @@
 	import Card from '#lib/sinaui/ui/Card.svelte';
 	import ConfirmButton from '#lib/sinaui/ui/ConfirmButton.svelte';
 	import { message } from '#lib/messages.ts';
-	import { submitting } from '#lib/submitting.svelte.ts';
+	import { mutating } from '#lib/admin-query.svelte.ts';
 	import Fields from './Fields.svelte';
 	import type { Field, Item } from './fields.ts';
 
@@ -35,7 +34,8 @@
 	}
 	let { noun, back, item, defaults, main, publish, side, form, actions }: Props = $props();
 
-	const save = submitting();
+	const save = mutating();
+	const remove = mutating();
 	let deleteForm = $state<HTMLFormElement>();
 	const values = $derived(form?.errors ? form.values : undefined);
 	const saved = $derived(form?.saved || page.url.searchParams.has('saved'));
@@ -51,7 +51,7 @@
 	{#if form?.errors}<Alert tone="danger" title="Some fields need a look. They are marked below." live />{/if}
 	{#if saved && !form?.code && !form?.errors}<Alert tone="success" title="Saved." live />{/if}
 
-	<form method="post" action="?/save" enctype="multipart/form-data" class="columns" use:enhance={save.enhance}>
+	<form method="post" action="?/save" enctype="multipart/form-data" class="columns" onsubmit={save.submit}>
 		<div class="main">
 			<Card><Fields fields={main} item={item ?? defaults} {values} errors={form?.errors} /></Card>
 		</div>
@@ -76,7 +76,7 @@
 			{/each}
 		</div>
 	</form>
-	{#if item}<form method="post" action="?/delete" bind:this={deleteForm} use:enhance hidden></form>{/if}
+	{#if item}<form method="post" action="?/delete" bind:this={deleteForm} onsubmit={remove.submit} hidden></form>{/if}
 </div>
 
 <style>

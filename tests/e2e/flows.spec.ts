@@ -63,8 +63,11 @@ test('a paid course opens after an admin confirms the payment', async ({ browser
 		await expect(confirm).toBeVisible({ timeout: 1000 });
 	}).toPass();
 	await expect(admin.getByRole('dialog').getByText(transaction)).toBeVisible();
+	// The list empties at once (before the server answers), so also wait for the save itself.
+	const saved = admin.waitForResponse((response) => response.url().includes('?/approve'));
 	await confirm.click();
 	await expect(admin.getByText('No payments are waiting')).toBeVisible();
+	expect((await saved).ok()).toBe(true);
 
 	await student.goto('/portal/courses/english-for-beginners');
 	await expect(student.getByRole('heading', { level: 1, name: 'Introduction to the Noun Phrase' })).toBeVisible();
@@ -205,4 +208,39 @@ test('staff set a new password for a student who cannot sign in', async ({ page,
 	await page.goto('/logout');
 	await page.goto('/login');
 	await expect(page.getByRole('link', { name: 'Forgot password?' })).toHaveCount(0);
+});
+
+test('admin data is refetched as JSON, for staff only', async ({ page, browser }) => {
+	// A visitor is sent to sign in, never handed data.
+	const anonymous = await page.request.get('/admin/data/payments', { maxRedirects: 0 });
+	expect(anonymous.status()).toBeGreaterThanOrEqual(300);
+	expect(await anonymous.text()).not.toContain('transaction_id');
+
+	await register(page, 'Karim');
+	expect((await page.request.get('/admin/data/payments', { maxRedirects: 0 })).status()).toBe(403);
+
+	const staff = await (await browser.newContext()).newPage();
+	await staff.goto('/login');
+	await signIn(staff, 'admin@example.com', 'admin12345');
+	await expect(staff).toHaveURL('/admin');
+	const payments = await staff.request.get('/admin/data/payments?status=all');
+	expect(payments.status()).toBe(200);
+	expect(await payments.text()).toContain('status');
+	expect((await staff.request.get('/admin/data/~layout')).status()).toBe(200);
+	expect((await staff.request.get('/admin/data/no-such-screen')).status()).toBe(404);
+});
+
+test('an item on the admin Overview opens that item, not the whole list', async ({ page }) => {
+	await page.goto('/login');
+	await signIn(page, 'admin@example.com', 'admin12345');
+	await expect(page).toHaveURL('/admin');
+	await expect(async () => {
+		await page.getByRole('tab', { name: 'Latest enrollments' }).click({ timeout: 2000 });
+		await expect(page.getByRole('tabpanel', { name: 'Latest enrollments' })).toBeVisible({ timeout: 1000 });
+	}).toPass();
+	const row = page.getByRole('tabpanel', { name: 'Latest enrollments' }).getByRole('listitem').first().getByRole('link');
+	const name = await row.locator('strong').innerText();
+	await row.click();
+	await expect(page).toHaveURL(/\/admin\/students\?open=/);
+	await expect(page.getByRole('dialog', { name })).toBeVisible();
 });

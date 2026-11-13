@@ -1,9 +1,13 @@
 <script lang="ts">
+	import { adminPage } from '#lib/admin-query.svelte.ts';
 	import Button from '#lib/sinaui/ui/Button.svelte';
 	import EditorPage from '#lib/components/EditorPage.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 
-	let { data, form } = $props();
+	let { data: loaded } = $props();
+	const admin = adminPage(() => loaded);
+	const data = $derived(admin.data);
+	const form = $derived(admin.form);
 </script>
 
 <Seo title="{data.page?.title ?? 'New page'} | Admin" description="Write a page for the website." noindex />
