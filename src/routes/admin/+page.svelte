@@ -14,6 +14,7 @@
 	import Card from '#lib/sinaui/ui/Card.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
 	import StatTabs from '#lib/sinaui/ui/StatTabs.svelte';
+	import * as Tabs from '#lib/sinaui/ui/tabs/index.ts';
 	import Seo from '#lib/components/Seo.svelte';
 	import TrendChart from '#lib/components/TrendChart.svelte';
 	import { date, dayShort, money, number, plural } from '#lib/format.ts';
@@ -63,6 +64,14 @@
 		{#each stats as stat (stat.label)}<Stat label={stat.label} value={stat.value} hint={stat.hint} icon={stat.icon} />{/each}
 	</div>
 
+	<Tabs.Root variant="pill" fit>
+		<Tabs.List label="Overview sections">
+			<Tabs.Tab value="trend">Trend</Tabs.Tab>
+			{#each waiting as list (list.title)}<Tabs.Tab value={list.title}>{list.title}</Tabs.Tab>{/each}
+			<Tabs.Tab value="recent">Latest enrollments</Tabs.Tab>
+			<Tabs.Tab value="popular">Most popular courses</Tabs.Tab>
+		</Tabs.List>
+		<Tabs.Panel value="trend" class="tab-panel">
 	<Card flush>
 		<StatTabs label="What the chart shows" {items} bind:value={metric} />
 		<div class="chart">
@@ -73,9 +82,10 @@
 			{/if}
 		</div>
 	</Card>
+		</Tabs.Panel>
 
-	<div class="three">
 		{#each waiting as list (list.title)}
+		<Tabs.Panel value={list.title} class="tab-panel">
 			<Card title={list.title} icon={list.icon} level={2} flush>
 				{#snippet aside()}<Button size="sm" variant="outline" href={list.href}>View all</Button>{/snippet}
 				{#if list.rows.length}
@@ -93,10 +103,10 @@
 					<p class="muted none">{list.empty}</p>
 				{/if}
 			</Card>
+		</Tabs.Panel>
 		{/each}
-	</div>
 
-	<div class="two">
+		<Tabs.Panel value="recent" class="tab-panel">
 		<Card title="Latest enrollments" icon={UserGroupIcon} level={2} flush>
 			{#snippet aside()}<Button size="sm" variant="outline" href="/admin/students">All students</Button>{/snippet}
 			{#if data.recent.length}
@@ -114,7 +124,9 @@
 				<p class="muted none">Nobody has enrolled yet. New enrollments show up here.</p>
 			{/if}
 		</Card>
+		</Tabs.Panel>
 
+		<Tabs.Panel value="popular" class="tab-panel">
 		<Card title="Most popular courses" icon={BookOpen01Icon} level={2}>
 			{#snippet aside()}<Button size="sm" variant="outline" href="/admin/analytics">Details</Button>{/snippet}
 			{#if data.courses.some((c) => c.students)}
@@ -134,7 +146,8 @@
 				<p class="muted">No course has students yet.</p>
 			{/if}
 		</Card>
-	</div>
+		</Tabs.Panel>
+	</Tabs.Root>
 </div>
 
 <style>
@@ -150,18 +163,6 @@
 		padding-block: 2.5rem;
 		text-align: center;
 		font-size: 0.875rem;
-	}
-	.three,
-	.two {
-		display: grid;
-		gap: var(--app-gap);
-		align-items: start;
-	}
-	.three {
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-	}
-	.two {
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
 	}
 	.rows,
 	.courses {

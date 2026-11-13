@@ -12,7 +12,7 @@
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
 	import Seo from '#lib/components/Seo.svelte';
@@ -30,10 +30,7 @@
 
 <div class="app-page">
 	<PageHeader title="Submissions">
-		{#snippet actions()}<Select label="Show" hideLabel value={data.show} onchange={(e) => goto(`?show=${e.currentTarget.value}`)}>
-				<option value="waiting">Waiting for review</option>
-				<option value="all">All submissions</option>
-			</Select>{/snippet}
+		{#snippet actions()}<CustomSelect label="Show" hideLabel value={data.show} onchange={(value) => goto(`?show=${value}`)} options={[{ value: 'waiting', label: 'Waiting for review' }, { value: 'all', label: 'All submissions' }]} />{/snippet}
 	</PageHeader>
 
 	<Card flush>

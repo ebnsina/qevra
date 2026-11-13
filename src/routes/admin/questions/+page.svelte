@@ -11,7 +11,7 @@
 	import ConfirmButton from '#lib/sinaui/ui/ConfirmButton.svelte';
 	import Dialog from '#lib/sinaui/ui/Dialog.svelte';
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
 	import Seo from '#lib/components/Seo.svelte';
@@ -32,10 +32,7 @@
 <div class="app-page">
 	<PageHeader title="Questions" description="What students ask under lessons. An answer from you is marked as the teacher's.">
 		{#snippet actions()}
-			<Select label="Show" hideLabel value={data.show} onchange={(e) => goto(`?show=${e.currentTarget.value}`)}>
-				<option value="open">Waiting for an answer</option>
-				<option value="all">All questions</option>
-			</Select>
+			<CustomSelect label="Show" hideLabel value={data.show} onchange={(value) => goto(`?show=${value}`)} options={[{ value: 'open', label: 'Waiting for an answer' }, { value: 'all', label: 'All questions' }]} />
 		{/snippet}
 	</PageHeader>
 

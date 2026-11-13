@@ -18,9 +18,10 @@
 	import Card from '#lib/sinaui/ui/Card.svelte';
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import StatTabs from '#lib/sinaui/ui/StatTabs.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
+	import * as Tabs from '#lib/sinaui/ui/tabs/index.ts';
 	import Seo from '#lib/components/Seo.svelte';
 	import TrendChart from '#lib/components/TrendChart.svelte';
 	import { dayShort, money, number, plural } from '#lib/format.ts';
@@ -68,11 +69,7 @@
 <div class="app-page">
 	<PageHeader title="Analytics" description="Trends, money, ratings and quizzes for {period}, and every course since it opened.">
 		{#snippet actions()}
-			<Select label="Period" hideLabel value={String(data.days)} onchange={(e) => goto(`?days=${e.currentTarget.value}`)}>
-				<option value="30">Last 30 days</option>
-				<option value="90">Last 90 days</option>
-				<option value="365">Last 12 months</option>
-			</Select>
+			<CustomSelect label="Period" hideLabel value={String(data.days)} onchange={(value) => goto(`?days=${value}`)} options={[{ value: '30', label: 'Last 30 days' }, { value: '90', label: 'Last 90 days' }, { value: '365', label: 'Last 12 months' }]} />
 		{/snippet}
 	</PageHeader>
 
@@ -80,6 +77,17 @@
 		{#each stats as stat (stat.label)}<Stat label={stat.label} value={stat.value} hint={stat.hint} icon={stat.icon} />{/each}
 	</div>
 
+	<Tabs.Root variant="pill" fit>
+		<Tabs.List label="Analytics sections">
+			<Tabs.Tab value="trends">Trends</Tabs.Tab>
+			<Tabs.Tab value="income">Income by course</Tabs.Tab>
+			<Tabs.Tab value="payments">How students pay</Tabs.Tab>
+			<Tabs.Tab value="ratings">Ratings</Tabs.Tab>
+			<Tabs.Tab value="quizzes">Hardest quizzes</Tabs.Tab>
+			<Tabs.Tab value="students">Most active students</Tabs.Tab>
+			<Tabs.Tab value="courses">Courses</Tabs.Tab>
+		</Tabs.List>
+		<Tabs.Panel value="trends" class="tab-panel">
 	<Card flush>
 		<StatTabs label="What the chart shows" {items} bind:value={metric} />
 		<div class="chart">
@@ -96,8 +104,9 @@
 			{/if}
 		</div>
 	</Card>
+		</Tabs.Panel>
 
-	<div class="two">
+		<Tabs.Panel value="income" class="tab-panel">
 		<Card title="Income by course" icon={Wallet01Icon} level={2} description="Confirmed payments in {period}.">
 			{#if data.income.length}
 				<ul class="bars">
@@ -111,7 +120,9 @@
 				<p class="muted">No confirmed payments in {period}.</p>
 			{/if}
 		</Card>
+		</Tabs.Panel>
 
+		<Tabs.Panel value="payments" class="tab-panel">
 		<Card title="How students pay" icon={Payment01Icon} level={2} description="Payments sent in {period}.">
 			{#if allPayments}
 				<ul class="bars">
@@ -133,9 +144,9 @@
 				<p class="muted">No payments in {period}.</p>
 			{/if}
 		</Card>
-	</div>
+		</Tabs.Panel>
 
-	<div class="three">
+		<Tabs.Panel value="ratings" class="tab-panel">
 		<Card title="Ratings" icon={StarIcon} level={2} description="Published reviews, all courses.">
 			{#if allRatings}
 				<ul class="bars">
@@ -149,7 +160,9 @@
 				<p class="muted">No published reviews yet.</p>
 			{/if}
 		</Card>
+		</Tabs.Panel>
 
+		<Tabs.Panel value="quizzes" class="tab-panel">
 		<Card title="Hardest quizzes" icon={Quiz01Icon} level={2} description="Lowest pass rates. A lesson to explain again, or a question to reword.">
 			{#if data.quizzes.length}
 				<ul class="bars">
@@ -163,7 +176,9 @@
 				<p class="muted">Not enough quiz tries yet to compare.</p>
 			{/if}
 		</Card>
+		</Tabs.Panel>
 
+		<Tabs.Panel value="students" class="tab-panel">
 		<Card title="Most active students" icon={UserGroupIcon} level={2} description="Lessons finished in {period}." flush>
 			{#if data.students.length}
 				<ol class="ranks">
@@ -175,8 +190,9 @@
 				<p class="muted none">Nobody finished a lesson in {period}.</p>
 			{/if}
 		</Card>
-	</div>
+		</Tabs.Panel>
 
+		<Tabs.Panel value="courses" class="tab-panel">
 	<Card title="Courses" icon={BookOpen01Icon} level={2} description="Since each course opened. Open one to see where its students stop." flush>
 		{#if data.courses.length}
 			<Table caption="Courses" hideCaption>
@@ -200,6 +216,8 @@
 			<EmptyState title="No courses yet" icon={Analytics01Icon}>Numbers appear here once you have a course with students.</EmptyState>
 		{/if}
 	</Card>
+		</Tabs.Panel>
+	</Tabs.Root>
 </div>
 
 <DetailSheet
@@ -248,17 +266,6 @@
 		padding-block: 2.5rem;
 		text-align: center;
 		font-size: 0.875rem;
-	}
-	.two,
-	.three {
-		display: grid;
-		gap: var(--app-gap);
-	}
-	.two {
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
-	}
-	.three {
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
 	}
 	.bars,
 	.ranks {

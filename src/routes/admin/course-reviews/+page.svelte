@@ -10,7 +10,7 @@
 	import Card from '#lib/sinaui/ui/Card.svelte';
 	import ConfirmButton from '#lib/sinaui/ui/ConfirmButton.svelte';
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { dateTime } from '#lib/format.ts';
@@ -29,10 +29,7 @@
 <div class="app-page">
 	<PageHeader title="Course reviews" description="Students' ratings. A review shows on its course page, and counts toward the stars, once you approve it.">
 		{#snippet actions()}
-			<Select label="Show" hideLabel value={data.show} onchange={(e) => goto(`?show=${e.currentTarget.value}`)}>
-				<option value="waiting">Waiting for approval</option>
-				<option value="all">All reviews</option>
-			</Select>
+			<CustomSelect label="Show" hideLabel value={data.show} onchange={(value) => goto(`?show=${value}`)} options={[{ value: 'waiting', label: 'Waiting for approval' }, { value: 'all', label: 'All reviews' }]} />
 		{/snippet}
 	</PageHeader>
 

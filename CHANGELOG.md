@@ -30,9 +30,11 @@ First version.
 - Course and post covers are photographs; the closing band has an aurora gradient
 - The website header blends into each page's opening section and gains its own surface on scroll
 - The sample academy is named Lisan Academy
-- Sign-in pages show a photo beside the form on wide screens; the home hero has a photo behind its text
+- Sign-in pages show a photo beside the form on wide screens
 - Strength, step and resource cards show their icon as a large watermark
 - Contact page: WhatsApp and email buttons and common questions
 - Every input shows an example of what to type
 - Phone number is required when creating an account
 - "Forgot password?" is gone from the sign-in page; staff set a new password for a student from the Students screen
+- Overview and Analytics are split into tabs instead of one long page; number tiles are tinted in their color
+- Dates, times, colors and dropdowns in forms use the app's own pickers instead of the browser's

@@ -87,12 +87,13 @@ test('an enrolled student sees a waiting screen, not an error, while the course 
 	await signIn(admin, 'admin@example.com', 'admin12345');
 	await expect(admin).toHaveURL('/admin');
 	await admin.goto('/admin/students');
-	const course = admin.getByLabel('Open a course without payment');
+	const course = admin.getByRole('combobox', { name: 'Open a course without payment' });
 	await expect(async () => {
 		await admin.getByRole('button', { name: 'Nadia' }).click();
 		await expect(course).toBeVisible({ timeout: 1000 });
 	}).toPass();
-	await course.selectOption({ label: 'Everyday Spoken English' });
+	await course.click();
+	await admin.getByRole('option', { name: 'Everyday Spoken English' }).click();
 	await admin.getByRole('button', { name: 'Enroll' }).click();
 	await expect(admin.getByText('Course opened for this student.')).toBeVisible();
 
@@ -169,7 +170,9 @@ test('analytics follows the chosen period', async ({ page }) => {
 	await signIn(page, 'admin@example.com', 'admin12345');
 	await expect(page.getByRole('heading', { level: 1, name: 'Analytics' })).toBeVisible();
 	await expect(async () => {
-		await page.getByLabel('Period').selectOption('90');
+		// Short timeouts: a click made before the page is interactive is simply tried again.
+		if (!(await page.getByRole('option', { name: 'Last 90 days' }).isVisible())) await page.getByRole('combobox', { name: 'Period' }).click({ timeout: 2000 });
+		await page.getByRole('option', { name: 'Last 90 days' }).click({ timeout: 2000 });
 		await expect(page).toHaveURL(/days=90/, { timeout: 1000 });
 	}).toPass();
 	await expect(page.getByText('In the last 90 days', { exact: true })).toBeVisible();
@@ -186,7 +189,7 @@ test('staff set a new password for a student who cannot sign in', async ({ page,
 	await staff.goto('/login?next=/admin/students');
 	await signIn(staff, 'admin@example.com', 'admin12345');
 	await expect(async () => {
-		await staff.getByRole('button', { name: 'Salma', exact: true }).click();
+		await staff.getByRole('button', { name: 'Salma', exact: true }).first().click();
 		await expect(staff.getByLabel('Set a new password')).toBeVisible({ timeout: 1000 });
 	}).toPass();
 	await staff.getByLabel('Set a new password').fill('brand-new-pass-9');

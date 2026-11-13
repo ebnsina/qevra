@@ -427,7 +427,9 @@ a.site-card.in:hover {
 }
 /* Stats in a row take the hues in turn. */
 .app-area .stats > * {
-	--ui-stat-icon-bg: color-mix(in oklab, var(--tile) 14%, var(--ui-surface));
+	/* The whole tile carries its hue faintly; the icon sits on a stronger patch of it. */
+	--ui-surface: color-mix(in oklab, var(--tile) 7%, var(--ui-bg));
+	--ui-stat-icon-bg: color-mix(in oklab, var(--tile) 20%, var(--ui-bg));
 	--ui-stat-icon-fg: var(--tile);
 }
 .app-area .stats > :nth-child(6n + 1) {
@@ -510,4 +512,11 @@ a.site-card.in:hover {
 /* The whole row is the target; the RowLink in its first cell names it for keyboards and screen readers. */
 .app-area tbody tr:has(td:first-child > button) {
 	cursor: pointer;
+}
+
+/* Tab panels in the app: the same gap between a panel's blocks as between a page's. */
+.app-area .tab-panel {
+	display: grid;
+	gap: var(--app-gap);
+	padding-top: var(--app-gap);
 }

@@ -13,7 +13,7 @@
 	import Input from '#lib/sinaui/ui/Input.svelte';
 	import PasswordInput from '#lib/sinaui/ui/PasswordInput.svelte';
 	import Progress from '#lib/sinaui/ui/Progress.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { date, number, plural } from '#lib/format.ts';
@@ -104,9 +104,7 @@
 		{#if available.length}
 			<form method="post" action="?/enroll" class="app-form-row add" use:enhance={enroll.enhance}>
 				<input type="hidden" name="user_id" value={selected.id} />
-				<Select label="Open a course without payment" name="course_id" required placeholder="Choose a course">
-					{#each available as course (course.id)}<option value={course.id}>{course.title}</option>{/each}
-				</Select>
+				<CustomSelect label="Open a course without payment" name="course_id" required placeholder="Choose a course" options={available.map((c) => ({ value: c.id, label: c.title }))} />
 				<Button type="submit" variant="outline" loading={enroll.busy}>Enroll</Button>
 			</form>
 		{/if}

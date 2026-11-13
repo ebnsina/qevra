@@ -10,7 +10,7 @@
 	import Dialog from '#lib/sinaui/ui/Dialog.svelte';
 	import EmptyState from '#lib/sinaui/ui/EmptyState.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
 	import PaymentStatus from '#lib/components/PaymentStatus.svelte';
@@ -30,10 +30,7 @@
 
 <div class="app-page">
 	<PageHeader title="Payments">
-		{#snippet actions()}<Select label="Show" hideLabel value={data.status} onchange={(e) => goto(`?status=${e.currentTarget.value}`)}>
-				<option value="pending">Waiting for confirmation</option>
-				<option value="all">All payments</option>
-			</Select>{/snippet}
+		{#snippet actions()}<CustomSelect label="Show" hideLabel value={data.status} onchange={(value) => goto(`?status=${value}`)} options={[{ value: 'pending', label: 'Waiting for confirmation' }, { value: 'all', label: 'All payments' }]} />{/snippet}
 	</PageHeader>
 
 	<Card flush>

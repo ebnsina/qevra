@@ -5,7 +5,7 @@
 	import Button from '#lib/sinaui/ui/Button.svelte';
 	import Card from '#lib/sinaui/ui/Card.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { date, money } from '#lib/format.ts';
 	import { message } from '#lib/messages.ts';
@@ -94,10 +94,7 @@
 			<form method="post" action="?/pay" class="app-form" use:enhance={send.enhance}>
 				{#if data.coupon?.percent}<input type="hidden" name="coupon" value={data.coupon.code} />{/if}
 				<div class="app-form-row">
-					<Select label="Paid with" name="method" required value={values?.method ?? 'bkash'} error={errors?.method}>
-						<option value="bkash">bKash</option>
-						<option value="nagad">Nagad</option>
-					</Select>
+					<CustomSelect label="Paid with" name="method" required value={values?.method ?? 'bkash'} error={errors?.method} options={[{ value: 'bkash', label: 'bKash' }, { value: 'nagad', label: 'Nagad' }]} />
 					<Input label="Number you paid from" name="sender_number" type="tel" required placeholder="01XXXXXXXXX" value={values?.sender_number ?? ''} error={errors?.sender_number} />
 				</div>
 				<Input label="Transaction ID" name="transaction_id" required placeholder="e.g. 9AB1CD2EFG" value={values?.transaction_id ?? ''} error={errors?.transaction_id} hint="It is in the confirmation message from bKash or Nagad." />

@@ -11,7 +11,7 @@
 	import FileDrop from '#lib/sinaui/ui/FileDrop.svelte';
 	import Icon from '#lib/sinaui/ui/Icon.svelte';
 	import Input from '#lib/sinaui/ui/Input.svelte';
-	import Select from '#lib/sinaui/ui/Select.svelte';
+	import CustomSelect from '#lib/sinaui/ui/CustomSelect.svelte';
 	import Sortable from '#lib/sinaui/ui/Sortable.svelte';
 	import Table from '#lib/sinaui/ui/Table.svelte';
 	import Textarea from '#lib/sinaui/ui/Textarea.svelte';
@@ -246,9 +246,7 @@
 					<Textarea label={item ? `Question ${i + 1}` : 'New question'} placeholder="Which word comes before a singular noun that starts with a vowel sound?" name="question" rows={2} required value={item?.question ?? ''} />
 					<Textarea label="Answers" placeholder={'a\nan\nthe'} name="options" rows={4} required value={item?.options.join('\n') ?? ''} hint="One answer per line, 2 to 4 answers." />
 					<div class="app-form-row">
-						<Select label="Right answer" name="correct" required value={String((item?.correct ?? 0) + 1)}>
-							{#each [1, 2, 3, 4] as n (n)}<option value={String(n)}>Answer {n}</option>{/each}
-						</Select>
+						<CustomSelect label="Right answer" name="correct" required value={String((item?.correct ?? 0) + 1)} options={[1, 2, 3, 4].map((n) => ({ value: String(n), label: `Answer ${n}` }))} />
 						<div class="app-form-actions">
 							{#if item}<Button type="submit" variant="ghost" formaction="?/deleteQuestion" formnovalidate>Delete</Button>{/if}
 							<Button type="submit" variant="outline" loading={question.busy}>{item ? 'Save question' : 'Add question'}</Button>
