@@ -4,6 +4,7 @@
 	import favicon from '#lib/assets/favicon.svg';
 	import { Toaster } from '#lib/sinaui/ui/toast/index.ts';
 
+	import NavProgress from '#lib/components/NavProgress.svelte';
 	import { onColor } from '#lib/color.ts';
 
 	let { data, children } = $props();
@@ -17,5 +18,6 @@
 	{@html `<style>:root{--brand:${brand};--on-brand:${onColor(brand)}}</style>`}
 </svelte:head>
 
+<NavProgress />
 {@render children()}
 <Toaster />

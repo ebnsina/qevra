@@ -4,6 +4,8 @@
 
 First version.
 
+- A thin bar across the top of every page shows while the next page loads
+- Post, page and course editors: Save, View and Delete sit in the page header and stay in view while you scroll
 - Public website for the academy: home, courses, course pages with a free preview, reviews, resources, blog and text pages
 - Student accounts with email and password, and password reset by email
 - Enrollment by bKash or Nagad with staff confirmation; free courses start at once

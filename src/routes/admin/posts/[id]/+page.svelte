@@ -36,7 +36,7 @@
 		]}
 	>
 		{#snippet actions(post)}
-			{#if post.published}<Button variant="outline" size="sm" href="/blog/{post.slug}" target="_blank">View</Button>{/if}
+			{#if post.published}<Button variant="outline" href="/blog/{post.slug}" target="_blank">View</Button>{/if}
 		{/snippet}
 	</EditorPage>
 {/key}

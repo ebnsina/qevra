@@ -50,8 +50,8 @@
 		]}
 	>
 		{#snippet actions(course)}
-			<Button variant="outline" size="sm" href="/admin/courses/{course.id}">Lessons</Button>
-			<Button variant="outline" size="sm" href="/courses/{course.slug}" target="_blank">View</Button>
+			<Button variant="outline" href="/admin/courses/{course.id}">Lessons</Button>
+			<Button variant="outline" href="/courses/{course.slug}" target="_blank">View</Button>
 		{/snippet}
 	</EditorPage>
 {/key}

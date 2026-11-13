@@ -30,6 +30,6 @@
 			}
 		]}
 	>
-		{#snippet actions(page)}<Button variant="outline" size="sm" href="/{page.slug}" target="_blank">View</Button>{/snippet}
+		{#snippet actions(page)}<Button variant="outline" href="/{page.slug}" target="_blank">View</Button>{/snippet}
 	</EditorPage>
 {/key}

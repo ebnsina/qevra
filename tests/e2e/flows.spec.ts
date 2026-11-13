@@ -244,3 +244,20 @@ test('an item on the admin Overview opens that item, not the whole list', async 
 	await expect(page).toHaveURL(/\/admin\/students\?open=/);
 	await expect(page.getByRole('dialog', { name })).toBeVisible();
 });
+
+test('a bar shows across the top while the next page loads', async ({ page }) => {
+	// Hold back the next page's data so the wait is long enough to see.
+	await page.route('**/__data.json*', async (route) => {
+		await new Promise((done) => setTimeout(done, 1500));
+		await route.continue();
+	});
+	const bar = page.getByRole('progressbar', { name: 'Loading page' });
+	await expect(async () => {
+		// Only a page whose scripts have loaded navigates in place; before that a click reloads the whole page.
+		await page.goto('/', { waitUntil: 'networkidle' });
+		await page.getByRole('banner').getByRole('link', { name: 'Courses' }).click({ timeout: 2000 });
+		await expect(bar).toBeVisible({ timeout: 1000 });
+	}).toPass();
+	await expect(page).toHaveURL('/courses');
+	await expect(bar).toHaveCount(0);
+});
